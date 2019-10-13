@@ -1,6 +1,8 @@
 _python_pkg = tiles
+db_name = tiles
+db_user = tiles
 
-.PHONY: run setup setup-dev test lint tox reformat help
+.PHONY: run setup setup-dev manage create-db test lint tox reformat help
 
 run:  ## Start the development
 	pipenv run python manage.py runserver
@@ -11,6 +13,14 @@ setup:  ## Create Pipenv virtual environment and install dependencies.
 
 setup-dev:  ## Install development dependencies
 	pipenv install --dev
+
+manage:  ## Run Django's manage.py, use variable 'args' to pass arguments
+	pipenv run python manage.py $(args)
+
+create-db:
+	sudo -u postgres sh -c ' \
+	    createuser "$(db_user)" && \
+	    createdb --encoding=UTF8 --template=template0 -O "$(db_user)" "$(db_name)"'
 
 test:  ## Run unit tests
 	pipenv run python -m unittest
