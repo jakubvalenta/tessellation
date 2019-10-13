@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from tiles.models import Composition, Tile
+from tiles.models import Composition, Image, Tile
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -8,8 +8,8 @@ class ImageSerializer(serializers.ModelSerializer):
     url = serializers.FileField(source='image', read_only=True, use_url=True)
 
     class Meta:
-        model = Tile
-        fields = ['imgId', 'url']
+        model = Image
+        fields = ['imgId', 'url', 'connections']
 
 
 class TileSerializer(serializers.ModelSerializer):
@@ -26,4 +26,4 @@ class CompositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Composition
-        fields = ['id', 'width', 'height', 'images', 'tiles']
+        fields = ['id', 'size', 'images', 'tiles']

@@ -42,7 +42,7 @@
 <div class="composition" id="js-composition"></div>
 {% endblock %}
 {% block scripts %}
-{{ composition.as_dict|json_script:'composition-data' }}
+{{ data|json_script:'composition-data' }}
 <script>
   window.tiles.pageNew(
     JSON.parse(document.getElementById('composition-data').textContent)
