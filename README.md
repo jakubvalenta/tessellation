@@ -34,10 +34,22 @@ $ make setup
 
 ## Usage
 
-Start the development server
+Start a development server
 
 ``` shell
 $ make run
+```
+
+Create database:
+
+``` shell
+$ make create-db
+```
+
+Create tables and populate them with fixtures:
+
+``` shell
+$ make migrate populate-db
 ```
 
 ## Development

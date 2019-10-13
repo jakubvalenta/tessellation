@@ -2,7 +2,7 @@ _python_pkg = tiles
 db_name = tiles
 db_user = tiles
 
-.PHONY: run setup setup-dev manage create-db test lint tox reformat help
+.PHONY: run setup setup-dev manage shell migrate makemigrations create-db populate-db test lint tox reformat help
 
 run:  ## Start the development
 	pipenv run python manage.py runserver
@@ -17,10 +17,22 @@ setup-dev:  ## Install development dependencies
 manage:  ## Run Django's manage.py, use variable 'args' to pass arguments
 	pipenv run python manage.py $(args)
 
-create-db:
+shell:  ## Run Django Extensions Shell Plus
+	$(MAKE) manage args=shell_plus
+
+migrate:  ## Migrate
+	$(MAKE) manage args=migrate
+
+makemigrations:  ## Make migrations
+	$(MAKE) manage args=makemigrations
+
+create-db:  ## Create database
 	sudo -u postgres sh -c ' \
 	    createuser "$(db_user)" && \
 	    createdb --encoding=UTF8 --template=template0 -O "$(db_user)" "$(db_name)"'
+
+populate-db:  ## Populate database with fixtures
+	$(MAKE) manage args="populate_db"
 
 test:  ## Run unit tests
 	pipenv run python -m unittest

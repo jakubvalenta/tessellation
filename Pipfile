@@ -13,6 +13,7 @@ mypy = "*"
 Django = "*"
 djangorestframework = "*"
 psycopg2 = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.7"
