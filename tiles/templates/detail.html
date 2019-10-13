@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
 <h1 class="sr-only">Composition</h1>
 <div class="composition" id="js-composition"></div>
 {% endblock %}
 {% block scripts %}
-{{ composition.as_dict|json_script:"composition-data" }}
+{{ composition.as_dict|json_script:'composition-data' }}
 <script>
   window.tiles.pageDetail(
     JSON.parse(document.getElementById('composition-data').textContent)
