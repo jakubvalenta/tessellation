@@ -14,6 +14,7 @@ Django = "*"
 djangorestframework = "*"
 psycopg2 = "*"
 django-extensions = "*"
+drf-base64 = "*"
 
 [requires]
 python_version = "3.7"
