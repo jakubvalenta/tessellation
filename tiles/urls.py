@@ -4,6 +4,8 @@ from django.urls import path
 
 from tiles import views
 
-urlpatterns = [path('', views.index, name='index')] + static(
-    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-)
+urlpatterns = [
+    path('', views.IndexView.as_view(), name='index'),
+    path('new/', views.NewView.as_view(), name='new'),
+    path('<str:pk>/', views.DetailView.as_view(), name='detail'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

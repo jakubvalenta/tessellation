@@ -1,0 +1,178 @@
+body {
+  font-family: 'Source Sans Pro', 'Arial', sans-serif;
+  font-size: 10/12 * 100%;
+  line-height: 1.3;
+  background: #eee;
+  margin: 2em;
+}
+
+p,
+ul,
+ol,
+dl,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+table {
+  margin: 0.5em 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+}
+
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.tile {
+  width: 5em;
+  height: 5em;
+  display: inline-block;
+  background: #fff;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.tile-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  line-height: 4em;
+  text-align: center;
+  border: 0.5em solid transparent;
+}
+
+.mode-final .composition .tile-inner {
+  visibility: hidden;
+}
+
+.col {
+  display: inline-block;
+}
+
+.images .tile {
+  position: relative;
+  display: block;
+  width: 10em;
+  height: 10em;
+}
+.images input,
+.images button {
+  display: block;
+}
+
+.conn-button {
+  position: absolute;
+  padding: 0;
+  width: 60%;
+  height: 20%;
+  line-height: 1.1;
+}
+.conn-button-0 {
+  left: -20%;
+  top: 40%;
+  transform: rotate(-0.25turn);
+}
+.conn-button-1 {
+  left: 20%;
+  top: 0;
+}
+.conn-button-2 {
+  transform: rotate(0.25turn);
+  top: 40%;
+  right: -20%;
+}
+.conn-button-3 {
+  transform: rotate(0.5turn);
+  left: 20%;
+  bottom: 0;
+}
+
+.size-input {
+  width: 3em;
+}
+
+.conn-0-1 {
+  border-left-color: red;
+}
+.conn-0-2 {
+  border-left-color: green;
+}
+.conn-0-3 {
+  border-left-color: blue;
+}
+.conn-0-4 {
+  border-left-color: yellow;
+}
+.conn-0-5 {
+  border-left-color: pink
+}
+.conn-1-1 {
+  border-top-color: red;
+}
+.conn-1-2 {
+  border-top-color: green;
+}
+.conn-1-3 {
+  border-top-color: blue;
+}
+.conn-1-4 {
+  border-top-color: yellow;
+}
+.conn-1-5 {
+  border-top-color: pink
+}
+.conn-2-1 {
+  border-right-color: red;
+}
+.conn-2-2 {
+  border-right-color: green;
+}
+.conn-2-3 {
+  border-right-color: blue;
+}
+.conn-2-4 {
+  border-right-color: yellow;
+}
+.conn-2-5 {
+  border-right-color: pink
+}
+.conn-3-1 {
+  border-bottom-color: red;
+}
+.conn-3-2 {
+  border-bottom-color: green;
+}
+.conn-3-3 {
+  border-bottom-color: blue;
+}
+.conn-3-4 {
+  border-bottom-color: yellow;
+}
+.conn-3-5 {
+  border-bottom-color: pink
+}
+.rot-1 {
+  transform: rotate(-0.25turn);
+}
+.rot-2 {
+  transform: rotate(-0.5turn);
+}
+.rot-3 {
+  transform: rotate(-0.75turn);
+}

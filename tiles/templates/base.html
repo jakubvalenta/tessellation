@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="{% static "css/main.css" %}"
+      type="text/css"
+      media="screen"
+    />
+    <title>Tiles</title>
+  </head>
+  <body class="no-js mode-final">
+    <noscript>This app requires JavaScript</noscript>
+    {% block content %}{% endblock %}
+    <script src="{% static "js/main.js" %}"></script>
+    <script>
+      document.body.classList.remove('no-js');
+    </script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

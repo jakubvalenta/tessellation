@@ -1,5 +1,23 @@
-from django.http import HttpResponse
+from django.views import generic
+
+from tiles.models import Composition
 
 
-def index(request):
-    return HttpResponse("Hello, world.")
+class IndexView(generic.ListView):
+    template_name = 'index.html'
+
+    def get_queryset(self):
+        return Composition.objects.order_by('-created_at')[:5]
+
+
+class DetailView(generic.DetailView):
+    model = Composition
+    template_name = 'detail.html'
+
+
+class NewView(generic.base.TemplateView):
+    template_name = 'new.html'
+
+    def get_context_data(self):
+        first_composition = Composition.objects.order_by('created_at').first()
+        return {'composition': first_composition}
