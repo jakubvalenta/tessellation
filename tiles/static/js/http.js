@@ -3,12 +3,15 @@ export function http(method, url, data) {
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
       if (req.readyState === XMLHttpRequest.DONE) {
-        if (req.status === 200 || req.status === 201) {
-          try {
-            const data = JSON.parse(req.responseText);
-            resolve(data);
-          } catch (err) {
-            reject(`Failed to parse response: ${err.message}`, null);
+        if (200 >= req.status < 300) {
+          if (req.responseText) {
+            try {
+              resolve(JSON.parse(req.responseText));
+            } catch (err) {
+              reject(`Failed to parse response: ${err.message}`, null);
+            }
+          } else {
+            resolve(null);
           }
         } else {
           reject(`The response status code was ${req.status}`, null);

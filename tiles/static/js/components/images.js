@@ -6,7 +6,7 @@ function renderImageConnections(state, image, elTile, elContainer) {
   image.connections.forEach((connection, side) => {
     const elConnButton = document.createElement('button');
     elConnButton.classList.add('conn-button', `conn-button-${side}`);
-    elConnButton.innerHTML = 'change connection';
+    elConnButton.textContent = 'change connection';
     elConnButton.addEventListener('click', () => {
       State.shiftImageConnection(state, image, side);
       renderImages(state, elContainer);
@@ -31,14 +31,14 @@ function renderImageFile(state, image, elImage) {
   elImage.appendChild(elFile);
 }
 
-function renderImageRemove(state, image, elImage, elContainer) {
-  const elRemove = document.createElement('button');
-  elRemove.innerHTML = 'remove';
-  elRemove.addEventListener('click', () => {
-    State.removeImage(state, image);
+function renderImageDelete(state, image, elImage, elContainer) {
+  const elButton = document.createElement('button');
+  elButton.textContent = 'delete';
+  elButton.addEventListener('click', () => {
+    State.deleteImage(state, image);
     renderImages(state, elContainer);
   });
-  elImage.appendChild(elRemove);
+  elImage.appendChild(elButton);
 }
 
 function renderImages(state, elContainer) {
@@ -50,14 +50,14 @@ function renderImages(state, elContainer) {
     renderImageConnections(state, image, elTile, elContainer);
     elImage.appendChild(elTile);
     renderImageFile(state, image, elImage);
-    renderImageRemove(state, image, elImage, elContainer);
+    renderImageDelete(state, image, elImage, elContainer);
     elContainer.appendChild(elImage);
   });
 }
 
 function bindImagesEvents(state, elContainer) {
-  const elAddButton = document.getElementById('js-images-add');
-  elAddButton.addEventListener('click', () => {
+  const elButton = document.getElementById('js-images-add');
+  elButton.addEventListener('click', () => {
     State.newImage(state);
     renderImages(state, elContainer);
   });

@@ -21,7 +21,7 @@ export function getStorageItem(dataIndex) {
   return getStorageObject()[dataIndex];
 }
 
-export function removeStorageItem(dataIndex) {
+export function deleteStorageItem(dataIndex) {
   const data = getStorageObject();
   data.splice(dataIndex, 1);
   setStorageObject(data);
@@ -70,7 +70,7 @@ function validateTileData(tileData) {
   return tileData.imgRef && tileData.rotation !== undefined;
 }
 
-export function readState(data) {
+export function deserializeState(data) {
   const newState = {};
   if (validateSizeData(data.size)) {
     newState.size = data.size;
@@ -109,4 +109,16 @@ export function publishState(state) {
   return Promise.all(promises).then(() => {
     return HTTP.http('POST', '/compositions/', data);
   });
+}
+
+export function getPublishedComposition(compositionId) {
+  return HTTP.http('GET', `/compositions/${compositionId}`);
+}
+
+export function getPublishedCompositions() {
+  return HTTP.http('GET', '/compositions/');
+}
+
+export function deletePublishedComposition(compositionId) {
+  return HTTP.http('DELETE', `/compositions/${compositionId}`);
 }

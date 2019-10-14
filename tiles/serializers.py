@@ -36,7 +36,7 @@ class CompositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Composition
-        fields = ['id', 'size', 'images', 'tiles']
+        fields = ['id', 'created_at', 'size', 'images', 'tiles']
 
     @transaction.atomic
     def create(self, validated_data: dict) -> Composition:

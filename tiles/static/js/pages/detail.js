@@ -5,6 +5,6 @@ import Composition from '../components/composition.js';
 export function init(data) {
   const state = State.initState();
   Composition(state);
-  const newState = StorageLib.readState(data);
+  const newState = StorageLib.deserializeState(data);
   State.updateState(state, newState);
 }

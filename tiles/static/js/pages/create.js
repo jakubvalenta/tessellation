@@ -11,6 +11,6 @@ export function init(data) {
   Settings(state);
   Storage(state);
   Composition(state);
-  const newState = StorageLib.readState(data);
+  const newState = StorageLib.deserializeState(data);
   State.updateState(state, newState);
 }
