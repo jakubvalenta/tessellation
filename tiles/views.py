@@ -36,12 +36,14 @@ class CompositionCreateView(generic.base.TemplateView):
 
 
 class CompositionAPIViewSet(viewsets.ModelViewSet):
-    queryset = Composition.objects.all()
     serializer_class = CompositionSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly,
     ]
+
+    def get_queryset(self):
+        return Composition.objects.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

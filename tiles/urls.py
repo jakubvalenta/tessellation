@@ -6,7 +6,9 @@ from rest_framework.routers import DefaultRouter
 from tiles import views
 
 router = DefaultRouter()
-router.register('compositions', views.CompositionAPIViewSet)
+router.register(
+    'compositions', views.CompositionAPIViewSet, basename='composition'
+)
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
