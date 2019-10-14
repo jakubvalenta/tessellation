@@ -3,7 +3,7 @@ export function http(method, url, data) {
     const req = new XMLHttpRequest();
     req.onreadystatechange = () => {
       if (req.readyState === XMLHttpRequest.DONE) {
-        if (200 >= req.status < 300) {
+        if (req.status >= 200 && req.status < 300) {
           if (req.responseText) {
             try {
               resolve(JSON.parse(req.responseText));

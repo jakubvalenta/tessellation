@@ -1,5 +1,5 @@
 from django.views import generic
-from rest_framework import viewsets
+from rest_framework import permissions, viewsets
 
 from tiles.models import Composition
 from tiles.serializers import CompositionSerializer
@@ -37,3 +37,7 @@ class CompositionCreateView(generic.base.TemplateView):
 class CompositionAPIViewSet(viewsets.ModelViewSet):
     queryset = Composition.objects.all()
     serializer_class = CompositionSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

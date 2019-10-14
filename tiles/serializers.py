@@ -54,6 +54,7 @@ class CompositionSerializer(serializers.ModelSerializer):
             for tile_data in validated_data['tiles']
         }
         composition = Composition.objects.create(
+            owner=validated_data['owner'],
             width=validated_data['size']['width'],
             height=validated_data['size']['height'],
         )

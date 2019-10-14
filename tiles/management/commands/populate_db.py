@@ -3,6 +3,7 @@ import logging
 from base64 import b64encode
 from pathlib import Path
 
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -19,7 +20,7 @@ def create_base64_data_url(path: Path):
     return f'data:text/{suffix};base64,{data}'
 
 
-def load_fixture(fixture_path: str):
+def load_fixture(fixture_path: str, user: User):
     logger.info('Loading fixture %s', fixture_path)
     with fixture_path.open() as f:
         data = json.load(f)
@@ -30,7 +31,7 @@ def load_fixture(fixture_path: str):
     if not serializer.is_valid():
         logger.error(serializer.errors)
         return
-    serializer.save()
+    serializer.save(owner=user)
 
 
 class Command(BaseCommand):
@@ -38,5 +39,11 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        superuser = User.objects.filter(is_superuser=True).first()
+        if not User.objects.filter(username='jakub').exists():
+            user = User.objects.create_user(
+                'jakub', 'jakub@jakubvalenta.cz', 'password'
+            )
+            user.save()
         for fixture_path in fixtures_path.glob('*.json'):
-            load_fixture(fixture_path)
+            load_fixture(fixture_path, superuser)

@@ -46,6 +46,9 @@ class Tile(models.Model):
 class Composition(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now=True)
+    owner = models.ForeignKey(
+        'auth.User', related_name='snippets', on_delete=models.CASCADE
+    )
     width = models.PositiveSmallIntegerField()
     height = models.PositiveSmallIntegerField()
     tiles = models.ManyToManyField(Tile, related_name='compositions')
