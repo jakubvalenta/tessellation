@@ -18,6 +18,7 @@ function renderComposition(composition, elContainer) {
   HTML.clearElement(elContainer);
   composition.forEach(rowTiles => {
     const elRow = document.createElement('div');
+    elRow.className = 'row';
     rowTiles.forEach(tile => elRow.appendChild(Tile.createTileElement(tile)));
     elContainer.appendChild(elRow);
   });

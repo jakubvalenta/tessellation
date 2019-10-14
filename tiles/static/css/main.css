@@ -37,10 +37,22 @@ h6 {
   overflow: hidden;
 }
 
+.row {
+  *zoom: 1;
+}
+.row:before,
+.row:after {
+  content: '';
+  display: table;
+}
+.row:after {
+  clear: both;
+}
+
 .tile {
   width: 5em;
   height: 5em;
-  display: inline-block;
+  float: left;
   background: #fff;
   background-position: center;
   background-size: contain;
@@ -62,12 +74,14 @@ h6 {
 }
 
 .col {
-  display: inline-block;
+  float: left;
+}
+.col .tile {
+  float: none;
 }
 
 .images .tile {
   position: relative;
-  display: block;
   width: 10em;
   height: 10em;
 }
@@ -120,7 +134,7 @@ h6 {
   border-left-color: yellow;
 }
 .conn-0-5 {
-  border-left-color: pink
+  border-left-color: pink;
 }
 .conn-1-1 {
   border-top-color: red;
@@ -135,7 +149,7 @@ h6 {
   border-top-color: yellow;
 }
 .conn-1-5 {
-  border-top-color: pink
+  border-top-color: pink;
 }
 .conn-2-1 {
   border-right-color: red;
@@ -150,7 +164,7 @@ h6 {
   border-right-color: yellow;
 }
 .conn-2-5 {
-  border-right-color: pink
+  border-right-color: pink;
 }
 .conn-3-1 {
   border-bottom-color: red;
@@ -165,7 +179,7 @@ h6 {
   border-bottom-color: yellow;
 }
 .conn-3-5 {
-  border-bottom-color: pink
+  border-bottom-color: pink;
 }
 .rot-1 {
   transform: rotate(-0.25turn);
