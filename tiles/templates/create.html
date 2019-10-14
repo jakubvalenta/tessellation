@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<a href="{% url 'index' %}">back</a>
 <h1 class="sr-only">Creat new composition</h1>
 <h2>Input</h2>
 <div class="images" id="js-images"></div>
@@ -12,11 +13,15 @@
 </p>
 <div id="js-drafts-list"></div>
 <h2>Published</h2>
+{% if user.is_authenticated %}
 <p>
   <button id="js-published-submit">publish</button>
 </p>
 <div id="js-published-status"></div>
 <div id="js-published-list"></div>
+{% else %}
+<p><a href="{% url 'login' %}">log in</a> to be able to publish compositions</p>
+{% endif %}
 <h2>Composition</h2>
 <form action="javascript:void(0)">
   {% csrf_token %}

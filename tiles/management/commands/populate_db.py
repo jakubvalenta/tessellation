@@ -20,6 +20,12 @@ def create_base64_data_url(path: Path):
     return f'data:text/{suffix};base64,{data}'
 
 
+def create_user_if_not_exists(username: str, *args):
+    if not User.objects.filter(username=username).exists():
+        user = User.objects.create_user(username, *args)
+        user.save()
+
+
 def load_fixture(fixture_path: str, user: User):
     logger.info('Loading fixture %s', fixture_path)
     with fixture_path.open() as f:
@@ -40,10 +46,9 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         superuser = User.objects.filter(is_superuser=True).first()
-        if not User.objects.filter(username='jakub').exists():
-            user = User.objects.create_user(
-                'jakub', 'jakub@jakubvalenta.cz', 'password'
-            )
-            user.save()
+        create_user_if_not_exists('jakub', 'jakub@jakubvalenta.cz', 'password')
+        create_user_if_not_exists(
+            'uttarayan', 'example@example.com', 'password'
+        )
         for fixture_path in fixtures_path.glob('*.json'):
             load_fixture(fixture_path, superuser)

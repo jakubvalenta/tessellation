@@ -166,6 +166,8 @@ export default function Storage(state) {
   bindDraftsEvents(state);
 
   const elStatus = document.getElementById('js-published-status');
-  initPublishedForm(state, elStatus);
-  bindPublishEvents(state, elStatus);
+  if (elStatus) {
+    initPublishedForm(state, elStatus);
+    bindPublishEvents(state, elStatus);
+  }
 }
