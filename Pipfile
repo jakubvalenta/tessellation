@@ -15,6 +15,7 @@ djangorestframework = "*"
 psycopg2 = "*"
 django-extensions = "*"
 drf-base64 = "*"
+django-debug-toolbar = "*"
 
 [requires]
 python_version = "3.7"
