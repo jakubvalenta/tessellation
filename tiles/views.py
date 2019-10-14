@@ -2,6 +2,7 @@ from django.views import generic
 from rest_framework import permissions, viewsets
 
 from tiles.models import Composition
+from tiles.permissions import IsOwnerOrReadOnly
 from tiles.serializers import CompositionSerializer
 
 
@@ -37,7 +38,10 @@ class CompositionCreateView(generic.base.TemplateView):
 class CompositionAPIViewSet(viewsets.ModelViewSet):
     queryset = Composition.objects.all()
     serializer_class = CompositionSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+        IsOwnerOrReadOnly,
+    ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

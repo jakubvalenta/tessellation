@@ -13,6 +13,13 @@
   </head>
   <body class="no-js mode-final">
     <noscript>This app requires JavaScript</noscript>
+    <header>
+      {% if user.is_authenticated %}
+      <p>Logged in as {{ user.username }} <a href="{% url 'logout' %}">logout</a></p>
+      {% else %}
+      <p><a href="{% url 'login' %}">log in</a></p>
+      {% endif %}
+    </header>
     {% block content %}{% endblock %}
     {% block scripts %}{% endblock %}
     <script>
