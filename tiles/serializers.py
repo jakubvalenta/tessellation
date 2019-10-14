@@ -1,8 +1,12 @@
+import logging
+
 from django.db import transaction
 from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
 
 from tiles.models import Composition, Image, Tile
+
+logger = logging.getLogger(__name__)
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -33,10 +37,16 @@ class CompositionSerializer(serializers.ModelSerializer):
     size = SizeSerializer()
     images = ImageSerializer(many=True)
     tiles = TileSerializer(many=True)
+    is_owner = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Composition
-        fields = ['id', 'created_at', 'size', 'images', 'tiles']
+        fields = ['id', 'created_at', 'is_owner', 'size', 'images', 'tiles']
+
+    def get_is_owner(self, obj: Composition) -> bool:
+        if self.context:
+            return self.context['request'].user.id == obj.owner.id
+        return False
 
     @transaction.atomic
     def create(self, validated_data: dict) -> Composition:
