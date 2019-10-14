@@ -2,7 +2,7 @@ _python_pkg = tiles
 db_name = tiles
 db_user = tiles
 
-.PHONY: run setup setup-dev manage shell migrate makemigrations create-db populate-db test lint tox reformat help
+.PHONY: run setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db test lint tox reformat help
 
 run:  ## Start the development
 	pipenv run python manage.py runserver
@@ -28,8 +28,11 @@ makemigrations:  ## Make migrations
 
 create-db:  ## Create database
 	sudo -u postgres sh -c ' \
-	    createuser "$(db_user)" && \
+	    createuser "$(db_user)"; \
 	    createdb --encoding=UTF8 --template=template0 -O "$(db_user)" "$(db_name)"'
+
+create-superuser:  ## Create superuser
+	$(MAKE) manage args="createsuperuser --username=root --email=example@example.com"
 
 populate-db:  ## Populate database with fixtures
 	$(MAKE) manage args="populate_db"
