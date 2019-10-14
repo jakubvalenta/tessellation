@@ -50,8 +50,10 @@
 {% block scripts %}
 {{ data|json_script:'composition-data' }}
 <script>
-  window.tiles.pageNew(
-    JSON.parse(document.getElementById('composition-data').textContent)
+  import('/static/js/pages/create.js').then((Page) =>
+    Page.init(
+      JSON.parse(document.getElementById('composition-data').textContent)
+    )
   );
 </script>
 {% endblock %}

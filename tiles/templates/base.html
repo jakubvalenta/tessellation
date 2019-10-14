@@ -14,10 +14,9 @@
   <body class="no-js mode-final">
     <noscript>This app requires JavaScript</noscript>
     {% block content %}{% endblock %}
-    <script src="{% static 'js/main.js' %}"></script>
+    {% block scripts %}{% endblock %}
     <script>
       document.body.classList.remove('no-js');
     </script>
-    {% block scripts %}{% endblock %}
   </body>
 </html>
