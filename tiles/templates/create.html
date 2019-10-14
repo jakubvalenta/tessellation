@@ -6,14 +6,20 @@
 <p>
   <button id="js-images-add">add</button>
 </p>
-<h2>Storage</h2>
+<h2>Drafts</h2>
 <div id="js-storage"></div>
 <p>
-  <button id="js-storage-save">save draft</button>
-  <button id="js-storage-submit">publish</button>
+  <button id="js-storage-save">save</button>
 </p>
+<h2>Published</h2>
+{% for composition in composition_list %}
+<div>{{ composition.created_at }} <a href="{% url 'detail' composition.id %}">permalink</a></div>
+{% endfor %}
+<div id="js-publish-status"></div>
+<button id="js-publish-submit">publish</button>
 <h2>Composition</h2>
 <form action="javascript:void(0)">
+  {% csrf_token %}
   <fieldset>
     <legend>Size</legend>
     <label for="js-width" class="sr-only">columns</label>

@@ -23,7 +23,7 @@
    * @see https://stackoverflow.com/a/2117523
    */
   function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
       var r = (Math.random() * 16) | 0,
         v = c === 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
@@ -54,7 +54,7 @@
 
   function createTileElement({ image, rotation }) {
     const el = document.createElement('div');
-    el.classList.add('tile', `img-${image.imgId}`, `rot-${rotation}`);
+    el.classList.add('tile', `img-${image.ref}`, `rot-${rotation}`);
     const elInner = document.createElement('div');
     elInner.classList.add(
       'tile-inner',
@@ -230,8 +230,8 @@
     onTilesChange(state);
   }
 
-  function setImageBackground({ imgId, url }) {
-    const rule = `.img-${imgId} { background-image: url('${url}') }`;
+  function setImageBackground({ ref, url }) {
+    const rule = `.img-${ref} { background-image: url('${url}') }`;
     const index = document.styleSheets[0].cssRules.length;
     console.log(`Inserting CSS rule ${rule} on index ${index}`);
     document.styleSheets[0].insertRule(rule, index);
@@ -243,10 +243,10 @@
 
   function addImages(state, images) {
     images.forEach(image => {
-      const imgId = uuidv4();
-      console.log(`Adding new image ${imgId}`);
+      const ref = uuidv4();
+      console.log(`Adding new image ${ref}`);
       state.images.push({
-        imgId,
+        ref,
         ...image
       });
     });
@@ -268,20 +268,20 @@
     setImageBackground(image);
   }
 
-  function findImageIndex(state, imgId) {
+  function findImageIndex(state, ref) {
     let i, image;
     for (i = 0; i < state.images.length; i++) {
       image = state.images[i];
-      if (image.imgId === imgId) {
+      if (image.ref === ref) {
         return i;
       }
     }
     return null;
   }
 
-  function removeImage(state, { imgId }) {
-    console.log(`Removing image ${imgId}`);
-    const imgIndex = findImageIndex(state, imgId);
+  function removeImage(state, { ref }) {
+    console.log(`Removing image ${ref}`);
+    const imgIndex = findImageIndex(state, ref);
     state.images.splice(imgIndex, 1);
     onImagesChange(state);
   }
@@ -339,21 +339,97 @@
     setStorageObject(data);
   }
 
-  function storeState(state) {
-    const dataItem = {
-      timestamp: new Date().toISOString(),
+  function serializeState(state) {
+    return {
       size: state.size,
       images: state.images,
       tiles: state.tiles.map(({ image, rotation }) => {
-        return { imgId: image.imgId, rotation };
+        return { imgRef: image.ref, rotation };
       })
     };
+  }
+
+  function storeState(state) {
+    const dataItem = serializeState(state);
+    dataItem.timestamp = new Date().toISOString();
     pushStorageItem(dataItem);
   }
 
-  function getImage(state, imgId) {
-    const imageIndex = findImageIndex(state, imgId);
+  function http(method, url, data, callback) {
+    const req = new XMLHttpRequest();
+    req.onreadystatechange = () => {
+      if (req.readyState === XMLHttpRequest.DONE) {
+        if (req.status === 200 || req.status === 201) {
+          try {
+            const data = JSON.parse(req.responseText);
+            callback(null, data);
+          } catch (err) {
+            callback(`Failed to parse response: ${err.message}`, null);
+          }
+        } else {
+          callback(`The response status code was ${req.status}`, null);
+        }
+      }
+    };
+    req.open(method, url, true);
+    req.setRequestHeader('Content-Type', 'application/json');
+    const elsCSRFToken = document.getElementsByName('csrfmiddlewaretoken');
+    if (elsCSRFToken) {
+      req.setRequestHeader('X-CSRFToken', elsCSRFToken[0].value);
+    }
+    req.send(JSON.stringify(data));
+  }
+
+  /**
+   * @see https://stackoverflow.com/a/42916772
+   */
+  function httpImageData(url) {
+    return new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.responseType = 'blob';
+      xhr.onload = () => {
+        var reader = new FileReader();
+        reader.addEventListener('load', () => {
+          resolve(reader.result);
+        });
+        reader.readAsDataURL(xhr.response);
+      };
+      xhr.send();
+    });
+  }
+
+  function publishState(state) {
+    const data = serializeState(state);
+    const promises = data.images.map(image => {
+      return httpImageData(image.url).then(data => {
+        image.data = data;
+      });
+    });
+    Promise.all(promises).then(() => {
+      const elStatus = document.getElementById('js-publish-status');
+      http('POST', '/compositions/', data, (err, data) => {
+        if (err) {
+          elStatus.innerHTML = 'Error while publishing the composition';
+          console.error(err);
+        } else {
+          elStatus.innerHTML = 'Composition was successfully published';
+        }
+      });
+    });
+  }
+
+  function getImage(state, ref) {
+    const imageIndex = findImageIndex(state, ref);
     return imageIndex !== null ? state.images[imageIndex] : null;
+  }
+
+  function compatImage(image) {
+    image.ref = image.ref || image.imgId; // compat
+  }
+
+  function compatTile(tile) {
+    tile.imgRef = tile.imgRef || tile.imgId; // compat
   }
 
   function loadState(state, data) {
@@ -366,11 +442,12 @@
     if (data.images) {
       state.images = [];
       data.images.forEach(image => {
+        compatImage(image);
         if (
           image.connections &&
           image.connections.length === SIDES.length &&
           image.url &&
-          image.imgId
+          image.ref
         ) {
           state.images.push(image);
         } else {
@@ -380,11 +457,12 @@
     }
     if (data.tiles) {
       state.tiles = [];
-      data.tiles.forEach(({ imgId, rotation }) => {
-        if (imgId && rotation !== undefined) {
-          const image = getImage(state, imgId);
+      data.tiles.forEach(tile => {
+        compatTile(tile);
+        if (tile.imgRef && tile.rotation !== undefined) {
+          const image = getImage(state, tile.imgRef);
           if (image !== null) {
-            state.tiles.push({ image, rotation });
+            state.tiles.push({ image: image, rotation: tile.rotation });
           } else {
             console.error('Invalid tile');
           }
@@ -463,6 +541,14 @@
     });
   }
 
+  function bindPublishEvents(state) {
+    const elSubmitButton = document.getElementById('js-publish-submit');
+    elSubmitButton.addEventListener('click', () => {
+      console.log('Publishing the state');
+      publishState(state);
+    });
+  }
+
   function bindImagesEvents(state) {
     const elAddButton = document.getElementById('js-images-add');
     elAddButton.addEventListener('click', () => newImage(state));
@@ -510,6 +596,7 @@
     bindShuffleEvents(state);
     bindSizeEvents(state);
     bindStorageEvents(state);
+    bindPublishEvents(state);
 
     onImagesChange(state);
   }

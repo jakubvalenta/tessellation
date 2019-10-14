@@ -25,7 +25,7 @@ def load_fixture(fixture_path: str):
         data = json.load(f)
     for image_data in data['images']:
         image_path = fixtures_path / 'images' / image_data['url']
-        image_data['image'] = create_base64_data_url(image_path)
+        image_data['data'] = create_base64_data_url(image_path)
     serializer = CompositionSerializer(data=data)
     if not serializer.is_valid():
         logger.error(serializer.errors)
