@@ -6,14 +6,15 @@ from tiles.serializers import CompositionSerializer
 
 
 class IndexView(generic.ListView):
+    model = Composition
     template_name = 'index.html'
-    queryset = Composition.objects.order_by('-created_at')
     paginate_by = 10
 
 
 class CompositionDetailView(generic.DetailView):
     model = Composition
     template_name = 'detail.html'
+    queryset = Composition.objects.prefetch_related('tiles__image')
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
@@ -26,12 +27,11 @@ class CompositionCreateView(generic.base.TemplateView):
     template_name = 'create.html'
 
     def get_context_data(self) -> dict:
-        first_composition = Composition.objects.order_by('created_at').first()
-        serializer = CompositionSerializer(first_composition)
-        return {
-            'data': serializer.data,
-            'composition_list': Composition.objects.order_by('created_at'),
-        }
+        oldest_composition = Composition.objects.prefetch_related(
+            'tiles__image'
+        ).last()
+        serializer = CompositionSerializer(oldest_composition)
+        return {'data': serializer.data}
 
 
 class CompositionAPIViewSet(viewsets.ModelViewSet):

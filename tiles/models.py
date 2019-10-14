@@ -50,6 +50,9 @@ class Composition(models.Model):
     height = models.PositiveSmallIntegerField()
     tiles = models.ManyToManyField(Tile, related_name='compositions')
 
+    class Meta:
+        ordering = ['-created_at']
+
     @property
     def size(self) -> dict:
         return {'width': self.width, 'height': self.height}
