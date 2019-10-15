@@ -15,10 +15,12 @@
   <body class="no-js mode-final">
     <noscript>This app requires JavaScript</noscript>
     <header class="header">
-      <div class="header-section header-main">
+      <div class="header-section header-left">
         {% block header %}
-        <h1>Tiles</h1>
         {% endblock %}
+      </div>
+      <div class="header-section header-main">
+        <h1>Tiles</h1>
       </div>
       <div class="header-section header-user">
         {% if user.is_authenticated %} Logged in as

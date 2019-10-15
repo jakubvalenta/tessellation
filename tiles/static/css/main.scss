@@ -129,10 +129,15 @@ button,
   }
 }
 .header-section {
+  flex-grow: 1;
+  flex-basis: 0;
   padding: 1em 2em;
 }
 .header-main {
-  flex-grow: 1;
+  text-align: center;
+}
+.header-user {
+  text-align: right;
 }
 
 .main {
