@@ -141,13 +141,16 @@ button,
   padding: 1em 2em;
 }
 
+.section-input {
+  width: 40%;
+}
 .section-composition {
   flex-grow: 1;
   padding: 0 2em;
 }
 
 .detail {
-  margin: 0 auto;
+  width: 100%;
 }
 
 .composition {
@@ -175,7 +178,6 @@ button,
     padding-bottom: 100%;
   }
 }
-
 .tile-inner {
   display: block;
   position: absolute;
@@ -188,11 +190,9 @@ button,
   text-align: center;
   border: 0.5em solid transparent;
 }
-
 .mode-final .tile-inner {
   visibility: hidden;
 }
-
 .composition-controls {
   display: flex;
   justify-content: space-between;
@@ -211,20 +211,21 @@ button,
 
 .images {
   @extend %clearfix;
-  width: 60em;
   margin-top: -0.5em;
   margin-left: -1em;
   margin-right: -1em;
 }
 .image {
+  width: 33.33%;
+  float: left;
+  padding: 1em;
+  box-sizing: border-box;
+}
+.image-inner {
   position: relative;
   border: 1px solid $color-border;
-  margin: 1em;
   padding: 3em;
   padding-bottom: 1.5em;
-  box-sizing: border-box;
-  width: 18em;
-  float: left;
 
   .tile {
     box-shadow: 0 0 0.5em $color-background-dark;
@@ -232,6 +233,8 @@ button,
 }
 .image-controls {
   margin-top: 3em;
+  margin-left: -3em;
+  margin-right: -3em;
   text-align: center;
 }
 .image-delete {
@@ -241,7 +244,7 @@ button,
   background: transparent;
   box-shadow: none;
 }
-.image-add {
+.image-inner-add {
   padding: 0;
   display: flex;
   justify-content: center;
@@ -290,7 +293,7 @@ button,
 .storage-header {
   display: flex;
   flex-direction: columns;
-  min-width: 35em;
+  min-width: 32em;
 }
 .section-heading {
   flex-grow: 1;

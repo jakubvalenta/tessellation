@@ -64,25 +64,31 @@ function renderImages(state, elContainer) {
   state.images.forEach(image => {
     const elImage = document.createElement('div');
     elImage.className = 'image';
+    const elImageInner = document.createElement('div');
+    elImageInner.className = 'image-inner';
     const elTile = Tile.createTileElement({ image, rotation: 0 });
     renderImageConnections(state, image, elTile, elContainer);
-    elImage.appendChild(elTile);
+    elImageInner.appendChild(elTile);
     const elControls = document.createElement('div');
     elControls.className = 'image-controls';
     renderImageFile(state, image, elControls);
-    renderImageDelete(state, image, elImage, elContainer);
-    elImage.appendChild(elControls);
+    renderImageDelete(state, image, elImageInner, elContainer);
+    elImageInner.appendChild(elControls);
+    elImage.appendChild(elImageInner);
     elContainer.appendChild(elImage);
   });
   const elImage = document.createElement('div');
-  elImage.className = 'image image-add';
+  elImage.className = 'image';
+  const elImageInner = document.createElement('div');
+  elImageInner.className = 'image-inner image-inner-add';
   const elButton = document.createElement('button');
   elButton.textContent = TEXT_ADD;
   elButton.addEventListener('click', () => {
     State.newImage(state);
     renderImages(state, elContainer);
   });
-  elImage.appendChild(elButton);
+  elImageInner.appendChild(elButton);
+  elImage.appendChild(elImageInner);
   elContainer.appendChild(elImage);
 }
 
