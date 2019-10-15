@@ -9,8 +9,12 @@ const TEXT_CHANGE_CONNECTIONS = 'change connection';
 function renderImageConnections(state, image, elTile, elContainer) {
   image.connections.forEach((connection, side) => {
     const elConnButton = document.createElement('button');
-    elConnButton.classList.add('conn-button', `conn-button-${side}`);
-    elConnButton.textContent = connection;
+    elConnButton.classList.add(
+      'conn-button',
+      `conn-button-${side}`,
+      `conn-${connection}`
+    );
+    elConnButton.textContent = connection || '\u00b7';
     elConnButton.addEventListener('click', () => {
       State.shiftImageConnection(state, image, side);
       renderImages(state, elContainer);

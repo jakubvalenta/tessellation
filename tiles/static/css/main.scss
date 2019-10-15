@@ -1,5 +1,6 @@
 @import '_mixins';
 
+$color-white: #fff;
 $color-blue: #b2deff;
 $color-green: #c8ffb2;
 $color-red: #ffb2c7;
@@ -10,6 +11,7 @@ $color-background: #444;
 $color-background-dark: #333;
 $color-background-darker: #111;
 $color-text: #bbb;
+$color-text-inverse: $color-background-darker;
 $color-border: #777;
 $color-highlight: #fff;
 $color-link: $color-blue;
@@ -153,7 +155,7 @@ button,
 .tile {
   flex-grow: 1;
   position: relative;
-  background: #fff;
+  background: $color-white;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -178,7 +180,7 @@ button,
   border: 0.5em solid transparent;
 }
 
-.mode-final .composition .tile-inner {
+.mode-final .tile-inner {
   visibility: hidden;
 }
 
@@ -203,6 +205,10 @@ button,
   box-sizing: border-box;
   width: 18em;
   float: left;
+
+  .tile {
+    box-shadow: 0 0 0.5em $color-background-dark;
+  }
 }
 .image-controls {
   margin-top: 3em;
@@ -233,7 +239,10 @@ button,
   padding: 0;
   width: 2em;
   height: 2em;
-  line-height: 1.1;
+  line-height: 2;
+  color: $color-text-inverse;
+  background: $color-white;
+  box-shadow: 0 0 0.25em $color-background-dark;
 }
 .conn-button-0,
 .conn-button-2 {
@@ -320,6 +329,11 @@ $connections: (
     .conn-#{$i}-#{$j} {
       border-#{$side}-color: $color;
     }
+  }
+}
+@each $i, $color in $connections {
+  .conn-#{$i} {
+    background: $color;
   }
 }
 
