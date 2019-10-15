@@ -17,10 +17,6 @@ $color-highlight: #fff;
 $color-link: $color-blue;
 $font-family: 'Droid Sans Mono', monospace;
 
-html,
-body {
-  height: 100%;
-}
 body {
   font-family: $font-family;
   font-size: 9/12 * 100%;
@@ -28,8 +24,6 @@ body {
   color: $color-text;
   background: $color-background;
   margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 p,
