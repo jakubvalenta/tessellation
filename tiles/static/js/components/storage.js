@@ -5,6 +5,19 @@ import * as StorageLib from '../storage.js';
 const TEXT_DELETE = 'x';
 const CLASS_BUTTON_SECONDARY = 'button-secondary';
 
+function createTableCell(elRow) {
+  const elCell = document.createElement('td');
+  elRow.appendChild(elCell);
+  return elCell;
+}
+
+function createLink(href, text) {
+  const elLink = document.createElement('a');
+  elLink.href = href;
+  elLink.textContent = text;
+  return elLink;
+}
+
 function createDraftsLoadButtonClickHandler(dataIndex) {
   return state => {
     console.log(`Loading stored state ${dataIndex}`);
@@ -44,19 +57,26 @@ function initDraftsItemDeleteButton(state, dataIndex, elItem) {
 }
 
 function initDraftsItemForm(state, timestamp, dataIndex, elContainer) {
-  const elItem = document.createElement('div');
-  elItem.textContent = timestamp;
-  initDraftsItemLoadButton(state, dataIndex, elItem);
-  initDraftsItemDeleteButton(state, dataIndex, elItem);
-  elContainer.appendChild(elItem);
+  const elRow = document.createElement('tr');
+  createTableCell(elRow).textContent = timestamp;
+  initDraftsItemLoadButton(state, dataIndex, createTableCell(elRow));
+  initDraftsItemDeleteButton(state, dataIndex, createTableCell(elRow));
+  elContainer.appendChild(elRow);
 }
 
 function initDraftsForm(state) {
   const elContainer = document.getElementById('js-drafts-list');
+  const elEmpty = document.getElementById('js-drafts-empty');
+  const timestamps = StorageLib.readStorageTimestamps();
   HTML.clearElement(elContainer);
-  StorageLib.readStorageTimestamps().forEach((timestamp, dataIndex) =>
-    initDraftsItemForm(state, timestamp, dataIndex, elContainer)
-  );
+  if (timestamps.length) {
+    elEmpty.style.display = 'none';
+    timestamps.forEach((timestamp, dataIndex) => {
+      initDraftsItemForm(state, timestamp, dataIndex, elContainer);
+    });
+  } else {
+    elEmpty.style.display = 'block';
+  }
 }
 
 function createPublishedLoadButtonClickHandler(compositionId) {
@@ -110,19 +130,6 @@ function initPublishedItemDeleteButton(state, compositionId, elItem, elStatus) {
     handler(state);
   });
   elItem.appendChild(elButton);
-}
-
-function createTableCell(elRow) {
-  const elCell = document.createElement('td');
-  elRow.appendChild(elCell);
-  return elCell;
-}
-
-function createLink(href, text) {
-  const elLink = document.createElement('a');
-  elLink.href = href;
-  elLink.textContent = text;
-  return elLink;
 }
 
 function initPublishedItemForm(
