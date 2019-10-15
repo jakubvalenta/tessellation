@@ -4,8 +4,12 @@ $color-background: #444;
 $color-background-dark: #333;
 $color-background-darker: #111;
 $color-text: #bbb;
+$color-border: #777;
 $color-highlight: #fff;
-$color-link: #aaf;
+$color-link: #b2deff;
+$color-green: #c8ffb2;
+$color-red: #ffb2c7;
+$color-yellow: #ffcdb2;
 $font-family: 'Droid Sans Mono', monospace;
 
 html,
@@ -70,9 +74,12 @@ button {
   padding: 0.5em 1em;
   border: 0;
   border-radius: 0.25em;
+  font-family: $font-family;
+  font-size: 100%;
+  line-height: 1.5;
   color: $color-text;
   background: $color-background-dark;
-  box-shadow: 0 0 0.25em $color-background-darker;
+  box-shadow: 0 0 0.1em $color-background-darker;
 
   &:hover,
   &:active,
@@ -106,10 +113,10 @@ button {
 }
 
 .section {
-  flex-grow: 1;
   padding: 1em 2em;
 }
 .section-composition {
+  flex-grow: 1;
   margin: 1em;
   border-radius: 0.25em;
   background: $color-background-dark;
@@ -193,6 +200,53 @@ button {
 
 .size-input {
   width: 3em;
+}
+
+.storage-header {
+  display: flex;
+  flex-direction: columns;
+  min-width: 35em;
+
+  h2 {
+    flex-grow: 1;
+    margin: 0;
+    padding: 0.5em 0;
+    color: $color-highlight;
+    text-transform: lowercase;
+  }
+}
+.storage-empty {
+  border-top: 1px solid $color-border;
+  padding: 0.5em 0;
+  font-style: italic;
+}
+.storage-status {
+  font-style: italic;
+}
+.success {
+  color: $color-green;
+}
+.error {
+  color: $color-red;
+}
+.storage-list {
+  min-height: 1em;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+
+  td {
+    border-top: 1px solid $color-border;
+    padding-left: 0.5em;
+
+    &:first-child {
+      width: 100%;
+      padding-left: 0;
+    }
+  }
+  button {
+    margin: 0.1em 0;
+  }
 }
 
 .conn-0-1 {

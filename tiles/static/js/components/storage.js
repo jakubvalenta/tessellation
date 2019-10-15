@@ -103,6 +103,19 @@ function initPublishedItemDeleteButton(state, compositionId, elItem, elStatus) {
   elItem.appendChild(elButton);
 }
 
+function createTableCell(elRow) {
+  const elCell = document.createElement('td');
+  elRow.appendChild(elCell);
+  return elCell;
+}
+
+function createLink(href, text) {
+  const elLink = document.createElement('a');
+  elLink.href = href;
+  elLink.textContent = text;
+  return elLink;
+}
+
 function initPublishedItemForm(
   state,
   timestamp,
@@ -111,15 +124,12 @@ function initPublishedItemForm(
   elContainer,
   elStatus
 ) {
-  const elItem = document.createElement('div');
-  const elLink = document.createElement('a');
-  elItem.textContent = timestamp;
-  elLink.href = compositionUrl;
-  elLink.textContent = 'permalink';
-  elItem.appendChild(elLink);
-  initPublishedItemLoadButton(state, compositionId, elItem);
-  initPublishedItemDeleteButton(state, compositionId, elItem, elStatus);
-  elContainer.appendChild(elItem);
+  const elRow = document.createElement('tr');
+  createTableCell(elRow).textContent = timestamp;
+  createTableCell(elRow).appendChild(createLink(compositionUrl, 'permalink'));
+  initPublishedItemLoadButton(state, compositionId, createTableCell(elRow));
+  initPublishedItemDeleteButton(state, compositionId, createTableCell(elRow));
+  elContainer.appendChild(elRow);
 }
 
 function initPublishedForm(state, elStatus) {
@@ -154,10 +164,14 @@ function bindPublishEvents(state, elStatus) {
     StorageLib.publishState(state)
       .then(() => {
         elStatus.textContent = 'Composition was successfully published';
+        elStatus.classList.remove('error');
+        elStatus.classList.add('success');
         initPublishedForm(state, elStatus);
       })
       .catch(err => {
         elStatus.textContent = 'Error while publishing the composition';
+        elStatus.classList.remove('success');
+        elStatus.classList.add('error');
         console.error(err);
       });
   });

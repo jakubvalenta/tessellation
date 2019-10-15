@@ -40,23 +40,25 @@
   <div class="composition" id="js-composition"></div>
 </div>
 <div class="section section-storage">
-  <h2>Drafts</h2>
-  <p>
+  <div class="storage-header">
+    <h2>Drafts</h2>
     <button id="js-drafts-save">save draft</button>
-  </p>
-  <div id="js-drafts-list"></div>
-  <h2>Published</h2>
-  {% if user.is_authenticated %}
-  <p>
+  </div>
+  <p class="storage-empty" id="js-drafts-empty">empty</p>
+  <table class="storage-list" id="js-drafts-list"></table>
+  <div class="storage-header">
+    <h2>Published</h2>
+    {% if user.is_authenticated %}
     <button id="js-published-submit">publish</button>
-  </p>
-  <div id="js-published-status"></div>
-  <div id="js-published-list"></div>
+    {% endif %}
+  </div>
+  {% if user.is_authenticated %}
+  <p class="storage-status" id="js-published-status"></p>
+  <table class="storage-list" id="js-published-list"></table>
   {% else %}
-  <p>
-    Please
+  <p class="storage-empty">
     <a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a> to
-    publish compositions.
+    publish compositions
   </p>
   {% endif %}
 </div>
