@@ -97,7 +97,23 @@ export function deserializeState(data) {
 
 export function readStorageTimestamps() {
   const data = getStorageObject() || [];
-  return data.map(({ timestamp }) => timestamp);
+  return data
+    .map(({ timestamp }, dataIndex) => {
+      return {
+        timestamp,
+        dataIndex
+      };
+    })
+    .sort((a, b) => {
+      if (a.timestamp < b.timestamp) {
+        return -1;
+      }
+      if (a.timestamp > b.timestamp) {
+        return 1;
+      }
+      return 0;
+    })
+    .reverse();
 }
 
 export function publishState(state) {

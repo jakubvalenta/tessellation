@@ -71,7 +71,7 @@ function initDraftsForm(state) {
   HTML.clearElement(elContainer);
   if (timestamps.length) {
     elEmpty.style.display = 'none';
-    timestamps.forEach((timestamp, dataIndex) => {
+    timestamps.forEach(({ timestamp, dataIndex }) => {
       initDraftsItemForm(state, timestamp, dataIndex, elContainer);
     });
   } else {
