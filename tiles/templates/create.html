@@ -13,6 +13,7 @@
       <button id="js-shuffle">shuffle</button>
     </p>
     <form action="javascript:void(0)" class="composition-settings">
+      {% csrf_token %}
       <p>
         <span class="sr-only">Size:</span>
         <label for="js-width" class="sr-only">columns</label>
