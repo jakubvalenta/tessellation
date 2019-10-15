@@ -10,6 +10,7 @@ SECRET_KEY = 'lrtp%mw(ep03k_o94g@eq9b2nfj+xp_%c2ltj158q!$vuvekgm'
 DEBUG = True
 
 ALLOWED_HOSTS: Sequence[str] = []
+INTERNAL_IPS = ['127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -74,6 +75,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'  # noqa: E501
     },
 ]
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -93,7 +96,3 @@ LOGGING = {
     },
     'loggers': {'tiles': {'level': 'INFO', 'handlers': ['console']}},
 }
-
-INTERNAL_IPS = ['127.0.0.1']
-
-LOGIN_REDIRECT_URL = 'index'
