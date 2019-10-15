@@ -2,10 +2,13 @@ _python_pkg = tiles
 db_name = tiles
 db_user = tiles
 
-.PHONY: run setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db test lint tox reformat help
+.PHONY: run start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db test lint tox reformat help
 
-run:  ## Start the development
+run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
+
+start-postgresql:
+	[[ -e /run/postgresql/.s.PGSQL.5432 ]] || systemctl start postgresql.service
 
 setup:  ## Create Pipenv virtual environment and install dependencies.
 	pipenv --three --site-packages
