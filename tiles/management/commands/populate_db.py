@@ -26,7 +26,7 @@ def create_user_if_not_exists(username: str, *args):
         user.save()
 
 
-def load_fixture(fixture_path: str, user: User):
+def load_fixture(fixture_path: Path, user: User):
     logger.info('Loading fixture %s', fixture_path)
     with fixture_path.open() as f:
         data = json.load(f)

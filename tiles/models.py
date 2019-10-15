@@ -88,7 +88,9 @@ class Composition(models.Model):
 
     @cached_property
     def images(self) -> List[Image]:
-        images = []  # Don't use the set data type to preserve order.
+        images: List[
+            Image
+        ] = []  # Don't use the 'set' data type to preserve order.
         for tile in self.tiles.all():
             if tile.image not in images:
                 images.append(tile.image)
