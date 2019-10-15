@@ -16,11 +16,11 @@
     <header>
       {% if user.is_authenticated %}
       <p>
-        Logged in as {{ user.username }}
-        <a href="{% url 'logout' %}?next={{ request.path }}">logout</a>
+        Logged in as <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+        <a href="{% url 'accounts:logout' %}?next={{ request.path }}">logout</a>
       </p>
       {% else %}
-      <p><a href="{% url 'login' %}?next={{ request.path }}">log in</a></p>
+      <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a></p>
       {% endif %}
     </header>
     {% block content %}{% endblock %}

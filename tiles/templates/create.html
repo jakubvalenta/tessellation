@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<a href="{% url 'index' %}">back</a>
+<a href="{% url 'index' %}">back to homepage</a>
 <h1 class="sr-only">Creat new composition</h1>
 <h2>Input</h2>
 <div class="images row" id="js-images"></div>
@@ -20,7 +20,7 @@
 <div id="js-published-status"></div>
 <div id="js-published-list"></div>
 {% else %}
-<p><a href="{% url 'login' %}?next={{ request.path }}">log in</a> to be able to publish compositions</p>
+<p><a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a> to be able to publish compositions</p>
 {% endif %}
 <h2>Composition</h2>
 <form action="javascript:void(0)">
