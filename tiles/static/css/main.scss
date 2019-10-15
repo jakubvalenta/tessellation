@@ -87,6 +87,7 @@ button,
   background: $color-background-dark;
   box-shadow: 0 0 0.1em $color-background-darker;
   white-space: nowrap;
+  cursor: pointer;
 
   &:hover,
   &:active,
@@ -271,6 +272,13 @@ button,
   color: $color-text-inverse;
   background: $color-white;
   box-shadow: 0 0 0.25em $color-background-dark;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $color-text-inverse;
+    box-shadow: 0 0 0.25em $color-background-darker;
+  }
 }
 .conn-button-0,
 .conn-button-2 {
@@ -358,6 +366,12 @@ $connections: (
 @each $i, $color in $connections {
   .conn-#{$i} {
     background: $color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background: $color;
+    }
   }
 }
 

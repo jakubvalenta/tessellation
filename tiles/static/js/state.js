@@ -125,7 +125,7 @@ export function shiftImageConnection(state, image, side) {
   const connection =
     image.connections[side] === null
       ? CONNECTIONS[0]
-      : ((image.connections[side] + 1) % CONNECTIONS.length) + 1;
+      : (image.connections[side] % CONNECTIONS.length) + 1;
   image.connections[side] = connection;
   if (isImageComplete(image)) {
     callImagesChangedCallbacks(state);
