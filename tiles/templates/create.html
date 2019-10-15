@@ -4,38 +4,28 @@
 <div class="section section-input">
   <h2 class="section-heading">Input</h2>
   <div class="images" id="js-images"></div>
-  <h2 class="section-heading">Settings</h2>
-  <form action="javascript:void(0)">
-    {% csrf_token %}
-    <p>
-      Size:
-      <label for="js-width" class="sr-only">columns</label>
-      <input type="number" id="js-width" min="1" class="size-input" />
-      x
-      <label for="js-height" class="sr-only">rows</label>
-      <input type="number" id="js-height" min="1" class="size-input" />
-    </p>
-    <p>
-      Mode:
-      <input
-        type="radio"
-        name="js-mode-preview"
-        id="mode-final"
-        value="0"
-        checked="checked"
-      />
-      <label for="mode-final">Final</label>
-      <input type="radio" name="js-mode-preview" id="mode-preview" value="1" />
-      <label for="mode-preview">Preview</label>
-    </p>
-  </form>
 </div>
 <div class="section section-composition">
   <h2 class="sr-only">Composition</h2>
   <div class="composition" id="js-composition"></div>
-  <p class="composition-shuffle">
-    <button id="js-shuffle">shuffle</button>
-  </p>
+  <div class="composition-controls">
+    <p class="composition-shuffle">
+      <button id="js-shuffle">shuffle</button>
+    </p>
+    <form action="javascript:void(0)" class="composition-settings">
+      <p>
+        <span class="sr-only">Size:</span>
+        <label for="js-width" class="sr-only">columns</label>
+        <input type="number" id="js-width" min="1" class="input-number" />
+        x
+        <label for="js-height" class="sr-only">rows</label>
+        <input type="number" id="js-height" min="1" class="input-number" />
+      </p>
+    </form>
+    <p>
+      <button id="js-mode" class="button-secondary">show connections</button>
+    </p>
+  </div>
 </div>
 <div class="section section-storage">
   <div class="storage-header">

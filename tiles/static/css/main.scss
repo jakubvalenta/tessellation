@@ -95,11 +95,20 @@ button,
     background: $color-background-darker;
   }
 }
+.button-secondary {
+  background: transparent;
+  box-shadow: 0;
+}
+
 .input-file {
 	width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
 	overflow: hidden;
+}
+.input-number {
+  line-height: 2;
+  width: 3em;
 }
 
 .success {
@@ -184,9 +193,20 @@ button,
   visibility: hidden;
 }
 
-.composition-shuffle {
+.composition-controls {
+  display: flex;
+  justify-content: space-between;
   margin: 1em 0;
-  text-align: center;
+
+  p {
+    margin: 0;
+  }
+}
+.composition-shuffle {
+  width: 33.3%;
+}
+.composition-settings {
+  width: 33.3%;
 }
 
 .images {
@@ -265,10 +285,6 @@ button,
 }
 .conn-button-3 {
   bottom: -2em;
-}
-
-.size-input {
-  width: 3em;
 }
 
 .storage-header {

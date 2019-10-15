@@ -1,5 +1,8 @@
 import * as State from '../state.js';
 
+const TEXT_SHOW_CONNECTIONS = 'show connections';
+const TEXT_HIDE_CONNECTIONS = 'hide connections';
+
 function initSizeForm(state) {
   const elWidth = document.getElementById('js-width');
   const elHeight = document.getElementById('js-height');
@@ -8,15 +11,14 @@ function initSizeForm(state) {
 }
 
 function bindModeEvents(state) {
-  const elRadios = document.getElementsByName('js-mode-preview');
-  elRadios.forEach(el => {
-    el.checked = el.getAttribute('checked');
-    el.addEventListener('click', evt =>
-      document.body.classList.toggle(
-        'mode-final',
-        evt.currentTarget.value !== '1'
-      )
-    );
+  const elButton = document.getElementById('js-mode');
+  var modeFinal = true;
+  elButton.addEventListener('click', () => {
+    modeFinal = !modeFinal;
+    elButton.textContent = modeFinal
+      ? TEXT_SHOW_CONNECTIONS
+      : TEXT_HIDE_CONNECTIONS;
+    document.body.classList.toggle('mode-final', modeFinal);
   });
 }
 

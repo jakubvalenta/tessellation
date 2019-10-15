@@ -3,6 +3,7 @@ import * as State from '../state.js';
 import * as StorageLib from '../storage.js';
 
 const TEXT_DELETE = 'x';
+const CLASS_BUTTON_SECONDARY = 'button-secondary';
 
 function createDraftsLoadButtonClickHandler(dataIndex) {
   return state => {
@@ -33,6 +34,7 @@ function initDraftsItemLoadButton(state, dataIndex, elItem) {
 
 function initDraftsItemDeleteButton(state, dataIndex, elItem) {
   const elButton = document.createElement('button');
+  elButton.className = CLASS_BUTTON_SECONDARY;
   elButton.textContent = TEXT_DELETE;
   const handler = createDraftsDeleteButtonClickHandler(dataIndex);
   elButton.addEventListener('click', () => {
@@ -98,6 +100,7 @@ function initPublishedItemLoadButton(state, compositionId, elItem) {
 
 function initPublishedItemDeleteButton(state, compositionId, elItem, elStatus) {
   const elButton = document.createElement('button');
+  elButton.className = CLASS_BUTTON_SECONDARY;
   elButton.textContent = TEXT_DELETE;
   const handler = createPublishedDeleteButtonClickHandler(
     compositionId,

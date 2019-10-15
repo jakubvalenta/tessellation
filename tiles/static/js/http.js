@@ -21,7 +21,7 @@ export function http(method, url, data) {
     req.open(method, url, true);
     req.setRequestHeader('Content-Type', 'application/json');
     const elsCSRFToken = document.getElementsByName('csrfmiddlewaretoken');
-    if (elsCSRFToken) {
+    if (elsCSRFToken.length) {
       req.setRequestHeader('X-CSRFToken', elsCSRFToken[0].value);
     }
     req.send(JSON.stringify(data));
