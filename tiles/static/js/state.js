@@ -112,8 +112,8 @@ export function changeImage(state, image, url) {
   }
 }
 
-export function removeImage(state, { ref }) {
-  console.log(`Removing image ${ref}`);
+export function deleteImage(state, { ref }) {
+  console.log(`Deleting image ${ref}`);
   const { index, image } = findImage(state, ref);
   state.images.splice(index, 1);
   if (isImageComplete(image)) {

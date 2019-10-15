@@ -1,3 +1,5 @@
 export function clearElement(el) {
-  el.innerHTML = '';
+  while (el.firstChild) {
+    el.removeChild(el.firstChild);
+  }
 }

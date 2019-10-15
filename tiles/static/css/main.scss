@@ -73,7 +73,8 @@ a {
   }
 }
 
-button {
+button,
+.label-file {
   padding: 0.5em 1em;
   border: 0;
   border-radius: 0.25em;
@@ -83,6 +84,7 @@ button {
   color: $color-text;
   background: $color-background-dark;
   box-shadow: 0 0 0.1em $color-background-darker;
+  white-space: nowrap;
 
   &:hover,
   &:active,
@@ -91,10 +93,22 @@ button {
     background: $color-background-darker;
   }
 }
+.input-file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+}
+
+.success {
+  color: $color-green;
+}
+.error {
+  color: $color-red;
+}
 
 .header {
   display: flex;
-  flex-direction: columns;
   text-transform: lowercase;
 
   h1 {
@@ -135,7 +149,6 @@ button {
 }
 .row {
   display: flex;
-  flex-direction: columns;
 }
 .tile {
   flex-grow: 1;
@@ -174,48 +187,75 @@ button {
   text-align: center;
 }
 
-.col {
+.images {
+  @extend %clearfix;
+  width: 60em;
+  margin-top: -0.5em;
+  margin-left: -1em;
+  margin-right: -1em;
+}
+.image {
+  position: relative;
+  border: 1px solid $color-border;
+  margin: 1em;
+  padding: 3em;
+  padding-bottom: 1.5em;
+  box-sizing: border-box;
+  width: 18em;
   float: left;
 }
-.col .tile {
-  float: none;
+.image-controls {
+  margin-top: 3em;
+  text-align: center;
 }
+.image-delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.image-add {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-.images .tile {
-  position: relative;
-  width: 10em;
-  height: 10em;
-}
-.images input,
-.images button {
-  display: block;
+  &:before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
 }
 
 .conn-button {
   position: absolute;
   padding: 0;
-  width: 60%;
-  height: 20%;
+  width: 2em;
+  height: 2em;
   line-height: 1.1;
 }
-.conn-button-0 {
-  left: -20%;
-  top: 40%;
-  transform: rotate(-0.25turn);
+.conn-button-0,
+.conn-button-2 {
+  top: 50%;
+  margin-top: -1em;
 }
-.conn-button-1 {
-  left: 20%;
-  top: 0;
+.conn-button-0 {
+  left: -2em;
 }
 .conn-button-2 {
-  transform: rotate(0.25turn);
-  top: 40%;
-  right: -20%;
+  right: -2em;
+}
+.conn-button-1,
+.conn-button-3 {
+  left: 50%;
+  margin-left: -1em;
+}
+.conn-button-1 {
+  top: -2em;
 }
 .conn-button-3 {
-  transform: rotate(0.5turn);
-  left: 20%;
-  bottom: 0;
+  bottom: -2em;
 }
 
 .size-input {
@@ -241,12 +281,6 @@ button {
 }
 .storage-status {
   font-style: italic;
-}
-.success {
-  color: $color-green;
-}
-.error {
-  color: $color-red;
 }
 .storage-list {
   min-height: 1em;

@@ -2,6 +2,8 @@ import * as HTML from '../html.js';
 import * as State from '../state.js';
 import * as StorageLib from '../storage.js';
 
+const TEXT_DELETE = 'x';
+
 function createDraftsLoadButtonClickHandler(dataIndex) {
   return state => {
     console.log(`Loading stored state ${dataIndex}`);
@@ -31,7 +33,7 @@ function initDraftsItemLoadButton(state, dataIndex, elItem) {
 
 function initDraftsItemDeleteButton(state, dataIndex, elItem) {
   const elButton = document.createElement('button');
-  elButton.textContent = 'delete';
+  elButton.textContent = TEXT_DELETE;
   const handler = createDraftsDeleteButtonClickHandler(dataIndex);
   elButton.addEventListener('click', () => {
     handler(state);
@@ -96,7 +98,7 @@ function initPublishedItemLoadButton(state, compositionId, elItem) {
 
 function initPublishedItemDeleteButton(state, compositionId, elItem, elStatus) {
   const elButton = document.createElement('button');
-  elButton.textContent = 'delete';
+  elButton.textContent = TEXT_DELETE;
   const handler = createPublishedDeleteButtonClickHandler(
     compositionId,
     elStatus
