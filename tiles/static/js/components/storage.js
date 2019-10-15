@@ -71,10 +71,14 @@ function createPublishedDeleteButtonClickHandler(compositionId, elStatus) {
     StorageLib.deletePublishedComposition(compositionId).then(
       () => {
         elStatus.textContent = 'Composition was successfully deleted';
+        elStatus.classList.remove('error');
+        elStatus.classList.add('success');
         initPublishedForm(state, elStatus);
       },
       () => {
         elStatus.textContent = 'Error while deleting composition';
+        elStatus.classList.remove('success');
+        elStatus.classList.add('error');
       }
     );
   };
@@ -128,14 +132,28 @@ function initPublishedItemForm(
   createTableCell(elRow).textContent = timestamp;
   createTableCell(elRow).appendChild(createLink(compositionUrl, 'permalink'));
   initPublishedItemLoadButton(state, compositionId, createTableCell(elRow));
-  initPublishedItemDeleteButton(state, compositionId, createTableCell(elRow));
+  initPublishedItemDeleteButton(
+    state,
+    compositionId,
+    createTableCell(elRow),
+    elStatus
+  );
   elContainer.appendChild(elRow);
 }
 
 function initPublishedForm(state, elStatus) {
   const elContainer = document.getElementById('js-published-list');
-  HTML.clearElement(elContainer);
-  StorageLib.getPublishedCompositions().then(data =>
+  const elEmpty = document.getElementById('js-published-empty');
+  const elLoading = document.getElementById('js-published-loading');
+  elEmpty.style.display = 'none';
+  elLoading.style.display = 'block';
+  StorageLib.getPublishedCompositions().then(data => {
+    HTML.clearElement(elContainer);
+    elLoading.style.display = 'none';
+    if (!data.length) {
+      elEmpty.style.display = 'block';
+      return;
+    }
     data.forEach(composition =>
       initPublishedItemForm(
         state,
@@ -145,8 +163,8 @@ function initPublishedForm(state, elStatus) {
         elContainer,
         elStatus
       )
-    )
-  );
+    );
+  });
 }
 
 function bindDraftsEvents(state) {

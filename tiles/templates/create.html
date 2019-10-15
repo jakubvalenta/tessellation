@@ -54,6 +54,8 @@
   </div>
   {% if user.is_authenticated %}
   <p class="storage-status" id="js-published-status"></p>
+  <p class="storage-empty" id="js-published-empty">empty</p>
+  <p class="storage-empty" id="js-published-loading" style="display: none">loading</p>
   <table class="storage-list" id="js-published-list"></table>
   {% else %}
   <p class="storage-empty">
