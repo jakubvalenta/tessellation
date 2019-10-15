@@ -1,60 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="sr-only">Creat new composition</h1>
-<h2>Input</h2>
-<div class="images row" id="js-images"></div>
-<p>
-  <button id="js-images-add">add</button>
-</p>
-<h2>Drafts</h2>
-<p>
-  <button id="js-drafts-save">save draft</button>
-</p>
-<div id="js-drafts-list"></div>
-<h2>Published</h2>
-{% if user.is_authenticated %}
-<p>
-  <button id="js-published-submit">publish</button>
-</p>
-<div id="js-published-status"></div>
-<div id="js-published-list"></div>
-{% else %}
-<p><a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a> to be able to publish compositions</p>
-{% endif %}
-<h2>Composition</h2>
-<form action="javascript:void(0)">
-  {% csrf_token %}
-  <fieldset>
-    <legend>Size</legend>
-    <label for="js-width" class="sr-only">columns</label>
-    <input type="number" id="js-width" min="0" class="size-input" />
-    x
-    <label for="js-height" class="sr-only">rows</label>
-    <input type="number" id="js-height" min="0" class="size-input" />
-  </fieldset>
-  <fieldset>
-    <legend>Mode</legend>
-    <input
-      type="radio"
-      name="js-mode-preview"
-      id="mode-final"
-      value="0"
-      checked="checked"
-    />
-    <label for="mode-final">Final</label>
-    <input type="radio" name="js-mode-preview" id="mode-preview" value="1" />
-    <label for="mode-preview">Preview</label>
-  </fieldset>
-  <fieldset>
-    <button id="js-shuffle">shuffle</button>
-  </fieldset>
-</form>
-<div class="composition" id="js-composition"></div>
+<h2 class="sr-only">Creat new composition</h2>
+<div class="section section-input">
+  <h2>Input</h2>
+  <div class="images row" id="js-images"></div>
+  <p>
+    <button id="js-images-add">add</button>
+  </p>
+</div>
+<div class="section section-composition">
+  <h2>Composition</h2>
+  <form action="javascript:void(0)">
+    {% csrf_token %}
+    <fieldset>
+      <legend>Size</legend>
+      <label for="js-width" class="sr-only">columns</label>
+      <input type="number" id="js-width" min="0" class="size-input" />
+      x
+      <label for="js-height" class="sr-only">rows</label>
+      <input type="number" id="js-height" min="0" class="size-input" />
+    </fieldset>
+    <fieldset>
+      <legend>Mode</legend>
+      <input
+        type="radio"
+        name="js-mode-preview"
+        id="mode-final"
+        value="0"
+        checked="checked"
+      />
+      <label for="mode-final">Final</label>
+      <input type="radio" name="js-mode-preview" id="mode-preview" value="1" />
+      <label for="mode-preview">Preview</label>
+    </fieldset>
+    <fieldset>
+      <button id="js-shuffle">shuffle</button>
+    </fieldset>
+  </form>
+  <div class="composition" id="js-composition"></div>
+</div>
+<div class="section section-storage">
+  <h2>Drafts</h2>
+  <p>
+    <button id="js-drafts-save">save draft</button>
+  </p>
+  <div id="js-drafts-list"></div>
+  <h2>Published</h2>
+  {% if user.is_authenticated %}
+  <p>
+    <button id="js-published-submit">publish</button>
+  </p>
+  <div id="js-published-status"></div>
+  <div id="js-published-list"></div>
+  {% else %}
+  <p>
+    Please
+    <a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a> to
+    publish compositions.
+  </p>
+  {% endif %}
+</div>
 {% endblock %}
 {% block scripts %}
 {{ data|json_script:'composition-data' }}
 <script>
-  import('/static/js/pages/create.js').then((Page) =>
+  import('/static/js/pages/create.js').then(Page =>
     Page.init(
       JSON.parse(document.getElementById('composition-data').textContent)
     )

@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
-{% block content %}
+{% block header %}
 <a href="{% url 'index' %}">back to homepage</a>
+{% endblock %}
+{% block content %}
 <h1 class="sr-only">Composition</h1>
-<div class="composition" id="js-composition"></div>
+<div class="detail">
+  <div class="composition" id="js-composition"></div>
+</div>
 {% endblock %}
 {% block scripts %}
 {{ data|json_script:'composition-data' }}
