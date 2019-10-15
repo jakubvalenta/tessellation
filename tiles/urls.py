@@ -7,12 +7,15 @@ from tiles import views
 
 router = DefaultRouter()
 router.register(
-    'compositions', views.CompositionAPIViewSet, basename='composition'
+    'api/compositions', views.CompositionAPIViewSet, basename='composition'
 )
 
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
+    path('', views.CompositionCreateView.as_view(), name='index'),
+    path(
+        'compositions/<str:pk>/',
+        views.CompositionDetailView.as_view(),
+        name='detail',
+    ),
     path('', include(router.urls)),
-    path('new/', views.CompositionCreateView.as_view(), name='create'),
-    path('<str:pk>/', views.CompositionDetailView.as_view(), name='detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

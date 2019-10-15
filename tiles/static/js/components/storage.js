@@ -107,13 +107,14 @@ function initPublishedItemForm(
   state,
   timestamp,
   compositionId,
+  compositionUrl,
   elContainer,
   elStatus
 ) {
   const elItem = document.createElement('div');
   const elLink = document.createElement('a');
   elItem.textContent = timestamp;
-  elLink.href = `/${compositionId}/`;
+  elLink.href = compositionUrl;
   elLink.textContent = 'permalink';
   elItem.appendChild(elLink);
   initPublishedItemLoadButton(state, compositionId, elItem);
@@ -130,6 +131,7 @@ function initPublishedForm(state, elStatus) {
         state,
         composition.created_at,
         composition.id,
+        composition.url,
         elContainer,
         elStatus
       )

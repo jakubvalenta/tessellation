@@ -33,14 +33,15 @@ class SizeSerializer(serializers.ModelSerializer):
         fields = ['width', 'height']
 
 
-class CompositionSerializer(serializers.ModelSerializer):
+class CompositionSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='detail')
     size = SizeSerializer()
     images = ImageSerializer(many=True)
     tiles = TileSerializer(many=True)
 
     class Meta:
         model = Composition
-        fields = ['id', 'created_at', 'size', 'images', 'tiles']
+        fields = ['id', 'url', 'created_at', 'size', 'images', 'tiles']
 
     @transaction.atomic
     def create(self, validated_data: dict) -> Composition:

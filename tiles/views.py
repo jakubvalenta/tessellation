@@ -6,12 +6,6 @@ from tiles.permissions import IsOwnerOrReadOnly
 from tiles.serializers import CompositionSerializer
 
 
-class IndexView(generic.ListView):
-    model = Composition
-    template_name = 'index.html'
-    paginate_by = 10
-
-
 class CompositionDetailView(generic.DetailView):
     model = Composition
     template_name = 'detail.html'
@@ -19,7 +13,9 @@ class CompositionDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        serializer = CompositionSerializer(self.object)
+        serializer = CompositionSerializer(
+            self.object, context={'request': self.request}
+        )
         context['data'] = serializer.data
         return context
 
@@ -31,18 +27,26 @@ class CompositionCreateView(generic.base.TemplateView):
         oldest_composition = Composition.objects.prefetch_related(
             'tiles__image'
         ).last()
-        serializer = CompositionSerializer(oldest_composition)
+        serializer = CompositionSerializer(
+            oldest_composition, context={'request': self.request}
+        )
         return {'data': serializer.data}
 
 
 class CompositionAPIViewSet(viewsets.ModelViewSet):
-    serializer_class = CompositionSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly,
     ]
 
+    def get_serializer(self, *args, **kwargs):
+        return CompositionSerializer(
+            *args, **kwargs, context={'request': self.request}
+        )
+
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Composition.objects.none()
         return Composition.objects.filter(owner=self.request.user)
 
     def perform_create(self, serializer):

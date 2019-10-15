@@ -2,6 +2,8 @@ import * as HTTP from './http.js';
 import * as State from './state.js';
 import { SIDES } from './composition.js';
 
+const API_URL = '/api/compositions';
+
 function setStorageObject(obj) {
   window.localStorage.setItem('tiles', JSON.stringify(obj));
 }
@@ -107,18 +109,18 @@ export function publishState(state) {
     });
   });
   return Promise.all(promises).then(() => {
-    return HTTP.http('POST', '/compositions/', data);
+    return HTTP.http('POST', `${API_URL}/`, data);
   });
 }
 
 export function getPublishedComposition(compositionId) {
-  return HTTP.http('GET', `/compositions/${compositionId}`);
+  return HTTP.http('GET', `${API_URL}/${compositionId}`);
 }
 
 export function getPublishedCompositions() {
-  return HTTP.http('GET', '/compositions/');
+  return HTTP.http('GET', `${API_URL}/`);
 }
 
 export function deletePublishedComposition(compositionId) {
-  return HTTP.http('DELETE', `/compositions/${compositionId}`);
+  return HTTP.http('DELETE', `${API_URL}/${compositionId}`);
 }
