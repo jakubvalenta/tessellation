@@ -61,10 +61,10 @@ export function updateState(state, newState) {
 
 export function setSize(state, { width, height }) {
   if (width) {
-    state.size.width = Math.max(width, 0);
+    state.size.width = Math.max(width, 1);
   }
   if (height) {
-    state.size.height = Math.max(height, 0);
+    state.size.height = Math.max(height, 1);
   }
   callTilesChangedCallbacks(state);
 }

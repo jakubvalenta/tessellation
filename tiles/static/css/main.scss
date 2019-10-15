@@ -110,37 +110,52 @@ button {
 .main {
   display: flex;
   flex-grow: 1;
-}
-
-.section {
   padding: 1em 2em;
 }
+
 .section-composition {
   flex-grow: 1;
-  margin: 1em;
-  border-radius: 0.25em;
-  background: $color-background-dark;
-  box-shadow: 0 0 0.25em $color-background-darker;
+  padding: 0 2em;
 }
 
 .detail {
-  margin: 2em auto;
+  margin: 0 auto;
 }
 
+.composition {
+  width: 100%;
+  padding: 1em;
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  background: $color-background-dark;
+  box-shadow: 0 0 0.25em $color-background-darker;
+}
+.row {
+  display: flex;
+  flex-direction: columns;
+}
 .tile {
-  width: 5em;
-  height: 5em;
-  float: left;
+  flex-grow: 1;
+  position: relative;
   background: #fff;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+
+  &:before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
 }
 
 .tile-inner {
   display: block;
+  position: absolute;
   width: 100%;
   height: 100%;
+  left: 0;
+  top: 0;
   box-sizing: border-box;
   line-height: 4em;
   text-align: center;
@@ -151,9 +166,11 @@ button {
   visibility: hidden;
 }
 
-.row {
-  @extend %clearfix;
+.composition-shuffle {
+  margin: 1em 0;
+  text-align: center;
 }
+
 .col {
   float: left;
 }
@@ -206,14 +223,13 @@ button {
   display: flex;
   flex-direction: columns;
   min-width: 35em;
-
-  h2 {
-    flex-grow: 1;
-    margin: 0;
-    padding: 0.5em 0;
-    color: $color-highlight;
-    text-transform: lowercase;
-  }
+}
+.section-heading {
+  flex-grow: 1;
+  margin: 0;
+  padding: 0.5em 0;
+  color: $color-highlight;
+  text-transform: lowercase;
 }
 .storage-empty {
   border-top: 1px solid $color-border;

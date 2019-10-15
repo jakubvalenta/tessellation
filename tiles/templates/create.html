@@ -2,26 +2,24 @@
 {% block content %}
 <h2 class="sr-only">Creat new composition</h2>
 <div class="section section-input">
-  <h2>Input</h2>
+  <h2 class="section-heading">Input</h2>
   <div class="images row" id="js-images"></div>
   <p>
     <button id="js-images-add">add</button>
   </p>
-</div>
-<div class="section section-composition">
-  <h2>Composition</h2>
+  <h2 class="section-heading">Settings</h2>
   <form action="javascript:void(0)">
     {% csrf_token %}
-    <fieldset>
-      <legend>Size</legend>
+    <p>
+      Size:
       <label for="js-width" class="sr-only">columns</label>
-      <input type="number" id="js-width" min="0" class="size-input" />
+      <input type="number" id="js-width" min="1" class="size-input" />
       x
       <label for="js-height" class="sr-only">rows</label>
-      <input type="number" id="js-height" min="0" class="size-input" />
-    </fieldset>
-    <fieldset>
-      <legend>Mode</legend>
+      <input type="number" id="js-height" min="1" class="size-input" />
+    </p>
+    <p>
+      Mode:
       <input
         type="radio"
         name="js-mode-preview"
@@ -32,22 +30,25 @@
       <label for="mode-final">Final</label>
       <input type="radio" name="js-mode-preview" id="mode-preview" value="1" />
       <label for="mode-preview">Preview</label>
-    </fieldset>
-    <fieldset>
-      <button id="js-shuffle">shuffle</button>
-    </fieldset>
+    </p>
   </form>
+</div>
+<div class="section section-composition">
+  <h2 class="sr-only">Composition</h2>
   <div class="composition" id="js-composition"></div>
+  <p class="composition-shuffle">
+    <button id="js-shuffle">shuffle</button>
+  </p>
 </div>
 <div class="section section-storage">
   <div class="storage-header">
-    <h2>Drafts</h2>
+    <h2 class="section-heading">Drafts</h2>
     <button id="js-drafts-save">save draft</button>
   </div>
   <p class="storage-empty" id="js-drafts-empty">empty</p>
   <table class="storage-list" id="js-drafts-list"></table>
   <div class="storage-header">
-    <h2>Published</h2>
+    <h2 class="section-heading">Published</h2>
     {% if user.is_authenticated %}
     <button id="js-published-submit">publish</button>
     {% endif %}
