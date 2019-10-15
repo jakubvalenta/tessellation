@@ -18,6 +18,7 @@
       <p>
         Logged in as <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
         <a href="{% url 'accounts:logout' %}?next={{ request.path }}">logout</a>
+        {% if user.is_staff %}<a href="{% url 'admin:index' %}">admin</a>{% endif %}
       </p>
       {% else %}
       <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a></p>
