@@ -13,9 +13,7 @@ router.register(
 urlpatterns = [
     path('', views.CompositionCreateView.as_view(), name='index'),
     path(
-        'compositions/<str:pk>/',
-        views.CompositionDetailView.as_view(),
-        name='detail',
+        'c/<slug:slug>/', views.CompositionDetailView.as_view(), name='detail'
     ),
     path('', include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

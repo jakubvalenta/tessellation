@@ -31,17 +31,17 @@ makemigrations:  ## Make migrations
 
 create-db:  ## Create database
 	sudo -u postgres sh -c ' \
-	    createuser "$(db_user)"; \
+	    createuser --createdb "$(db_user)"; \
 	    createdb --encoding=UTF8 --template=template0 -O "$(db_user)" "$(db_name)"'
 
 create-superuser:  ## Create superuser
-	$(MAKE) manage args="createsuperuser --username=root --email=example@example.com"
+	$(MAKE) manage args="createsuperuser --username=admin --email=example@example.com"
 
 populate-db:  ## Populate database with fixtures
 	$(MAKE) manage args="populate_db"
 
 test:  ## Run unit tests
-	pipenv run python -m unittest
+	$(MAKE) manage args="test"
 
 lint:  ## Run linting
 	pipenv run flake8 $(_python_pkg)

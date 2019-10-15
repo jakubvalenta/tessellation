@@ -46,6 +46,8 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         superuser = User.objects.filter(is_superuser=True).first()
+        if not superuser:
+            raise Exception('You must create the superuser first')
         create_user_if_not_exists('jakub', 'jakub@jakubvalenta.cz', 'password')
         create_user_if_not_exists(
             'uttarayan', 'example@example.com', 'password'

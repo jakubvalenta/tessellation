@@ -1,10 +1,16 @@
+import logging
 import uuid
 from pathlib import Path
-from typing import List
+from typing import Callable, List, Optional
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.functional import cached_property
+from django.utils.http import int_to_base36
+
+from tiles.managers import CompositionManager
+
+logger = logging.getLogger(__name__)
 
 
 def image_upload_to(instance: 'Image', filename: str) -> str:
@@ -43,6 +49,20 @@ class Tile(models.Model):
         return str(self.id)
 
 
+def find_shortest_str(
+    s: str,
+    test_fn: Callable[[str], bool],
+    length: int = 1,
+    max_length: int = 0,
+) -> Optional[str]:
+    if length > len(s) or max_length and length > max_length:
+        return None
+    out = s[:length]
+    if not test_fn(out):
+        return find_shortest_str(s, test_fn, length + 1)
+    return out
+
+
 class Composition(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now=True)
@@ -52,6 +72,12 @@ class Composition(models.Model):
     width = models.PositiveSmallIntegerField()
     height = models.PositiveSmallIntegerField()
     tiles = models.ManyToManyField(Tile, related_name='compositions')
+    slug = models.SlugField(max_length=50)
+
+    MIN_SLUG_LENGTH = 8
+    MAX_SLUG_LENGTH = 50
+
+    objects = CompositionManager()
 
     class Meta:
         ordering = ['-created_at']
@@ -68,5 +94,21 @@ class Composition(models.Model):
                 images.append(tile.image)
         return images
 
-    def __str__(self):
+    def generate_slug(self):
+        self.id = uuid.uuid4()
+        self.slug = find_shortest_str(
+            int_to_base36(self.id.int),
+            test_fn=Composition.objects.slug_doesnt_exist,
+            length=self.MIN_SLUG_LENGTH,
+        )
+        if self.slug is None:
+            raise Exception('Slug collision')
+        iterations = len(self.slug) - self.MIN_SLUG_LENGTH + 1
+        logger.info(f'Generated new slug in {iterations} interations')
+
+    def save(self, *args, **kwargs):
+        self.generate_slug()
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
         return str(self.id)
