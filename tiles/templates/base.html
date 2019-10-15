@@ -1,11 +1,12 @@
 {% load static %}
+{% load sass_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <link
+      href="{% sass_src 'css/main.scss' %}"
       rel="stylesheet"
-      href="{% static 'css/main.css' %}"
       type="text/css"
       media="screen"
     />
@@ -16,12 +17,17 @@
     <header>
       {% if user.is_authenticated %}
       <p>
-        Logged in as <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+        Logged in as
+        <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
         <a href="{% url 'accounts:logout' %}?next={{ request.path }}">logout</a>
-        {% if user.is_staff %}<a href="{% url 'admin:index' %}">admin</a>{% endif %}
+        {% if user.is_staff %}
+        <a href="{% url 'admin:index' %}">admin</a>
+        {% endif %}
       </p>
       {% else %}
-      <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a></p>
+      <p>
+        <a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a>
+      </p>
       {% endif %}
     </header>
     {% block content %}{% endblock %}
