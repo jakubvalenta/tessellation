@@ -1,15 +1,18 @@
 @import '_mixins';
 
+$color-blue: #b2deff;
+$color-green: #c8ffb2;
+$color-red: #ffb2c7;
+$color-orange: #ffcdb2;
+$color-yellow: #eeffb2;
+
 $color-background: #444;
 $color-background-dark: #333;
 $color-background-darker: #111;
 $color-text: #bbb;
 $color-border: #777;
 $color-highlight: #fff;
-$color-link: #b2deff;
-$color-green: #c8ffb2;
-$color-red: #ffb2c7;
-$color-yellow: #ffcdb2;
+$color-link: $color-blue;
 $font-family: 'Droid Sans Mono', monospace;
 
 html,
@@ -265,72 +268,34 @@ button {
   }
 }
 
-.conn-0-1 {
-  border-left-color: red;
+$sides: (
+  0: 'left',
+  1: 'top',
+  2: 'right',
+  3: 'bottom'
+);
+$connections: (
+  1: $color-red,
+  2: $color-green,
+  3: $color-blue,
+  4: $color-orange,
+  5: $color-yellow
+);
+@each $i, $side in $sides {
+  @each $j, $color in $connections {
+    .conn-#{$i}-#{$j} {
+      border-#{$side}-color: $color;
+    }
+  }
 }
-.conn-0-2 {
-  border-left-color: green;
-}
-.conn-0-3 {
-  border-left-color: blue;
-}
-.conn-0-4 {
-  border-left-color: yellow;
-}
-.conn-0-5 {
-  border-left-color: pink;
-}
-.conn-1-1 {
-  border-top-color: red;
-}
-.conn-1-2 {
-  border-top-color: green;
-}
-.conn-1-3 {
-  border-top-color: blue;
-}
-.conn-1-4 {
-  border-top-color: yellow;
-}
-.conn-1-5 {
-  border-top-color: pink;
-}
-.conn-2-1 {
-  border-right-color: red;
-}
-.conn-2-2 {
-  border-right-color: green;
-}
-.conn-2-3 {
-  border-right-color: blue;
-}
-.conn-2-4 {
-  border-right-color: yellow;
-}
-.conn-2-5 {
-  border-right-color: pink;
-}
-.conn-3-1 {
-  border-bottom-color: red;
-}
-.conn-3-2 {
-  border-bottom-color: green;
-}
-.conn-3-3 {
-  border-bottom-color: blue;
-}
-.conn-3-4 {
-  border-bottom-color: yellow;
-}
-.conn-3-5 {
-  border-bottom-color: pink;
-}
-.rot-1 {
-  transform: rotate(-0.25turn);
-}
-.rot-2 {
-  transform: rotate(-0.5turn);
-}
-.rot-3 {
-  transform: rotate(-0.75turn);
+
+$rotations: (
+  1: -0.25turn,
+  2: -0.5turn,
+  3: -0.75turn
+);
+@each $i, $rotation in $rotations {
+  .rot-#{$i} {
+    transform: rotate($rotation);
+  }
 }
