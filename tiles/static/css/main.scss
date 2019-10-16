@@ -17,6 +17,18 @@ $color-highlight: #fff;
 $color-link: $color-blue;
 $font-family: 'Droid Sans Mono', monospace;
 
+@font-face {
+  font-family: 'Droid Sans Mono';
+  src: url('../fonts/DroidSansMono-webfont.eot');
+  src: url('../fonts/DroidSansMono-webfont.eot?#iefix')
+      format('embedded-opentype'),
+    url('../fonts/DroidSansMono-webfont.woff') format('woff'),
+    url('../fonts/DroidSansMono-webfont.ttf') format('truetype'),
+    url('../fonts/DroidSansMono-webfont.svg#DroidSansMono') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: $font-family;
   font-size: 9/12 * 100%;
@@ -96,10 +108,10 @@ button,
 }
 
 .input-file {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
 }
 .input-number {
   line-height: 2;
