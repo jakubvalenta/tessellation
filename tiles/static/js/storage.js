@@ -1,6 +1,6 @@
 import * as HTTP from './http.js';
 import * as State from './state.js';
-import { SIDES } from './composition.js';
+import { isImageComplete, SIDES } from './composition.js';
 
 const API_URL = '/api/compositions';
 
@@ -32,7 +32,7 @@ export function deleteStorageItem(dataIndex) {
 function serializeState(state) {
   return {
     size: state.size,
-    images: state.images,
+    images: state.images.filter(isImageComplete),
     tiles: state.tiles.map(({ image, rotation }) => {
       return { imgRef: image.ref, rotation };
     })
