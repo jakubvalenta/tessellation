@@ -126,8 +126,12 @@ button,
 }
 
 .header {
+  @extend %clearfix !optional;
+
   display: flex;
+  padding: 1em 2em;
   text-transform: lowercase;
+  white-space: nowrap;
 
   h1 {
     margin: 0;
@@ -136,29 +140,98 @@ button,
   }
 }
 .header-section {
-  flex-grow: 1;
+  flex-grow: 2;
   flex-basis: 0;
-  padding: 1em 2em;
 }
 .header-main {
+  flex-grow: 1;
   text-align: center;
 }
 .header-user {
   text-align: right;
 }
+@media screen and (max-width: 639px) {
+  .header {
+    display: block;
+  }
+  .header-section {
+    float: left;
+  }
+  .header-left {
+    padding-right: 1.5em;
+  }
+  .header-user {
+    float: right;
+  }
+}
+@media screen and (max-width: 479px) {
+  .header-main {
+    float: right;
+  }
+  .header-user {
+    float: left;
+    clear: both;
+    padding-top: 0.5em;
+  }
+}
 
 .main {
-  display: flex;
-  flex-grow: 1;
   padding: 1em 2em;
 }
-
-.section-input {
-  width: 40%;
+@media screen and (min-width: 800px) {
+  .main {
+    display: flex;
+  }
+  .section-composition {
+    flex-grow: 1;
+  }
 }
-.section-composition {
-  flex-grow: 1;
-  padding: 0 2em;
+@media screen and (min-width: 1440px) {
+  .section-input {
+    width: 40%;
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+  .section-input {
+    width: 30%;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .section-composition {
+    padding-right: 2em;
+  }
+  .section-storage {
+    width: 32em;
+  }
+}
+@media screen and (min-width: 800px) {
+  .section-composition {
+    padding-left: 2em;
+    box-sizing: border-box;
+  }
+}
+@media screen and (min-width: 800px) and (max-width: 1023px) {
+  .main {
+    flex-wrap: wrap;
+  }
+  .section-input {
+    width: 40%;
+  }
+  .section-composition {
+    width: 60%;
+    padding-right: 0;
+  }
+}
+@media screen and (max-width: 1023px) {
+  .section-storage {
+    width: 100%;
+    padding-top: 1em;
+  }
+}
+@media screen and (max-width: 799px) {
+  .section-composition {
+    padding-top: 1em;
+  }
 }
 
 .detail {
@@ -168,6 +241,7 @@ button,
 .composition {
   width: 100%;
   padding: 1em;
+  margin-bottom: 1em;
   border-radius: 0.25em;
   box-sizing: border-box;
   background: $color-background-dark;
@@ -208,17 +282,17 @@ button,
 .composition-controls {
   display: flex;
   justify-content: space-between;
-  margin: 1em 0;
+  margin-bottom: 1em;
 
   p {
     margin: 0;
   }
 }
 .composition-shuffle {
-  width: 33.3%;
+  width: 33.33%;
 }
 .composition-settings {
-  width: 33.3%;
+  width: 33.33%;
 }
 
 .images {
@@ -232,6 +306,11 @@ button,
   float: left;
   padding: 1em;
   box-sizing: border-box;
+}
+@media screen and (max-width: 1439px) {
+  .image {
+    width: 50%;
+  }
 }
 .image-inner {
   position: relative;
@@ -312,7 +391,6 @@ button,
 .storage-header {
   display: flex;
   flex-direction: columns;
-  min-width: 32em;
 }
 .section-heading {
   flex-grow: 1;
