@@ -38,6 +38,14 @@ body {
   margin: 0;
 }
 
+.noscript {
+  text-align: center;
+  color: $color-text-inverse;
+  background: $color-red;
+  margin: 0;
+  padding: 2em;
+}
+
 p,
 ul,
 ol,
