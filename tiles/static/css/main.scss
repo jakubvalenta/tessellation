@@ -59,6 +59,8 @@ h5,
 h6 {
   font-size: 100%;
   font-weight: normal;
+  color: $color-highlight;
+  text-transform: lowercase;
 }
 
 .sr-only {
@@ -136,7 +138,6 @@ button,
   h1 {
     margin: 0;
     letter-spacing: 0.25em;
-    color: $color-highlight;
   }
 }
 .header-section {
@@ -179,7 +180,7 @@ button,
   padding: 1em 2em;
 }
 @media screen and (min-width: 800px) {
-  .main {
+  .sections {
     display: flex;
   }
   .section-composition {
@@ -211,7 +212,7 @@ button,
   }
 }
 @media screen and (min-width: 800px) and (max-width: 1023px) {
-  .main {
+  .sections {
     flex-wrap: wrap;
   }
   .section-input {
@@ -396,8 +397,6 @@ button,
   flex-grow: 1;
   margin: 0;
   padding: 0.5em 0;
-  color: $color-highlight;
-  text-transform: lowercase;
 }
 .storage-empty {
   border-top: 1px solid $color-border;
