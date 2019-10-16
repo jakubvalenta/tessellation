@@ -12,10 +12,14 @@
     />
     <title>Tiles</title>
   </head>
-  <body class="no-js mode-final">
+  <body class="mode-final">
     <noscript>
-      <p class="noscript">This app requires JavaScript</p>
+      <p class="alert-error">This app requires JavaScript</p>
     </noscript>
+    <p class="alert-error error-unsupported">
+      This app only supports the latest versions of Mozilla Firefox and Google
+      Chrome.
+    </p>
     <header class="header">
       <div class="header-section header-left">
         {% block header %}
@@ -38,9 +42,25 @@
     <main class="main">
       {% block content %}{% endblock %}
     </main>
-    {% block scripts %}{% endblock %}
     <script>
-      document.body.classList.remove('no-js');
+      (function () {
+        /*
+         * @see https://www.bram.us/2016/10/31/checking-if-a-browser-supports-es6/
+         */
+        function supportsES6() {
+          try {
+            new Function("(a = 0) => a");
+            return true;
+          }
+          catch (err) {
+            return false;
+          }
+        }
+        if (!supportsES6()) {
+          document.body.className = 'is-unsupported';
+        }
+      }());
     </script>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

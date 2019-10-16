@@ -38,12 +38,18 @@ body {
   margin: 0;
 }
 
-.noscript {
+.alert-error {
   text-align: center;
   color: $color-text-inverse;
   background: $color-red;
   margin: 0;
   padding: 2em;
+}
+.error-unsupported {
+  display: none;
+}
+.is-unsupported .error-unsupported {
+  display: block;
 }
 
 p,
