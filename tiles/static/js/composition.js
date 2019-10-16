@@ -8,6 +8,16 @@ export function isImageComplete(image) {
   );
 }
 
+function createEmptyTile() {
+  return {
+    image: {
+      ref: 'none',
+      connections: SIDES.map(() => 0)
+    },
+    rotation: 0
+  };
+}
+
 export function generateTiles(images) {
   const out = [];
   let i = 0;
@@ -84,6 +94,7 @@ export function generateComposition(tiles, [width, height]) {
   const composition = Array.from(Array(height), () => new Array(width));
   const stack = Array.from(tiles);
   let row, col, tile;
+  let stop = false;
   for (row = 0; row < height; row++) {
     for (col = 0; col < width; col++) {
       console.log(`Choosing tile for position ${row} ${col}`);
@@ -93,8 +104,14 @@ export function generateComposition(tiles, [width, height]) {
         composition[row][col] = tile;
       } else {
         console.log('No fitting tile found, stopping composition generation');
-        return composition;
+        stop = true;
       }
+      if (stop) {
+        composition[row][col] = createEmptyTile();
+      }
+    }
+    if (stop) {
+      return composition;
     }
   }
   return composition;
