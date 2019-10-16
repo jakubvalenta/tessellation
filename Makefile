@@ -2,10 +2,27 @@ _python_pkg = tiles
 db_name = tiles
 db_user = tiles
 
-.PHONY: run start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db test lint tox reformat help
+.PHONY: run run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db test lint tox reformat help
 
 run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
+
+run-prod: | start-postgresql  ## Start the development server with production settings
+	head -c 64 /dev/urandom > /tmp/tiles-secret-key
+	DJANGO_SETTINGS_MODULE=conf.settings_prod \
+	DJANGO_SECRET_KEY_FILE=/tmp/tiles-secret-key \
+	$(MAKE) manage args="runserver"
+
+run-wsgi:  ## Collect static files and start the production WSGI server
+	$(MAKE) manage args="collectstatic --no-input"
+	DJANGO_SECRET_KEY_FILE=/tmp/tiles-secret-key \
+	gunicorn conf.wsgi
+
+check-prod:  ## Check production settings
+	head -c 64 /dev/urandom > /tmp/tiles-secret-key
+	DJANGO_SETTINGS_MODULE=conf.settings_prod_ssl \
+	DJANGO_SECRET_KEY_FILE=/tmp/tiles-secret-key \
+	$(MAKE) manage args="check --deploy"
 
 start-postgresql:
 	[[ -e /run/postgresql/.s.PGSQL.5432 ]] || systemctl start postgresql.service

@@ -1,15 +1,10 @@
 import os
-from typing import Sequence
 
 from tiles import __db_name__, __db_user__
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'lrtp%mw(ep03k_o94g@eq9b2nfj+xp_%c2ltj158q!$vuvekgm'
-
-DEBUG = True
-
-ALLOWED_HOSTS: Sequence[str] = []
+ALLOWED_HOSTS = ['*']
 INTERNAL_IPS = ['127.0.0.1']
 
 INSTALLED_APPS = [
@@ -20,14 +15,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'debug_toolbar',
     'sass_processor',
     'accounts',
     'tiles',
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,9 +74,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_L10N = True
+TIME_ZONE = 'Europe/Berlin'
+USE_I18N = False
+USE_L10N = False
 USE_TZ = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
