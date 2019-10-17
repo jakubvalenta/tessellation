@@ -33,12 +33,8 @@ ROOT_URLCONF = 'conf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(x.absolute()) for x in BASE_DIR.glob('*/templates/')],
         'OPTIONS': {
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ],
+            'loaders': ['django.template.loaders.app_directories.Loader'],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
