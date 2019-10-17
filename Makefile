@@ -1,28 +1,30 @@
 _python_pkg = tiles
 db_name = tiles
 db_user = tiles
+tmp_secret_key_file = /tmp/tiles-secret-key
 
 .PHONY: run run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db test lint tox reformat help
 
 run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
 
-run-prod: | start-postgresql  ## Start the development server with production settings
-	head -c 64 /dev/urandom > /tmp/tiles-secret-key
+run-prod: $(tmp_secret_key_file) | start-postgresql  ## Start the development server with production settings
 	DJANGO_SETTINGS_MODULE=conf.settings_prod \
-	DJANGO_SECRET_KEY_FILE=/tmp/tiles-secret-key \
+	DJANGO_SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	$(MAKE) manage args="runserver"
 
-run-wsgi:  ## Collect static files and start the production WSGI server
+run-wsgi: $(tmp_secret_key_file)  ## Collect static files and start the production WSGI server
 	$(MAKE) manage args="collectstatic --no-input"
-	DJANGO_SECRET_KEY_FILE=/tmp/tiles-secret-key \
+	DJANGO_SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	gunicorn conf.wsgi
 
-check-prod:  ## Check production settings
-	head -c 64 /dev/urandom > /tmp/tiles-secret-key
+check-prod: $(tmp_secret_key_file)  ## Check production settings
 	DJANGO_SETTINGS_MODULE=conf.settings_prod_ssl \
-	DJANGO_SECRET_KEY_FILE=/tmp/tiles-secret-key \
+	DJANGO_SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	$(MAKE) manage args="check --deploy"
+
+$(tmp_secret_key_file):
+	pwgen --secure --symbols 64 1 > $@
 
 start-postgresql:
 	[[ -e /run/postgresql/.s.PGSQL.5432 ]] || systemctl start postgresql.service
@@ -57,7 +59,7 @@ create-superuser:  ## Create superuser
 populate-db:  ## Populate database with fixtures
 	$(MAKE) manage args="populate_db"
 
-test:  ## Run unit tests
+test: | start-postgresql  ## Run unit tests
 	$(MAKE) manage args="test"
 
 lint:  ## Run linting
