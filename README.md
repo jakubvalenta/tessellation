@@ -49,7 +49,17 @@ $ make create-db
 Create tables and populate them with fixtures:
 
 ``` shell
-$ make migrate populate-db
+$ make create-superuser migrate populate-db
+```
+
+Start a development server with production settings.
+
+Dependencies:
+
+- pwgen
+
+``` shell
+$ make run-prod
 ```
 
 ## Development
