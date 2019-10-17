@@ -6,9 +6,7 @@ from conf.settings_base import DATABASES, TEMPLATES
 
 DEBUG = os.environ.get('DEBUG', False)
 SECRET_KEY = (
-    Path(
-        os.environ.get('DJANGO_SECRET_KEY_FILE', '/run/keys/tiles-secret-key')
-    )
+    Path(os.environ.get('SECRET_KEY_FILE', '/run/keys/tiles-secret-key'))
     .read_text()
     .strip()
 )
