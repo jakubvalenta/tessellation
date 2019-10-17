@@ -31,5 +31,6 @@ setup(
         'libsass',
         'django-compressor',
         'django-sass-processor',
+        'Pillow',
     ],
 )
