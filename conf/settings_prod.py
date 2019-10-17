@@ -4,8 +4,14 @@ from pathlib import Path
 from conf.settings_base import *  # noqa: F401, F403
 from conf.settings_base import DATABASES, TEMPLATES
 
-DEBUG = True
-SECRET_KEY = Path(os.environ['DJANGO_SECRET_KEY_FILE']).read_text().strip()
+DEBUG = os.environ.get('DEBUG', False)
+SECRET_KEY = (
+    Path(
+        os.environ.get('DJANGO_SECRET_KEY_FILE', '/run/keys/tiles-secret-key')
+    )
+    .read_text()
+    .strip()
+)
 TEMPLATES[0]['OPTIONS']['loaders'] = [
     (
         'django.template.loaders.cached.Loader',
