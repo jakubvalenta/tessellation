@@ -4,7 +4,7 @@ from pathlib import Path
 from conf.settings_base import *  # noqa: F401, F403
 from conf.settings_base import DATABASES, TEMPLATES
 
-DEBUG = False
+DEBUG = True
 SECRET_KEY = Path(os.environ['DJANGO_SECRET_KEY_FILE']).read_text().strip()
 TEMPLATES[0]['OPTIONS']['loaders'] = [
     (

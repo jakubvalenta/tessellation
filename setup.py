@@ -6,7 +6,7 @@ from tiles import __title__
 
 setup(
     name='tiles',
-    version='0.1.1',
+    version='0.1.2',
     description=__title__,
     long_description=(Path(__file__).parent / 'README.md').read_text(),
     url='https://lab.saloun.cz/jakub/tiles2',
