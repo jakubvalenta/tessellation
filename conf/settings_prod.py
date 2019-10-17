@@ -15,7 +15,7 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
         ],
     )
 ]
-DATABASES['default']['NAME'] = 'robot'
+DATABASES['default']['USER'] = 'robot'
 DATABASES['default']['CONN_MAX_AGE'] = 300
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
