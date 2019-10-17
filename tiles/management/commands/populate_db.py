@@ -48,9 +48,5 @@ class Command(BaseCommand):
         superuser = User.objects.filter(is_superuser=True).first()
         if not superuser:
             raise Exception('You must create the superuser first')
-        create_user_if_not_exists('jakub', 'jakub@jakubvalenta.cz', 'password')
-        create_user_if_not_exists(
-            'uttarayan', 'example@example.com', 'password'
-        )
         for fixture_path in fixtures_path.glob('*.json'):
             load_fixture(fixture_path, superuser)
