@@ -10,17 +10,17 @@ run: | start-postgresql  ## Start the development server
 
 run-prod: $(tmp_secret_key_file) | start-postgresql  ## Start the development server with production settings
 	DJANGO_SETTINGS_MODULE=conf.settings_prod \
-	DJANGO_SECRET_KEY_FILE="$(tmp_secret_key_file)" \
+	SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	$(MAKE) manage args="runserver"
 
 run-wsgi: $(tmp_secret_key_file)  ## Collect static files and start the production WSGI server
 	$(MAKE) manage args="collectstatic --no-input"
-	DJANGO_SECRET_KEY_FILE="$(tmp_secret_key_file)" \
+	SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	gunicorn conf.wsgi
 
 check-prod: $(tmp_secret_key_file)  ## Check production settings
 	DJANGO_SETTINGS_MODULE=conf.settings_prod_ssl \
-	DJANGO_SECRET_KEY_FILE="$(tmp_secret_key_file)" \
+	SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	$(MAKE) manage args="check --deploy"
 
 $(tmp_secret_key_file):
