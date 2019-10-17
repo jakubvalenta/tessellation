@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from tiles import __db_name__, __db_user__
-
 BASE_DIR = Path(__file__).absolute().parents[1]
 
 ALLOWED_HOSTS = ['*']
@@ -56,8 +54,8 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': __db_name__,
-        'USER': __db_user__,
+        'NAME': 'tiles',
+        'USER': 'tiles',
     }
 }
 

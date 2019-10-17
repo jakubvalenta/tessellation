@@ -46,10 +46,10 @@ Create database:
 $ make create-db
 ```
 
-Create tables and populate them with fixtures:
+Create database tables, superuser, and populate the db with fixtures:
 
 ``` shell
-$ make create-superuser migrate populate-db
+$ make migrate create-superuser populate-db
 ```
 
 Start a development server with production settings.
