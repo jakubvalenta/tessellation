@@ -1,6 +1,7 @@
 import * as HTML from '../html.js';
 import * as State from '../state.js';
 import * as StorageLib from '../storage.js';
+import { formatDate } from '../utils/date.js';
 
 const TEXT_DELETE = 'x';
 const CLASS_BUTTON_SECONDARY = 'button-secondary';
@@ -56,9 +57,9 @@ function initDraftsItemDeleteButton(state, dataIndex, elItem) {
   elItem.appendChild(elButton);
 }
 
-function initDraftsItemForm(state, timestamp, dataIndex, elContainer) {
+function initDraftsItemForm(state, date, id, dataIndex, elContainer) {
   const elRow = document.createElement('tr');
-  createTableCell(elRow).textContent = timestamp;
+  createTableCell(elRow).textContent = `${id} ${formatDate(date)}`;
   initDraftsItemLoadButton(state, dataIndex, createTableCell(elRow));
   initDraftsItemDeleteButton(state, dataIndex, createTableCell(elRow));
   elContainer.appendChild(elRow);
@@ -71,8 +72,14 @@ function initDraftsForm(state) {
   HTML.clearElement(elContainer);
   if (timestamps.length) {
     elEmpty.style.display = 'none';
-    timestamps.forEach(({ timestamp, dataIndex }) => {
-      initDraftsItemForm(state, timestamp, dataIndex, elContainer);
+    timestamps.forEach(({ timestamp, dataIndex }, index) => {
+      initDraftsItemForm(
+        state,
+        new Date(timestamp),
+        timestamps.length - index,
+        dataIndex,
+        elContainer
+      );
     });
   } else {
     elEmpty.style.display = 'block';
@@ -134,14 +141,15 @@ function initPublishedItemDeleteButton(state, compositionId, elItem, elStatus) {
 
 function initPublishedItemForm(
   state,
-  timestamp,
+  date,
+  id,
   compositionId,
   compositionUrl,
   elContainer,
   elStatus
 ) {
   const elRow = document.createElement('tr');
-  createTableCell(elRow).textContent = timestamp;
+  createTableCell(elRow).textContent = `${id} ${formatDate(date)}`;
   createTableCell(elRow).appendChild(createLink(compositionUrl, 'permalink'));
   initPublishedItemLoadButton(state, compositionId, createTableCell(elRow));
   initPublishedItemDeleteButton(
@@ -166,10 +174,11 @@ function initPublishedForm(state, elStatus) {
       elEmpty.style.display = 'block';
       return;
     }
-    data.forEach(composition =>
+    data.forEach((composition, index) =>
       initPublishedItemForm(
         state,
-        composition.created_at,
+        new Date(composition.created_at),
+        data.length - index,
         composition.id,
         composition.url,
         elContainer,
