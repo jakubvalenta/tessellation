@@ -11,6 +11,7 @@ export function isImageComplete(image) {
 function createEmptyTile() {
   return {
     image: {
+      i: null,
       ref: 'none',
       connections: SIDES.map(() => 0)
     },

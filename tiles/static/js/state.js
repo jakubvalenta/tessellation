@@ -74,29 +74,22 @@ export function setTiles(state, tiles) {
   callTilesChangedCallbacks(state);
 }
 
-function findImage(state, ref) {
+export function findImage(state, ref) {
   let i, image;
   for (i = 0; i < state.images.length; i++) {
     image = state.images[i];
     if (image.ref === ref) {
-      return {
-        index: i,
-        image
-      };
+      return image;
     }
   }
-  return { index: null, image: null };
-}
-
-export function getImage(state, ref) {
-  const imageIndex = findImage(state, ref).index;
-  return imageIndex !== null ? state.images[imageIndex] : null;
+  return null;
 }
 
 export function newImage(state) {
   const ref = uuidv4();
   console.log(`Adding new image ${ref}`);
   state.images.push({
+    index: state.images.length + 1,
     ref,
     connections: [null, null, null, null],
     url: null
@@ -114,8 +107,8 @@ export function changeImage(state, image, url) {
 
 export function deleteImage(state, { ref }) {
   console.log(`Deleting image ${ref}`);
-  const { index, image } = findImage(state, ref);
-  state.images.splice(index, 1);
+  const image = findImage(state, ref);
+  state.images.splice(image.index, 1);
   if (isImageComplete(image)) {
     callImagesChangedCallbacks(state);
   }

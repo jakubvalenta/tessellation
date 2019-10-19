@@ -29,10 +29,18 @@ export function deleteStorageItem(dataIndex) {
   setStorageObject(data);
 }
 
+function addIndex(image, i) {
+  return { index: i, ...image };
+}
+
+function removeIndex({ index, ...imageWithoutIndex }) {
+  return imageWithoutIndex;
+}
+
 function serializeState(state) {
   return {
     size: state.size,
-    images: state.images.filter(isImageComplete),
+    images: state.images.filter(isImageComplete).map(removeIndex),
     tiles: state.tiles.map(({ image, rotation }) => {
       return { imgRef: image.ref, rotation };
     })
@@ -78,7 +86,10 @@ export function deserializeState(data) {
     newState.size = data.size;
   }
   if (data.images) {
-    newState.images = data.images.map(compatImage).filter(validateImageData);
+    newState.images = data.images
+      .map(compatImage)
+      .filter(validateImageData)
+      .map(addIndex);
     if (data.tiles) {
       newState.tiles = data.tiles
         .map(compatTile)
@@ -86,7 +97,7 @@ export function deserializeState(data) {
         .map(tileData => {
           return {
             ...tileData,
-            image: State.getImage(newState, tileData.imgRef)
+            image: State.findImage(newState, tileData.imgRef)
           };
         })
         .filter(tile => !!tile.image);

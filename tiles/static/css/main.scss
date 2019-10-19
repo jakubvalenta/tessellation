@@ -287,12 +287,25 @@ button,
   left: 0;
   top: 0;
   box-sizing: border-box;
-  line-height: 4em;
   text-align: center;
   border: 0.5em solid transparent;
 }
 .mode-final .tile-inner {
   visibility: hidden;
+}
+.tile-text {
+  position: absolute;
+  width: 2em;
+  height: 2em;
+  left: 50%;
+  top: 50%;
+  margin-top: -1em;
+  margin-left: -1em;
+  line-height: 2em;
+  text-align: center;
+  color: $color-highlight;
+  background: $color-background-darker;
+  border-radius: 100%;
 }
 .composition-controls {
   display: flex;
@@ -480,5 +493,9 @@ $rotations: (
 @each $i, $rotation in $rotations {
   .rot-#{$i} {
     transform: rotate($rotation);
+
+    .tile-text {
+      transform: rotate(-$rotation);
+    }
   }
 }
