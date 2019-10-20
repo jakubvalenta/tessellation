@@ -89,7 +89,7 @@ export function newImage(state) {
   const ref = uuidv4();
   console.log(`Adding new image ${ref}`);
   state.images.push({
-    index: state.images.length + 1,
+    index: state.images.length,
     ref,
     connections: [null, null, null, null],
     url: null
@@ -109,6 +109,9 @@ export function deleteImage(state, { ref }) {
   console.log(`Deleting image ${ref}`);
   const image = findImage(state, ref);
   state.images.splice(image.index, 1);
+  state.images = state.images.map((image, i) => {
+    return { ...image, index: i };
+  });
   if (isImageComplete(image)) {
     callImagesChangedCallbacks(state);
   }
