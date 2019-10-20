@@ -1,7 +1,7 @@
 import logging
 
 from django.db import transaction
-from drf_base64.fields import Base64ImageField
+from drf_base64.fields import Base64FileField
 from rest_framework import serializers
 
 from tiles.models import Composition, Image, Tile
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class ImageSerializer(serializers.ModelSerializer):
     ref = serializers.CharField(source='pk')
     url = serializers.FileField(source='image', read_only=True, use_url=True)
-    data = Base64ImageField(write_only=True)
+    data = Base64FileField(write_only=True)
 
     class Meta:
         model = Image

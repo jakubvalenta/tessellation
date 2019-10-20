@@ -23,7 +23,7 @@ def image_upload_to(instance: 'Image', filename: str) -> str:
 class Image(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to=image_upload_to, unique=True)
+    image = models.FileField(upload_to=image_upload_to, unique=True)
     connections = ArrayField(models.PositiveSmallIntegerField())
 
     def __str__(self):
