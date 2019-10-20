@@ -1,0 +1,32 @@
+{
+  "size": { "width": 20, "height": 20 },
+  "images": [
+    { "ref": "1", "url": "tile-1.svg", "connections": [1, 1, 1, 1] },
+    { "ref": "2", "url": "tile-2.svg", "connections": [2, 2, 2, 2] },
+    { "ref": "3", "url": "tile-3.svg", "connections": [1, 2, 2, 1] },
+    { "ref": "4", "url": "tile-4.svg", "connections": [1, 1, 2, 1] },
+    { "ref": "5", "url": "tile-5.svg", "connections": [2, 2, 1, 2] }
+  ],
+  "tiles": [
+    { "imgRef": "1", "rotation": 1 },
+    { "imgRef": "5", "rotation": 2 },
+    { "imgRef": "3", "rotation": 3 },
+    { "imgRef": "4", "rotation": 1 },
+    { "imgRef": "2", "rotation": 2 },
+    { "imgRef": "4", "rotation": 3 },
+    { "imgRef": "1", "rotation": 0 },
+    { "imgRef": "3", "rotation": 2 },
+    { "imgRef": "5", "rotation": 0 },
+    { "imgRef": "2", "rotation": 3 },
+    { "imgRef": "2", "rotation": 1 },
+    { "imgRef": "5", "rotation": 1 },
+    { "imgRef": "1", "rotation": 2 },
+    { "imgRef": "5", "rotation": 3 },
+    { "imgRef": "1", "rotation": 3 },
+    { "imgRef": "2", "rotation": 0 },
+    { "imgRef": "3", "rotation": 1 },
+    { "imgRef": "4", "rotation": 0 },
+    { "imgRef": "4", "rotation": 2 },
+    { "imgRef": "3", "rotation": 0 }
+  ]
+}

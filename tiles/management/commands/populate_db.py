@@ -31,7 +31,7 @@ def load_fixture(fixture_path: Path, user: User):
     with fixture_path.open() as f:
         data = json.load(f)
     for image_data in data['images']:
-        image_path = fixtures_path / 'images' / image_data['url']
+        image_path = fixture_path.parent / image_data['url']
         image_data['data'] = create_base64_data_url(image_path)
     serializer = CompositionSerializer(data=data)
     if not serializer.is_valid():
@@ -48,5 +48,5 @@ class Command(BaseCommand):
         superuser = User.objects.filter(is_superuser=True).first()
         if not superuser:
             raise Exception('You must create the superuser first')
-        for fixture_path in fixtures_path.glob('*.json'):
+        for fixture_path in fixtures_path.glob('**/data.json'):
             load_fixture(fixture_path, superuser)
