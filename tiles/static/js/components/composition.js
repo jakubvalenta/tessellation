@@ -3,15 +3,26 @@ import * as HTML from '../html.js';
 import * as State from '../state.js';
 import * as Tile from './tile.js';
 
-function setImageBackground({ ref, url }) {
-  const rule = `.img-${ref} { background-image: url('${url}') }`;
-  const index = document.styleSheets[0].cssRules.length;
-  console.log(`Inserting CSS rule ${rule} on index ${index}`);
-  document.styleSheets[0].insertRule(rule, index);
+function findStyleSheetByTitle(title) {
+  let i, styleSheet;
+  for (i = 0; i < document.styleSheets.length; i++) {
+    styleSheet = document.styleSheets[i];
+    if (styleSheet.title === title) {
+      return styleSheet;
+    }
+  }
+  return null;
 }
 
-function setAllImageBackgrounds(images) {
-  images.forEach(image => image.url && setImageBackground(image));
+function setImageBackground({ ref, url }, styleSheet) {
+  const rule = `.img-${ref} { background-image: url('${url}') }`;
+  const index = styleSheet.cssRules.length;
+  console.log(`Inserting CSS rule ${rule} on index ${index}`);
+  styleSheet.insertRule(rule, index);
+}
+
+function setAllImageBackgrounds(images, styleSheet) {
+  images.forEach(image => image.url && setImageBackground(image, styleSheet));
 }
 
 function renderComposition(composition, elContainer) {
@@ -26,11 +37,12 @@ function renderComposition(composition, elContainer) {
 
 export default function Composition(state) {
   const elContainer = document.getElementById('js-composition');
+  const styleSheet = findStyleSheetByTitle('main');
   State.registerImagesLoadedCallback(state, state => {
-    setAllImageBackgrounds(state.images);
+    setAllImageBackgrounds(state.images, styleSheet);
   });
   State.registerImageUpdatedCallback(state, (state, image) => {
-    setImageBackground(image);
+    setImageBackground(image, styleSheet);
   });
   State.registerImagesChangedCallback(state, state => {
     const newTiles = CompositionLib.generateTiles(state.images);

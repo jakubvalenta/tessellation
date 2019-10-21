@@ -7,6 +7,7 @@ $color-red: #ffb2c7;
 $color-orange: #ffcdb2;
 $color-yellow: #eeffb2;
 
+$color-background-light: #555;
 $color-background: #444;
 $color-background-dark: #333;
 $color-background-darker: #111;
@@ -98,7 +99,8 @@ a {
 }
 
 button,
-.label-file {
+.label-file,
+.introjs-button {
   padding: 0.5em 1em;
   border: 0;
   border-radius: 0.25em;
@@ -501,8 +503,47 @@ $rotations: (
 }
 
 .introjs-helperLayer {
-  opacity: 0.2;
+  background: $color-background;
+  opacity: 1;
 }
 .introjs-tooltip {
-  opacity: 0.8;
+  color: $color-highlight;
+  background: $color-background;
+}
+.introjs-arrow {
+  &.top,
+  &.top-right,
+  &.top-middle {
+    border-bottom-color: $color-background-light;
+  }
+  &.right,
+  &.right-bottom {
+    border-left-color: $color-background-light;
+  }
+  &.bottom,
+  &.bottom-right,
+  &.bottom-middle {
+    border-top-color: $color-background-light;
+  }
+  &.left,
+  &.left-bottom {
+    border-right-color: $color-background-light;
+  }
+}
+.introjs-button {
+  text-shadow: none;
+
+  &:hover {
+    box-shadow: 0 0 0.1em $color-background-darker;
+  }
+}
+.introjs-skipbutton,
+.introjs-prevbutton {
+  margin-right: 0.5em;
+}
+.introjs-progress {
+  background-color: $color-border;
+}
+.introjs-progressbar {
+  background-color: $color-blue;
 }
