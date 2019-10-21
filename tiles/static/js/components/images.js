@@ -15,9 +15,10 @@ function renderImageConnections(state, image, elTile, elContainer) {
       `conn-${connection}`
     );
     elConnButton.textContent = connection || '\u00b7';
-    elConnButton.addEventListener('click', () =>
-      State.shiftImageConnection(state, image, side)
-    );
+    elConnButton.addEventListener('click', () => {
+      State.shiftImageConnection(state, image, side);
+      renderImages(state, elContainer);
+    });
     elTile.appendChild(elConnButton);
   });
 }
@@ -66,6 +67,7 @@ function renderImages(state, elContainer) {
     const elImageInner = document.createElement('div');
     elImageInner.className = 'image-inner';
     const elTile = Tile.createTileElement({ image, rotation: 0 });
+    elTile.style.backgroundImage = `url('${image.url}')`;
     renderImageConnections(state, image, elTile, elContainer);
     elImageInner.appendChild(elTile);
     const elControls = document.createElement('div');
@@ -95,6 +97,10 @@ export default function Images(state) {
   const elContainer = document.getElementById('js-images');
   State.registerImagesLoadedCallback(state, state =>
     renderImages(state, elContainer)
+  );
+  State.registerImageUpdatedCallback(
+    state,
+    state => renderImages(state, elContainer) // TODO: wasteful
   );
   State.registerImagesChangedCallback(state, state =>
     renderImages(state, elContainer)

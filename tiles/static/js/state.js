@@ -1,3 +1,4 @@
+import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
 import { call } from './utils/func.js';
 import { CONNECTIONS, isImageComplete } from './composition.js';
@@ -55,6 +56,9 @@ export function updateState(state, newState) {
       state[field] = newState[field];
     }
   });
+  state.images.forEach(image => {
+    image.htmlImage = image.url ? HTML.createHtmlImage(image.url) : null;
+  });
   callImagesLoadedCallbacks(state);
   callTilesChangedCallbacks(state);
 }
@@ -98,10 +102,15 @@ export function newImage(state) {
 
 export function changeImage(state, image, url) {
   console.log(`Picked file ${url}`);
+  const oldIsImageComplete = isImageComplete(image);
   const oldUrl = image.url;
   image.url = url;
   if (oldUrl !== url) {
+    image.htmlImage = url ? HTML.createHtmlImage(url) : null;
     callImageUpdatedCallbacks(state, image);
+  }
+  if (oldIsImageComplete !== isImageComplete(image)) {
+    callImagesChangedCallbacks(state);
   }
 }
 

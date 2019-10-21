@@ -1,6 +1,6 @@
 export function createTileElement({ image, rotation }) {
   const el = document.createElement('div');
-  el.classList.add('tile', `img-${image.ref}`, `rot-${rotation}`);
+  el.classList.add('tile', `rot-${rotation}`);
   const elInner = document.createElement('div');
   elInner.classList.add(
     'tile-inner',
