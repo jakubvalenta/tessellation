@@ -15,10 +15,9 @@ function renderImageConnections(state, image, elTile, elContainer) {
       `conn-${connection}`
     );
     elConnButton.textContent = connection || '\u00b7';
-    elConnButton.addEventListener('click', () => {
-      State.shiftImageConnection(state, image, side);
-      renderImages(state, elContainer);
-    });
+    elConnButton.addEventListener('click', () =>
+      State.shiftImageConnection(state, image, side)
+    );
     elTile.appendChild(elConnButton);
   });
 }
@@ -30,7 +29,7 @@ function renderImageFile(state, image, elControls) {
   );
   const name = `image-upload-${image.ref}`;
   const elLabel = document.createElement('label');
-  elLabel.textContent = 'select file';
+  elLabel.textContent = 'upload image';
   elLabel.setAttribute('for', name);
   elLabel.className = 'label-file';
   const elFile = document.createElement('input');
