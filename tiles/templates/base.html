@@ -4,13 +4,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Tiles</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1" />
+    <meta
+      name="description"
+      content="Tiles is a tool to create large compositions from smaller images. The input images are repeated, rotated, and assembled according to specified rules."
+    />
     <link
       href="{% sass_src 'css/main.scss' %}"
       rel="stylesheet"
       type="text/css"
       media="screen"
     />
-    <title>Tiles</title>
   </head>
   <body class="mode-final">
     <noscript>
@@ -22,8 +28,7 @@
     </p>
     <header class="header">
       <div class="header-section header-left">
-        {% block header %}
-        {% endblock %}
+        {% block header %}{% endblock %}
       </div>
       <div class="header-section header-main">
         <h1>Tiles</h1>
@@ -43,23 +48,22 @@
       {% block content %}{% endblock %}
     </main>
     <script>
-      (function () {
+      (function() {
         /*
          * @see https://www.bram.us/2016/10/31/checking-if-a-browser-supports-es6/
          */
         function supportsES6() {
           try {
-            new Function("(a = 0) => a");
+            new Function('(a = 0) => a');
             return true;
-          }
-          catch (err) {
+          } catch (err) {
             return false;
           }
         }
         if (!supportsES6()) {
           document.body.className = 'is-unsupported';
         }
-      }());
+      })();
     </script>
     {% block scripts %}{% endblock %}
   </body>
