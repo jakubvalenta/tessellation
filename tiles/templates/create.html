@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %}{% block header %}first time here?
+<button id="js-intro-start">show intro</button>
+{% endblock %}{% block content %}
 <div class="sections">
   <h2 class="sr-only">Create new composition</h2>
   <div class="section section-input">
@@ -45,7 +46,9 @@
     {% if user.is_authenticated %}
     <p class="storage-status" id="js-published-status"></p>
     <p class="storage-empty" id="js-published-empty">empty</p>
-    <p class="storage-empty" id="js-published-loading" style="display: none">loading</p>
+    <p class="storage-empty" id="js-published-loading" style="display: none">
+      loading
+    </p>
     <table class="storage-list" id="js-published-list"></table>
     {% else %}
     <p class="storage-empty">
@@ -55,9 +58,7 @@
     {% endif %}
   </div>
 </div>
-{% endblock %}
-{% block scripts %}
-{{ data|json_script:'composition-data' }}
+{% endblock %}{% block scripts %}{{ data|json_script:'composition-data' }}
 <script>
   import('/static/js/pages/create.js').then(Page =>
     Page.init(

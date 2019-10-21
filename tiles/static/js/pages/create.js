@@ -2,6 +2,7 @@ import * as State from '../state.js';
 import * as StorageLib from '../storage.js';
 import Composition from '../components/composition.js';
 import Images from '../components/images.js';
+import Intro from '../components/intro.js';
 import Settings from '../components/settings.js';
 import Storage from '../components/storage.js';
 
@@ -11,6 +12,7 @@ export function init(data) {
   Settings(state);
   Storage(state);
   Composition(state);
+  Intro(state);
   const newState = StorageLib.deserializeState(data);
   State.updateState(state, newState);
 }

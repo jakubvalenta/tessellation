@@ -1,5 +1,4 @@
-{% load static %}
-{% load sass_tags %}
+{% load static %}{% load sass_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,6 +12,18 @@
     />
     <link
       href="{% sass_src 'css/main.scss' %}"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="{% static 'node_modules/intro.js/minified/introjs.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+    <link
+      href="{% static 'node_modules/intro.js/themes/introjs-nassim.css' %}"
       rel="stylesheet"
       type="text/css"
       media="screen"
@@ -65,6 +76,7 @@
         }
       })();
     </script>
+    <script src="{% static 'node_modules/intro.js/minified/intro.min.js' %}"></script>
     {% block scripts %}{% endblock %}
   </body>
 </html>
