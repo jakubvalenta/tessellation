@@ -9,10 +9,16 @@
   </div>
   <div class="section section-composition">
     <h2 class="sr-only">Composition</h2>
-    <div class="composition" id="js-composition"></div>
+    <div class="composition" id="js-composition">
+      <div id="js-composition-tiles"></div>
+      <canvas id="js-composition-canvas"></canvas>
+    </div>
     <div class="composition-controls">
       <p class="composition-shuffle">
         <button id="js-shuffle">shuffle</button>
+        <a href="javascript:void(0)" download="composition.png" id="js-download"
+          >download</a
+        >
       </p>
       <form action="javascript:void(0)" class="composition-settings">
         {% csrf_token %}

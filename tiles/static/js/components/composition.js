@@ -1,3 +1,4 @@
+import * as CanvasLib from '../canvas.js';
 import * as CompositionLib from '../composition.js';
 import * as HTML from '../html.js';
 import * as State from '../state.js';
@@ -35,14 +36,69 @@ function renderComposition(composition, elContainer) {
   });
 }
 
+function renderCompositionOnCanvas(
+  elContainer,
+  canvas,
+  composition,
+  width,
+  height,
+  htmlImages
+) {
+  const containerWidth = elContainer.clientWidth;
+  const tileSize = Math.round(containerWidth / width);
+  canvas.width = containerWidth;
+  canvas.height = height * tileSize;
+  var ctx = canvas.getContext('2d');
+  CanvasLib.fillCanvas(canvas, ctx, '#fff');
+  composition.forEach((rowTiles, row) => {
+    rowTiles.forEach((tile, col) => {
+      if (!tile.image.ref) {
+        return;
+      }
+      const htmlImage = htmlImages[tile.image.ref];
+      htmlImage.width = tileSize;
+      htmlImage.height = tileSize;
+      CanvasLib.drawRotatedImage(
+        canvas,
+        ctx,
+        htmlImage,
+        col * tileSize,
+        row * tileSize,
+        -(tile.rotation / 2) * Math.PI
+      );
+    });
+  });
+}
+
+function bindDownloadEvents(canvas) {
+  const elButton = document.getElementById('js-download');
+  elButton.addEventListener(
+    'click',
+    evt => {
+      evt.target.href = CanvasLib.canvasToDataUrl(canvas);
+    },
+    false
+  );
+}
+
 export default function Composition(state) {
   const elContainer = document.getElementById('js-composition');
   const styleSheet = findStyleSheetByTitle('main');
+  const elTiles = document.getElementById('js-composition-tiles');
+  const canvas = document.getElementById('js-composition-canvas');
+  const localState = {
+    htmlImages: {}
+  };
   State.registerImagesLoadedCallback(state, state => {
     setAllImageBackgrounds(state.images, styleSheet);
+    localState.htmlImages = {};
+    state.images.forEach(image => {
+      localState.htmlImages[image.ref] = HTML.createHtmlImage(image.url);
+    });
   });
   State.registerImageUpdatedCallback(state, (state, image) => {
     setImageBackground(image, styleSheet);
+    localState.htmlImages[image.ref] = HTML.createHtmlImage(image.url);
   });
   State.registerImagesChangedCallback(state, state => {
     const newTiles = CompositionLib.generateTiles(state.images);
@@ -53,6 +109,17 @@ export default function Composition(state) {
       state.size.width,
       state.size.height
     ]);
-    renderComposition(composition, elContainer);
+    renderComposition(composition, elTiles);
+    window.setTimeout(() => {
+      renderCompositionOnCanvas(
+        elContainer,
+        canvas,
+        composition,
+        state.size.width,
+        state.size.height,
+        localState.htmlImages
+      );
+    }, 100); // TODO: wait for images
   });
+  bindDownloadEvents(canvas);
 }

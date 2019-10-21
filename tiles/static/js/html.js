@@ -3,3 +3,9 @@ export function clearElement(el) {
     el.removeChild(el.firstChild);
   }
 }
+
+export function createHtmlImage(url) {
+  const htmlImage = new Image();
+  htmlImage.src = url;
+  return htmlImage;
+}

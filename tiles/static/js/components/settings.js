@@ -1,4 +1,5 @@
 import * as State from '../state.js';
+import * as CompositionLib from '../composition.js';
 
 const TEXT_SHOW_CONNECTIONS = 'show connections';
 const TEXT_HIDE_CONNECTIONS = 'hide connections';
