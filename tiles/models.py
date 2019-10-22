@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Callable, List, Optional
 
 from django.contrib.postgres.fields import ArrayField
-from django.db import models
+from django.db import models, transaction
 from django.utils.functional import cached_property
 from django.utils.http import int_to_base36
 
@@ -67,7 +67,7 @@ class Composition(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(
-        'auth.User', related_name='snippets', on_delete=models.CASCADE
+        'auth.User', related_name='compositions', on_delete=models.CASCADE
     )
     width = models.PositiveSmallIntegerField()
     height = models.PositiveSmallIntegerField()
@@ -113,6 +113,11 @@ class Composition(models.Model):
         if not self.slug:
             self.generate_slug()
         super().save(*args, **kwargs)
+
+    @transaction.atomic
+    def delete(self, *args, **kwargs):
+        Image.objects.filter(tiles__compositions__id=self.pk).delete()
+        super().delete(*args, **kwargs)
 
     def __str__(self) -> str:
         return str(self.id)
