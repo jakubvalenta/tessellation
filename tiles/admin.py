@@ -15,4 +15,4 @@ class TileAdmin(admin.ModelAdmin):
 
 @admin.register(Composition)
 class CompositionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'slug', 'created_at')
+    list_display = ('id', 'slug', 'owner', 'public', 'created_at')
