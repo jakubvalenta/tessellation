@@ -24,11 +24,13 @@ class CompositionCreateView(generic.base.TemplateView):
     template_name = 'create.html'
 
     def get_context_data(self) -> dict:
-        oldest_composition = Composition.objects.prefetch_related(
-            'tiles__image'
-        ).last()
+        oldest_sample_composition = (
+            Composition.objects.get_sample_compositions()
+            .prefetch_related('tiles__image')
+            .last()
+        )
         serializer = CompositionSerializer(
-            oldest_composition, context={'request': self.request}
+            oldest_sample_composition, context={'request': self.request}
         )
         return {'data': serializer.data}
 
