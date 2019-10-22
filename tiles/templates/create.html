@@ -1,4 +1,8 @@
-{% extends 'base.html' %}{% block header %}first time here?
+{% extends 'base.html' %}{% load static %}{% block meta %}
+<meta property="og:image" content="{% static 'img/tiles.png' %}" />
+<meta property="og:url" content="{% url 'index' %}" />
+{% endblock %}
+{% block header %}first time here?
 <button id="js-intro-start">show intro</button>
 {% endblock %}{% block content %}
 <div class="sections">
