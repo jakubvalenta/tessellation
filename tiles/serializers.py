@@ -37,6 +37,7 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='detail', lookup_field='slug'
     )
+    name = serializers.CharField(read_only=True)
     size = SizeSerializer()
     images = ImageSerializer(many=True)
     tiles = TileSerializer(many=True)
@@ -48,6 +49,7 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'url',
             'created_at',
+            'name',
             'size',
             'images',
             'tiles',

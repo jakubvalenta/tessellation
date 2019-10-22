@@ -28,5 +28,7 @@
     { "imgRef": "4", "rotation": 0 },
     { "imgRef": "4", "rotation": 2 },
     { "imgRef": "3", "rotation": 0 }
-  ]
+  ],
+  "name": "Minimal",
+  "public": true
 }
