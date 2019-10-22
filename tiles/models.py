@@ -110,7 +110,8 @@ class Composition(models.Model):
         logger.info(f'Generated new slug in {iterations} interations')
 
     def save(self, *args, **kwargs):
-        self.generate_slug()
+        if not self.slug:
+            self.generate_slug()
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
