@@ -73,10 +73,10 @@ function initDraftsForm(state) {
   }
 }
 
-function createPublishedLoadButtonClickHandler(compositionId) {
+function createPublishedLoadButtonClickHandler(compositionId, func) {
   return state => {
     console.log(`Loading published state ${compositionId}`);
-    StorageLib.getPublishedComposition(compositionId).then(data => {
+    func(compositionId).then(data => {
       const newState = StorageLib.deserializeState(data);
       State.updateState(state, newState);
     });
@@ -102,10 +102,10 @@ function createPublishedDeleteButtonClickHandler(compositionId, elStatus) {
   };
 }
 
-function initPublishedItemLoadButton(state, compositionId, elItem) {
+function initPublishedItemLoadButton(state, compositionId, elItem, func) {
   const elButton = document.createElement('button');
   elButton.textContent = 'load';
-  const handler = createPublishedLoadButtonClickHandler(compositionId);
+  const handler = createPublishedLoadButtonClickHandler(compositionId, func);
   elButton.addEventListener('click', () => {
     handler(state);
   });
@@ -147,13 +147,26 @@ function initPublishedItemForm(
   initPublishedItemLoadButton(
     state,
     compositionId,
-    HTML.createTableCell(elRow)
+    HTML.createTableCell(elRow),
+    StorageLib.getPublishedComposition
   );
   initPublishedItemDeleteButton(
     state,
     compositionId,
     HTML.createTableCell(elRow),
     elStatus
+  );
+  elContainer.appendChild(elRow);
+}
+
+function initSamplesItemForm(state, id, compositionId, name, elContainer) {
+  const elRow = document.createElement('tr');
+  HTML.createTableCell(elRow).textContent = id + ' ' + name;
+  initPublishedItemLoadButton(
+    state,
+    compositionId,
+    HTML.createTableCell(elRow),
+    StorageLib.getSampleComposition
   );
   elContainer.appendChild(elRow);
 }
@@ -182,6 +195,25 @@ function initPublishedForm(state, elStatus) {
         composition.public,
         elContainer,
         elStatus
+      )
+    );
+  });
+}
+
+function initSamplesForm(state, elStatus) {
+  const elContainer = document.getElementById('js-samples-list');
+  const elLoading = document.getElementById('js-samples-loading');
+  elLoading.style.display = 'block';
+  StorageLib.getSampleCompositions().then(data => {
+    HTML.clearElement(elContainer);
+    elLoading.style.display = 'none';
+    data.forEach((composition, index) =>
+      initSamplesItemForm(
+        state,
+        data.length - index,
+        composition.id,
+        composition.name,
+        elContainer
       )
     );
   });
@@ -224,4 +256,6 @@ export default function Storage(state) {
     initPublishedForm(state, elStatus);
     bindPublishEvents(state, elStatus);
   }
+
+  initSamplesForm(state, elStatus);
 }

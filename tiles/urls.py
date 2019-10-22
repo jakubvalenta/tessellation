@@ -9,6 +9,7 @@ router = DefaultRouter()
 router.register(
     'api/compositions', views.CompositionAPIViewSet, basename='composition'
 )
+router.register('api/samples', views.SampleAPIViewSet, basename='sample')
 
 urlpatterns = [
     path('', views.CompositionCreateView.as_view(), name='index'),

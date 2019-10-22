@@ -69,7 +69,7 @@ class Composition(models.Model):
     owner = models.ForeignKey(
         'auth.User', related_name='compositions', on_delete=models.CASCADE
     )
-    name = models.CharField(max_length=128, null=True)
+    name = models.CharField(max_length=128, null=True, blank=True)
     width = models.PositiveSmallIntegerField()
     height = models.PositiveSmallIntegerField()
     tiles = models.ManyToManyField(Tile, related_name='compositions')

@@ -55,3 +55,14 @@ class CompositionAPIViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class SampleAPIViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Composition.objects.filter(
+        owner__is_superuser=True, public=True
+    )
+
+    def get_serializer(self, *args, **kwargs):
+        return CompositionSerializer(
+            *args, **kwargs, context={'request': self.request}
+        )

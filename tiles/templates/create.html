@@ -64,6 +64,13 @@
       publish compositions
     </p>
     {% endif %}
+    <div class="storage-header">
+      <h2 class="section-heading">Samples</h2>
+    </div>
+    <p class="storage-empty" id="js-samples-loading" style="display: none">
+      loading
+    </p>
+    <table class="storage-list" id="js-samples-list"></table>
   </div>
 </div>
 {% endblock %}{% block scripts %}{{ data|json_script:'composition-data' }}
