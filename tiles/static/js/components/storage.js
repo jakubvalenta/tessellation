@@ -132,12 +132,14 @@ function initPublishedItemForm(
   id,
   compositionId,
   compositionUrl,
+  name,
   isPublic,
   elContainer,
   elStatus
 ) {
   const elRow = document.createElement('tr');
-  HTML.createTableCell(elRow).textContent = `${id} ${formatDate(date)}`;
+  HTML.createTableCell(elRow).textContent =
+    id + ' ' + (name || formatDate(date));
   const elCellLink = HTML.createTableCell(elRow);
   if (isPublic) {
     elCellLink.appendChild(HTML.createLink(compositionUrl, 'permalink'));
@@ -176,6 +178,7 @@ function initPublishedForm(state, elStatus) {
         data.length - index,
         composition.id,
         composition.url,
+        composition.name,
         composition.public,
         elContainer,
         elStatus
