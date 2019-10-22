@@ -9,7 +9,9 @@ from tiles.serializers import CompositionSerializer
 class CompositionDetailView(generic.DetailView):
     model = Composition
     template_name = 'detail.html'
-    queryset = Composition.objects.prefetch_related('tiles__image')
+    queryset = Composition.objects.filter(public=True).prefetch_related(
+        'tiles__image'
+    )
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
