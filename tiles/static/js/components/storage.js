@@ -6,19 +6,6 @@ import { formatDate } from '../utils/date.js';
 const TEXT_DELETE = 'x';
 const CLASS_BUTTON_SECONDARY = 'button-secondary';
 
-function createTableCell(elRow) {
-  const elCell = document.createElement('td');
-  elRow.appendChild(elCell);
-  return elCell;
-}
-
-function createLink(href, text) {
-  const elLink = document.createElement('a');
-  elLink.href = href;
-  elLink.textContent = text;
-  return elLink;
-}
-
 function createDraftsLoadButtonClickHandler(dataIndex) {
   return state => {
     console.log(`Loading stored state ${dataIndex}`);
@@ -59,9 +46,9 @@ function initDraftsItemDeleteButton(state, dataIndex, elItem) {
 
 function initDraftsItemForm(state, date, id, dataIndex, elContainer) {
   const elRow = document.createElement('tr');
-  createTableCell(elRow).textContent = `${id} ${formatDate(date)}`;
-  initDraftsItemLoadButton(state, dataIndex, createTableCell(elRow));
-  initDraftsItemDeleteButton(state, dataIndex, createTableCell(elRow));
+  HTML.createTableCell(elRow).textContent = `${id} ${formatDate(date)}`;
+  initDraftsItemLoadButton(state, dataIndex, HTML.createTableCell(elRow));
+  initDraftsItemDeleteButton(state, dataIndex, HTML.createTableCell(elRow));
   elContainer.appendChild(elRow);
 }
 
@@ -145,17 +132,25 @@ function initPublishedItemForm(
   id,
   compositionId,
   compositionUrl,
+  isPublic,
   elContainer,
   elStatus
 ) {
   const elRow = document.createElement('tr');
-  createTableCell(elRow).textContent = `${id} ${formatDate(date)}`;
-  createTableCell(elRow).appendChild(createLink(compositionUrl, 'permalink'));
-  initPublishedItemLoadButton(state, compositionId, createTableCell(elRow));
+  HTML.createTableCell(elRow).textContent = `${id} ${formatDate(date)}`;
+  const elCellLink = HTML.createTableCell(elRow);
+  if (isPublic) {
+    elCellLink.appendChild(HTML.createLink(compositionUrl, 'permalink'));
+  }
+  initPublishedItemLoadButton(
+    state,
+    compositionId,
+    HTML.createTableCell(elRow)
+  );
   initPublishedItemDeleteButton(
     state,
     compositionId,
-    createTableCell(elRow),
+    HTML.createTableCell(elRow),
     elStatus
   );
   elContainer.appendChild(elRow);
@@ -181,6 +176,7 @@ function initPublishedForm(state, elStatus) {
         data.length - index,
         composition.id,
         composition.url,
+        composition.public,
         elContainer,
         elStatus
       )

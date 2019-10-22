@@ -41,3 +41,16 @@ export function canvasToDataUrl(canvas) {
 export function setBackgroundImage(el, url) {
   el.style.backgroundImage = `url('${url}')`;
 }
+
+export function createTableCell(elRow) {
+  const elCell = document.createElement('td');
+  elRow.appendChild(elCell);
+  return elCell;
+}
+
+export function createLink(href, text) {
+  const elLink = document.createElement('a');
+  elLink.href = href;
+  elLink.textContent = text;
+  return elLink;
+}
