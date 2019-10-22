@@ -59,6 +59,9 @@ function bindDownloadEvents(canvas) {
 }
 
 export default function Composition(state) {
+  const localState = {
+    composition: null
+  };
   const elContainer = document.getElementById('js-composition-container');
   const canvas = document.getElementById('js-composition-canvas');
   const elOverlay = document.getElementById('js-composition-overlay');
@@ -66,21 +69,34 @@ export default function Composition(state) {
     const newTiles = CompositionLib.generateTiles(state.images);
     State.setTiles(state, newTiles);
   });
+  State.registerImageUpdatedCallback(state, (state, image) => {
+    if (!localState.composition) {
+      console.error(
+        'imageUpdated event happened before any tilesChanged event'
+      );
+      return;
+    }
+    renderCompositionOnCanvas(
+      elContainer,
+      canvas,
+      localState.composition,
+      state.size.width,
+      state.size.height
+    );
+  });
   State.registerTilesChangedCallback(state, state => {
-    const composition = CompositionLib.generateComposition(state.tiles, [
+    localState.composition = CompositionLib.generateComposition(state.tiles, [
       state.size.width,
       state.size.height
     ]);
-    window.setTimeout(() => {
-      renderCompositionOnCanvas(
-        elContainer,
-        canvas,
-        composition,
-        state.size.width,
-        state.size.height
-      );
-      renderCompositionOverlay(composition, elOverlay);
-    }, 100); // TODO: wait for images
+    renderCompositionOnCanvas(
+      elContainer,
+      canvas,
+      localState.composition,
+      state.size.width,
+      state.size.height
+    );
+    renderCompositionOverlay(localState.composition, elOverlay);
   });
   bindDownloadEvents(canvas);
 }

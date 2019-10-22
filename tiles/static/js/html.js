@@ -5,9 +5,17 @@ export function clearElement(el) {
 }
 
 export function createHtmlImage(url) {
-  const htmlImage = new Image();
-  htmlImage.src = url;
-  return htmlImage;
+  return new Promise(resolve => {
+    const htmlImage = new window.Image();
+    htmlImage.addEventListener(
+      'load',
+      () => {
+        resolve(htmlImage);
+      },
+      false
+    );
+    htmlImage.src = url;
+  });
 }
 
 export function fillCanvas(canvas, ctx, color) {
@@ -28,4 +36,8 @@ export function canvasToDataUrl(canvas) {
   const dataUrl = canvas.toDataURL('image/png');
   dataUrl.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
   return dataUrl;
+}
+
+export function setBackgroundImage(el, url) {
+  el.style.backgroundImage = `url('${url}')`;
 }

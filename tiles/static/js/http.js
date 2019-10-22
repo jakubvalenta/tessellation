@@ -37,7 +37,7 @@ export function httpImageData(url) {
     xhr.open('GET', url);
     xhr.responseType = 'blob';
     xhr.onload = () => {
-      var reader = new FileReader();
+      var reader = new window.FileReader();
       reader.addEventListener('load', () => {
         resolve(reader.result);
       });

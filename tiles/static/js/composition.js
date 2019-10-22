@@ -4,7 +4,8 @@ const [LEFT, TOP, RIGHT, BOTTOM] = SIDES;
 
 export function isImageComplete(image) {
   return (
-    image.url && image.connections.every(connection => connection !== null)
+    image.url !== null &&
+    image.connections.every(connection => connection !== null)
   );
 }
 

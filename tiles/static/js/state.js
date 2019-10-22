@@ -50,17 +50,26 @@ function callTilesChangedCallbacks(state) {
   call(state.callbacks.tilesChanged, state);
 }
 
+function loadHtmlImage(image) {
+  if (!image.url) {
+    return Promise.resolve(null);
+  }
+  return HTML.createHtmlImage(image.url).then(htmlImage => {
+    image.htmlImage = htmlImage;
+  });
+}
+
 export function updateState(state, newState) {
   ['size', 'images', 'tiles'].forEach(field => {
     if (newState[field]) {
       state[field] = newState[field];
     }
   });
-  state.images.forEach(image => {
-    image.htmlImage = image.url ? HTML.createHtmlImage(image.url) : null;
+  const promises = state.images.map(loadHtmlImage);
+  Promise.all(promises).then(() => {
+    callImagesLoadedCallbacks(state);
+    callTilesChangedCallbacks(state);
   });
-  callImagesLoadedCallbacks(state);
-  callTilesChangedCallbacks(state);
 }
 
 export function setSize(state, { width, height }) {
@@ -100,18 +109,23 @@ export function newImage(state) {
   });
 }
 
-export function changeImage(state, image, url) {
+export function updateImage(state, image, url) {
   console.log(`Picked file ${url}`);
   const oldIsImageComplete = isImageComplete(image);
   const oldUrl = image.url;
   image.url = url;
-  if (oldUrl !== url) {
-    image.htmlImage = url ? HTML.createHtmlImage(url) : null;
-    callImageUpdatedCallbacks(state, image);
-  }
-  if (oldIsImageComplete !== isImageComplete(image)) {
-    callImagesChangedCallbacks(state);
-  }
+  return new Promise(resolve => {
+    loadHtmlImage(image).then(() => {
+      resolve();
+      const newIsImageComplete = isImageComplete(image);
+      if (newIsImageComplete && oldUrl !== url) {
+        callImageUpdatedCallbacks(state, image);
+      }
+      if (oldIsImageComplete !== isImageComplete(image)) {
+        callImagesChangedCallbacks(state);
+      }
+    });
+  });
 }
 
 export function deleteImage(state, { ref }) {
