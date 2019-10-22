@@ -37,7 +37,7 @@ def load_fixture(fixture_path: Path, user: User):
     if not serializer.is_valid():
         logger.error(serializer.errors)
         return
-    serializer.save(owner=user)
+    serializer.save(owner=user, public=True)
 
 
 class Command(BaseCommand):
