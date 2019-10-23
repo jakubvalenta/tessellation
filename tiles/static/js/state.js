@@ -109,8 +109,9 @@ export function newImage(state) {
   });
 }
 
-export function updateImage(state, image, url) {
+export function updateImage(state, imageCopy, url) {
   console.log(`Picked file ${url}`);
+  const image = findImage(state, imageCopy.ref);
   const oldIsImageComplete = isImageComplete(image);
   const oldUrl = image.url;
   image.url = url;
