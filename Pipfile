@@ -19,6 +19,8 @@ django-debug-toolbar = "*"
 libsass = "*"
 django-compressor = "*"
 django-sass-processor = "*"
+django-cleanup = "*"
+django-unused-media = "*"
 
 [requires]
 python_version = "3.7"

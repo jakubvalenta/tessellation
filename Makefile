@@ -3,7 +3,7 @@ db_name = tiles
 db_user = tiles
 tmp_secret_key_file = /tmp/tiles-secret-key
 
-.PHONY: run run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db test lint tox reformat help
+.PHONY: run run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media test lint tox reformat help
 
 run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
@@ -58,6 +58,9 @@ create-superuser:  ## Create superuser
 
 populate-db:  ## Populate database with fixtures
 	$(MAKE) manage args="populate_db"
+
+cleanup-media:  ## Remove unused media files
+	$(MAKE) manage args="cleanup_unused_media --no-input"
 
 test: | start-postgresql  ## Run unit tests
 	$(MAKE) manage args="test"
