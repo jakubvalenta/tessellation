@@ -83,7 +83,11 @@ function createPublishedLoadButtonClickHandler(compositionId, func) {
   };
 }
 
-function createPublishedDeleteButtonClickHandler(compositionId, elStatus) {
+function createPublishedDeleteButtonClickHandler(
+  localState,
+  compositionId,
+  elStatus
+) {
   return state => {
     console.log(`Deleting published state ${compositionId}`);
     StorageLib.deletePublishedComposition(compositionId).then(
@@ -91,7 +95,7 @@ function createPublishedDeleteButtonClickHandler(compositionId, elStatus) {
         elStatus.textContent = 'Composition was successfully deleted';
         elStatus.classList.remove('error');
         elStatus.classList.add('success');
-        initPublishedForm(state, elStatus);
+        initPublishedForm(state, localState, elStatus);
       },
       () => {
         elStatus.textContent = 'Error while deleting composition';
@@ -112,11 +116,18 @@ function initPublishedItemLoadButton(state, compositionId, elItem, func) {
   elItem.appendChild(elButton);
 }
 
-function initPublishedItemDeleteButton(state, compositionId, elItem, elStatus) {
+function initPublishedItemDeleteButton(
+  state,
+  localState,
+  compositionId,
+  elItem,
+  elStatus
+) {
   const elButton = document.createElement('button');
   elButton.className = CLASS_BUTTON_SECONDARY;
   elButton.textContent = TEXT_DELETE;
   const handler = createPublishedDeleteButtonClickHandler(
+    localState,
     compositionId,
     elStatus
   );
@@ -128,6 +139,7 @@ function initPublishedItemDeleteButton(state, compositionId, elItem, elStatus) {
 
 function initPublishedItemForm(
   state,
+  localState,
   date,
   id,
   compositionId,
@@ -152,6 +164,7 @@ function initPublishedItemForm(
   );
   initPublishedItemDeleteButton(
     state,
+    localState,
     compositionId,
     HTML.createTableCell(elRow),
     elStatus
@@ -171,13 +184,14 @@ function initSamplesItemForm(state, id, compositionId, name, elContainer) {
   elContainer.appendChild(elRow);
 }
 
-function initPublishedForm(state, elStatus) {
+function initPublishedForm(state, localState, elStatus) {
   const elContainer = document.getElementById('js-published-list');
   const elEmpty = document.getElementById('js-published-empty');
   const elLoading = document.getElementById('js-published-loading');
   elEmpty.style.display = 'none';
   elLoading.style.display = 'block';
   StorageLib.getPublishedCompositions().then(data => {
+    localState.publishedCompositions = data;
     HTML.clearElement(elContainer);
     elLoading.style.display = 'none';
     if (!data.length) {
@@ -187,6 +201,7 @@ function initPublishedForm(state, elStatus) {
     data.forEach((composition, index) =>
       initPublishedItemForm(
         state,
+        localState,
         new Date(composition.created_at),
         data.length - index,
         composition.id,
@@ -228,14 +243,50 @@ function bindDraftsEvents(state) {
   });
 }
 
-function bindPublishEvents(state, elStatus) {
+function validateLocalStateBeforePublish(localState) {
+  if (
+    localState.publishedCompositions.length >=
+    StorageLib.MAX_COMPOSITIONS_PER_USER
+  ) {
+    return 'You have reached the maximum number of published compositions. Delete some compositions to be able to publish new ones.';
+  }
+  return null;
+}
+
+function validate(func, elStatus) {
+  const err = func();
+  if (!err) {
+    return true;
+  }
+  elStatus.textContent = err;
+  elStatus.classList.remove('success');
+  elStatus.classList.add('error');
+  return false;
+}
+
+function validateAll(funcs, elStatus) {
+  let i, func;
+  for (let i = 0; i < funcs.length; i++) {
+    func = funcs[i];
+    if (!validate(func, elStatus)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function bindPublishEvents(state, localState, elStatus) {
   const elSubmitButton = document.getElementById('js-published-submit');
   elSubmitButton.addEventListener('click', () => {
-    const validationErr = StorageLib.validateStateBeforePublish(state);
-    if (validationErr) {
-      elStatus.textContent = validationErr;
-      elStatus.classList.remove('success');
-      elStatus.classList.add('error');
+    if (
+      !validateAll(
+        [
+          () => validateLocalStateBeforePublish(localState),
+          () => StorageLib.validateStateBeforePublish(state)
+        ],
+        elStatus
+      )
+    ) {
       return;
     }
     StorageLib.publishState(state)
@@ -243,7 +294,7 @@ function bindPublishEvents(state, elStatus) {
         elStatus.textContent = 'Composition was successfully published';
         elStatus.classList.remove('error');
         elStatus.classList.add('success');
-        initPublishedForm(state, elStatus);
+        initPublishedForm(state, localState, elStatus);
       })
       .catch(err => {
         elStatus.textContent = 'Error while publishing the composition';
@@ -255,13 +306,17 @@ function bindPublishEvents(state, elStatus) {
 }
 
 export default function Storage(state) {
+  const localState = {
+    publishedCompositions: []
+  };
+
   initDraftsForm(state);
   bindDraftsEvents(state);
 
   const elStatus = document.getElementById('js-published-status');
   if (elStatus) {
-    initPublishedForm(state, elStatus);
-    bindPublishEvents(state, elStatus);
+    initPublishedForm(state, localState, elStatus);
+    bindPublishEvents(state, localState, elStatus);
   }
 
   initSamplesForm(state, elStatus);
