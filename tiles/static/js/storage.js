@@ -4,6 +4,9 @@ import { isImageComplete, SIDES } from './composition.js';
 
 const API_URL = '/api';
 
+// Keep in sync with Django setting MAX_UPLOAD_SIZE_BYTES
+const MAX_UPLOAD_SIZE_BYTES = 1000000;
+
 function setStorageObject(obj) {
   window.localStorage.setItem('tiles', JSON.stringify(obj));
 }
@@ -125,6 +128,15 @@ export function readStorageTimestamps() {
       return 0;
     })
     .reverse();
+}
+
+export function validateStateBeforePublish(state) {
+  for (let i = 0; i < state.images.length; i++) {
+    if (state.images[i].url.length > MAX_UPLOAD_SIZE_BYTES) {
+      return `When publishing, the maximum allowed size of a tile image is ${MAX_UPLOAD_SIZE_BYTES} bytes. Please choose a smaller image.`;
+    }
+  }
+  return null;
 }
 
 export function publishState(state) {

@@ -95,4 +95,5 @@ LOGGING = {
     'loggers': {'tiles': {'level': 'INFO', 'handlers': ['console']}},
 }
 
+# Keep in sync with js/storage setting MAX_UPLOAD_SIZE_BYTES
 MAX_UPLOAD_SIZE_BYTES = 1_000_000

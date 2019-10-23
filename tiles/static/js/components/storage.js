@@ -231,6 +231,13 @@ function bindDraftsEvents(state) {
 function bindPublishEvents(state, elStatus) {
   const elSubmitButton = document.getElementById('js-published-submit');
   elSubmitButton.addEventListener('click', () => {
+    const validationErr = StorageLib.validateStateBeforePublish(state);
+    if (validationErr) {
+      elStatus.textContent = validationErr;
+      elStatus.classList.remove('success');
+      elStatus.classList.add('error');
+      return;
+    }
     StorageLib.publishState(state)
       .then(() => {
         elStatus.textContent = 'Composition was successfully published';
