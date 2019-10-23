@@ -100,3 +100,5 @@ MAX_COMPOSITIONS_PER_USER = 10
 
 # Keep in sync with js/storage setting MAX_UPLOAD_SIZE_BYTES
 MAX_UPLOAD_SIZE_BYTES = 1_000_000
+
+CONTACT_EMAIL = 'tiles@mailbox.org'  # TODO

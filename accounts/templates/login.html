@@ -1,5 +1,6 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %}{% load email_extras %}{% block header %}
+<a href="/">back to homepage</a>
+{% endblock %}{% block content %}
 <h3>Login</h3>
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
@@ -16,10 +17,15 @@
       <td>{{ form.password }}</td>
     </tr>
   </table>
-  <input type="submit" value="Login">
-  <input type="hidden" name="next" value="{{ next }}">
+
+  <input type="submit" value="Login" />
+  <input type="hidden" name="next" value="{{ next }}" />
 </form>
+<h4>Create account</h4>
+<p>
+  Please write and email to {{ email|obfuscate_email|safe }} to get an
+  invitation.
+</p>
 {% comment %}
 <p><a href="{% url 'accounts:password_reset' %}">Lost password?</a></p>
-{% endcomment %}
-{% endblock %}
+{% endcomment %}{% endblock %}

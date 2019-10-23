@@ -1,102 +1,99 @@
-{% extends 'base.html' %}{% load static %}{% block meta %}
+{% extends 'base.html' %}{% load static %}{% load email_extras %}{% block meta %}
 <meta property="og:image" content="{% static 'img/tiles.png' %}" />
 <meta property="og:url" content="{% url 'index' %}" />
 {% endblock %} {% block header %}first time here?
 <button id="js-intro-start">show intro</button>
 {% endblock %}{% block content %}
-<main class="main">
-  <div class="sections">
-    <h2 class="sr-only">Create new composition</h2>
-    <div class="section section-input">
-      <h2 class="section-heading">Input</h2>
-      <div class="images" id="js-images"></div>
-    </div>
-    <div class="section section-composition">
-      <h2 class="sr-only">Composition</h2>
-      <div class="composition-container">
-        <div class="composition-inner" id="js-composition-container">
-          <canvas id="js-composition-canvas"></canvas>
-          <div class="composition-overlay" id="js-composition-overlay"></div>
-        </div>
+<div class="sections">
+  <h2 class="sr-only">Create new composition</h2>
+  <div class="section section-input">
+    <h2 class="section-heading">Input</h2>
+    <div class="images" id="js-images"></div>
+  </div>
+  <div class="section section-composition">
+    <h2 class="sr-only">Composition</h2>
+    <div class="composition-container">
+      <div class="composition-inner" id="js-composition-container">
+        <canvas id="js-composition-canvas"></canvas>
+        <div class="composition-overlay" id="js-composition-overlay"></div>
       </div>
-      <div class="composition-controls">
-        <p class="composition-shuffle">
-          <button id="js-shuffle">shuffle</button>
-          <a
-            href="javascript:void(0)"
-            download="composition.png"
-            id="js-download"
-            >download</a
-          >
-        </p>
-        <form action="javascript:void(0)" class="composition-settings">
-          {% csrf_token %}
-          <p>
-            <span class="sr-only">Size:</span>
-            <label for="js-width" class="sr-only">columns</label>
-            <input type="number" id="js-width" min="1" class="input-number" />
-            x
-            <label for="js-height" class="sr-only">rows</label>
-            <input type="number" id="js-height" min="1" class="input-number" />
-          </p>
-        </form>
+    </div>
+    <div class="composition-controls">
+      <p class="composition-shuffle">
+        <button id="js-shuffle">shuffle</button>
+        <a href="javascript:void(0)" download="composition.png" id="js-download"
+          >download</a
+        >
+      </p>
+      <form action="javascript:void(0)" class="composition-settings">
+        {% csrf_token %}
         <p>
-          <button id="js-mode" class="button-secondary">
-            show connections
-          </button>
+          <span class="sr-only">Size:</span>
+          <label for="js-width" class="sr-only">columns</label>
+          <input type="number" id="js-width" min="1" class="input-number" />
+          x
+          <label for="js-height" class="sr-only">rows</label>
+          <input type="number" id="js-height" min="1" class="input-number" />
         </p>
-      </div>
-    </div>
-    <div class="section section-storage">
-      <div class="storage-header">
-        <h2 class="section-heading">Drafts</h2>
-        <button id="js-drafts-save">save draft</button>
-      </div>
-      <p class="storage-empty" id="js-drafts-empty">empty</p>
-      <table class="storage-list" id="js-drafts-list"></table>
-      <div class="storage-header">
-        <h2 class="section-heading">Published</h2>
-        {% if user.is_authenticated %}
-        <button id="js-published-submit">publish</button>
-        {% endif %}
-      </div>
-      {% if user.is_authenticated %}
-      <p class="storage-status" id="js-published-status"></p>
-      <p class="storage-empty" id="js-published-empty">empty</p>
-      <p class="storage-empty" id="js-published-loading" style="display: none">
-        loading
+      </form>
+      <p>
+        <button id="js-mode" class="button-secondary">
+          show connections
+        </button>
       </p>
-      <table class="storage-list" id="js-published-list"></table>
-      {% else %}
-      <p class="storage-empty">
-        <a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a>
-        to publish compositions
-      </p>
-      {% endif %}
-      <div class="storage-header">
-        <h2 class="section-heading">Samples</h2>
-      </div>
-      <p class="storage-empty" id="js-samples-loading" style="display: none">
-        loading
-      </p>
-      <table class="storage-list" id="js-samples-list"></table>
     </div>
   </div>
-  {% endblock %}{% block scripts %}{{ data|json_script:'composition-data' }}
-  <script>
-    import('/static/js/pages/create.js').then(Page =>
-      Page.init(
-        JSON.parse(document.getElementById('composition-data').textContent)
-      )
-    );
-  </script>
-</main>
-<main class="footer">
+  <div class="section section-storage">
+    <div class="storage-header">
+      <h2 class="section-heading">Drafts</h2>
+      <button id="js-drafts-save">save draft</button>
+    </div>
+    <p class="storage-empty" id="js-drafts-empty">empty</p>
+    <table class="storage-list" id="js-drafts-list"></table>
+    <div class="storage-header">
+      <h2 class="section-heading">Published</h2>
+      {% if user.is_authenticated %}
+      <button id="js-published-submit">publish</button>
+      {% endif %}
+    </div>
+    {% if user.is_authenticated %}
+    <p class="storage-status" id="js-published-status"></p>
+    <p class="storage-empty" id="js-published-empty">empty</p>
+    <p class="storage-empty" id="js-published-loading" style="display: none">
+      loading
+    </p>
+    <table class="storage-list" id="js-published-list"></table>
+    {% else %}
+    <p class="storage-empty">
+      <a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a>
+      to publish compositions
+    </p>
+    {% endif %}
+    <div class="storage-header">
+      <h2 class="section-heading">Samples</h2>
+    </div>
+    <p class="storage-empty" id="js-samples-loading" style="display: none">
+      loading
+    </p>
+    <table class="storage-list" id="js-samples-list"></table>
+  </div>
+</div>
+{% endblock %}{% block scripts %}{{ data|json_script:'composition-data' }}
+<script>
+  import('/static/js/pages/create.js').then(Page =>
+    Page.init(
+      JSON.parse(document.getElementById('composition-data').textContent)
+    )
+  );
+</script>
+{% endblock %}{% block footer %}
+<footer class="footer">
   <p>
     created by
     <a href="https://uttarayan.tumblr.com/">Sébastien Mazauric</a> and
     <a href="https://www.jakubvalenta.cz/">Jakub Valenta</a> |
+    {{ email|obfuscate_email|safe }} |
     <a href="https://www.github.com/jakubvalenta/tiles">code</a>
   </p>
-</main>
+</footer>
 {% endblock %}

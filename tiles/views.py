@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.views import generic
 from rest_framework import permissions, viewsets
 
@@ -34,7 +35,7 @@ class CompositionCreateView(generic.base.TemplateView):
         serializer = CompositionSerializer(
             oldest_sample_composition, context={'request': self.request}
         )
-        return {'data': serializer.data}
+        return {'data': serializer.data, 'email': settings.CONTACT_EMAIL}
 
 
 class CompositionAPIViewSet(viewsets.ModelViewSet):

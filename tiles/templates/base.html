@@ -57,7 +57,10 @@
         {% endif %}
       </div>
     </header>
-    {% block content %}{% endblock %}
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+    {% block footer %}{% endblock %}
     <script>
       (function() {
         /*
