@@ -94,3 +94,5 @@ LOGGING = {
     },
     'loggers': {'tiles': {'level': 'INFO', 'handlers': ['console']}},
 }
+
+MAX_UPLOAD_SIZE_BYTES = 1_000_000

@@ -1,5 +1,7 @@
 import logging
 
+from django.conf import settings
+from django.core.files.base import ContentFile
 from django.db import transaction
 from drf_base64.fields import Base64FileField
 from rest_framework import serializers
@@ -9,10 +11,15 @@ from tiles.models import Composition, Image, Tile
 logger = logging.getLogger(__name__)
 
 
+def validate_upload_size(value: ContentFile):
+    if value.size > settings.MAX_UPLOAD_SIZE_BYTES:
+        raise serializers.ValidationError('Maximum upload size exceeded')
+
+
 class ImageSerializer(serializers.ModelSerializer):
     ref = serializers.CharField(source='pk')
     url = serializers.FileField(source='image', read_only=True, use_url=True)
-    data = Base64FileField(write_only=True)
+    data = Base64FileField(write_only=True, validators=[validate_upload_size])
 
     class Meta:
         model = Image
