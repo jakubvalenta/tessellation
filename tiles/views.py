@@ -51,7 +51,9 @@ class CompositionAPIViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if not self.request.user.is_authenticated:
             return Composition.objects.none()
-        return Composition.objects.filter(owner=self.request.user)
+        return Composition.objects.filter(
+            owner=self.request.user
+        ).prefetch_related('tiles__image')
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -60,7 +62,7 @@ class CompositionAPIViewSet(viewsets.ModelViewSet):
 class SampleAPIViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Composition.objects.filter(
         owner__is_superuser=True, public=True
-    )
+    ).prefetch_related('tiles__image')
 
     def get_serializer(self, *args, **kwargs):
         return CompositionSerializer(
