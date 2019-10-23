@@ -1,18 +1,20 @@
 {% extends 'base.html' %}{% block header %}
 <a href="{% url 'index' %}">back to homepage</a>
 {% endblock %}{% block content %}
-<h2 class="sr-only">Composition</h2>
-<div class="composition-container">
-  <div class="composition-inner" id="js-composition-container">
-    <canvas id="js-composition-canvas"></canvas>
-    <div class="composition-overlay" id="js-composition-overlay"></div>
+<main class="main">
+  <h2 class="sr-only">Composition</h2>
+  <div class="composition-container">
+    <div class="composition-inner" id="js-composition-container">
+      <canvas id="js-composition-canvas"></canvas>
+      <div class="composition-overlay" id="js-composition-overlay"></div>
+    </div>
   </div>
-</div>
-<div class="composition-controls">
-  <a href="javascript:void(0)" download="composition.png" id="js-download"
-    >download</a
-  >
-</div>
+  <div class="composition-controls">
+    <a href="javascript:void(0)" download="composition.png" id="js-download"
+      >download</a
+    >
+  </div>
+</main>
 {% endblock %}{% block scripts %}{{ data|json_script:'composition-data' }}
 <script>
   import('/static/js/pages/detail.js').then(Page =>

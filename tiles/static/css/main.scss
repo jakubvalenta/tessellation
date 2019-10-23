@@ -30,12 +30,18 @@ $font-family: 'Droid Sans Mono', monospace;
   font-style: normal;
 }
 
+html,
+body {
+  height: 100%;
+}
 body {
   font-family: $font-family;
   font-size: 9/12 * 100%;
   line-height: 1.5;
   color: $color-text;
   background: $color-background;
+  display: flex;
+  flex-direction: column;
   margin: 0;
 }
 
@@ -143,11 +149,15 @@ button,
   color: $color-red;
 }
 
+.header,
+.main,
+.footer {
+  padding: 1em 2em;
+}
 .header {
   @extend %clearfix !optional;
 
   display: flex;
-  padding: 1em 2em;
   text-transform: lowercase;
   white-space: nowrap;
 
@@ -193,7 +203,7 @@ button,
 }
 
 .main {
-  padding: 1em 2em;
+  flex-grow: 1;
 }
 @media screen and (min-width: 800px) {
   .sections {
@@ -470,6 +480,14 @@ button,
   }
   button {
     margin: 0.1em 0;
+  }
+}
+
+.footer {
+  text-align: right;
+
+  p {
+    margin: 0;
   }
 }
 

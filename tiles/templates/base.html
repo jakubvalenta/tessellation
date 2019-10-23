@@ -11,7 +11,10 @@
       content="Tiles is a tool to create large compositions from smaller images. The input images are repeated, rotated, and assembled according to specified rules."
     />
     <meta property="og:title" content="Tiles" />
-    <meta property="og:description" content="Tiles is a tool to create large compositions from smaller images. The input images are repeated, rotated, and assembled according to specified rules." />
+    <meta
+      property="og:description"
+      content="Tiles is a tool to create large compositions from smaller images. The input images are repeated, rotated, and assembled according to specified rules."
+    />
     <meta name="twitter:card" content="summary_large_image" />
     {% block meta %}{% endblock %}
     <link
@@ -54,9 +57,7 @@
         {% endif %}
       </div>
     </header>
-    <main class="main">
-      {% block content %}{% endblock %}
-    </main>
+    {% block content %}{% endblock %}
     <script>
       (function() {
         /*
