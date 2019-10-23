@@ -2,7 +2,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).absolute().parents[1]
 
-ALLOWED_HOSTS = ['*']
 INTERNAL_IPS = ['127.0.0.1']
 
 INSTALLED_APPS = [

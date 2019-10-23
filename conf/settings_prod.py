@@ -4,6 +4,7 @@ from pathlib import Path
 from conf.settings_base import *  # noqa: F401, F403
 from conf.settings_base import DATABASES, TEMPLATES
 
+ALLOWED_HOSTS = [os.environ['ALLOWED_HOST']]
 DEBUG = os.environ.get('DEBUG', False)
 SECRET_KEY = (
     Path(os.environ.get('SECRET_KEY_FILE', '/run/keys/tiles-secret-key'))
