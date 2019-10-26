@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% load static %}{% load email_extras %}{% block meta %}
-<meta property="og:image" content="{% static 'img/tiles.png' %}" />
+<meta property="og:image" content="{% static 'img/tessellation.png' %}" />
 <meta property="og:url" content="{% url 'index' %}" />
 {% endblock %} {% block header %}first time here?
 <button id="js-intro-start">show intro</button>
@@ -93,7 +93,7 @@
     <a href="https://uttarayan.tumblr.com/">Sébastien Mazauric</a> and
     <a href="https://www.jakubvalenta.cz/">Jakub Valenta</a> |
     {{ email|obfuscate_email|safe }} |
-    <a href="https://www.github.com/jakubvalenta/tiles">code</a>
+    <a href="https://www.github.com/jakubvalenta/tessellation">code</a>
   </p>
 </footer>
 {% endblock %}

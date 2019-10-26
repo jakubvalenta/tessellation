@@ -5,7 +5,7 @@ import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
 
-import tiles.models
+import tessellation.models
 
 
 class Migration(migrations.Migration):
@@ -31,7 +31,8 @@ class Migration(migrations.Migration):
                 (
                     'image',
                     models.FileField(
-                        unique=True, upload_to=tiles.models.image_upload_to
+                        unique=True,
+                        upload_to=tessellation.models.image_upload_to,
                     ),
                 ),
                 (
@@ -62,7 +63,7 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name='tiles',
-                        to='tiles.Image',
+                        to='tessellation.Image',
                     ),
                 ),
             ],
@@ -94,7 +95,7 @@ class Migration(migrations.Migration):
                 (
                     'tiles',
                     models.ManyToManyField(
-                        related_name='compositions', to='tiles.Tile'
+                        related_name='compositions', to='tessellation.Tile'
                     ),
                 ),
             ],

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from tiles.models import Composition, Image, Tile
+from tessellation.models import Composition, Image, Tile
 
 
 @admin.register(Image)

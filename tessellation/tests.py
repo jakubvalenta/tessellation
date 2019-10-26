@@ -1,7 +1,7 @@
 from ddt import data, ddt, unpack
 from django.test import TestCase
 
-from tiles.models import find_shortest_str
+from tessellation.models import find_shortest_str
 
 
 @ddt

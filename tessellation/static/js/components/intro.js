@@ -26,7 +26,7 @@ function addStaticIntro() {
   );
   addIntro(
     document.querySelector('#js-drafts-save'),
-    'You can save the generated composition to your device using this button. Note that when you open Tiles on a second device, you will not see the compositions you saved on the first device.'
+    'You can save the generated composition to your device using this button. Note that when you open Tessellation on a second device, you will not see the compositions you saved on the first device.'
   );
 }
 

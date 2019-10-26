@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import permissions
 
-from tiles.models import Composition
+from tessellation.models import Composition
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):

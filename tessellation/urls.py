@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from tiles import views
+from tessellation import views
 
 router = DefaultRouter()
 router.register(

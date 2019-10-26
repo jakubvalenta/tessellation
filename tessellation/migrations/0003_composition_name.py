@@ -3,7 +3,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [('tiles', '0002_composition_public')]
+    dependencies = [('tessellation', '0002_composition_public')]
 
     operations = [
         migrations.AddField(

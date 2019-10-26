@@ -2,9 +2,9 @@ from django.conf import settings
 from django.views import generic
 from rest_framework import permissions, viewsets
 
-from tiles.models import Composition
-from tiles.permissions import IsOwnerOrReadOnly
-from tiles.serializers import CompositionSerializer
+from tessellation.models import Composition
+from tessellation.permissions import IsOwnerOrReadOnly
+from tessellation.serializers import CompositionSerializer
 
 
 class CompositionDetailView(generic.DetailView):

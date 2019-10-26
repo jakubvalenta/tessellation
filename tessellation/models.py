@@ -8,7 +8,7 @@ from django.db import models, transaction
 from django.utils.functional import cached_property
 from django.utils.http import int_to_base36
 
-from tiles.managers import CompositionManager
+from tessellation.managers import CompositionManager
 
 logger = logging.getLogger(__name__)
 

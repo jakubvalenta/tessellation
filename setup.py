@@ -2,14 +2,14 @@ from pathlib import Path
 
 from setuptools import find_packages, setup
 
-from tiles import __title__
+from tessellation import __title__
 
 setup(
-    name='tiles',
+    name='tessellation',
     version='0.1.3',
     description=__title__,
     long_description=(Path(__file__).parent / 'README.md').read_text(),
-    url='https://lab.saloun.cz/jakub/tiles2',
+    url='https://www.github.com/jakubvalenta/tessellation',
     author='Jakub Valenta',
     author_email='jakub@jakubvalenta.cz',
     license='Apache Software License',

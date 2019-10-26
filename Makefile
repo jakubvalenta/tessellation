@@ -1,7 +1,7 @@
-_python_pkg = tiles
-db_name = tiles
-db_user = tiles
-tmp_secret_key_file = /tmp/tiles-secret-key
+_python_pkg = tessellation
+db_name = tessellation
+db_user = tessellation
+tmp_secret_key_file = /tmp/tessellation-secret-key
 
 .PHONY: run run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media test lint tox reformat help
 

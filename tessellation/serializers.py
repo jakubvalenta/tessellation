@@ -6,7 +6,7 @@ from django.db import transaction
 from drf_base64.fields import Base64FileField
 from rest_framework import serializers
 
-from tiles.models import Composition, Image, Tile
+from tessellation.models import Composition, Image, Tile
 
 logger = logging.getLogger(__name__)
 

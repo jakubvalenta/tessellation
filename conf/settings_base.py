@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     'django_unused_media',
     'sass_processor',
     'accounts',
-    'tiles',
+    'tessellation',
     'django_cleanup.apps.CleanupConfig',
 ]
 
@@ -51,8 +51,8 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tiles',
-        'USER': 'tiles',
+        'NAME': 'tessellation',
+        'USER': 'tessellation',
     }
 }
 
@@ -93,7 +93,7 @@ LOGGING = {
     'handlers': {
         'console': {'level': 'INFO', 'class': 'logging.StreamHandler'}
     },
-    'loggers': {'tiles': {'level': 'INFO', 'handlers': ['console']}},
+    'loggers': {'tessellation': {'level': 'INFO', 'handlers': ['console']}},
 }
 
 MAX_COMPOSITIONS_PER_USER = 10
@@ -101,4 +101,4 @@ MAX_COMPOSITIONS_PER_USER = 10
 # Keep in sync with js/storage setting MAX_UPLOAD_SIZE_BYTES
 MAX_UPLOAD_SIZE_BYTES = 1_000_000
 
-CONTACT_EMAIL = 'tiles@mailbox.org'  # TODO
+CONTACT_EMAIL = 'tessellation@mailbox.org'

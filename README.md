@@ -1,9 +1,9 @@
-# Tiles
+# Tessellation
 
-Tiles is a tool to create large compositions from smaller images. The input
-images are repeated, rotated, and assembled according to specified rules.
+Tessellation is a tool to create large compositions from smaller images. The
+input images are repeated, rotated, and assembled according to specified rules.
 
-![Tiles](./tiles/static/img/tiles.png)
+![Tessellation](./tessellation/static/img/tessellation.png)
 
 ## Installation
 
