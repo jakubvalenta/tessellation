@@ -4,17 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Tessellation</title>
+    <title>{% if heading %}{{ heading }} | {% endif %}{{ title }}</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1" />
-    <meta
-      name="description"
-      content="Tessellation is a tool to create large compositions from smaller images. The input images are repeated, rotated, and assembled according to specified rules."
-    />
-    <meta property="og:title" content="Tessellation" />
-    <meta
-      property="og:description"
-      content="Tessellation is a tool to create large compositions from smaller images. The input images are repeated, rotated, and assembled according to specified rules."
-    />
+    <meta name="description" content="{{ description }}" />
+    <meta property="og:title" content="{% if heading %}{{ heading }}{% else %}{{ title }}{% endif %}" />
+    <meta property="og:description" content="{{ description }}" />
     <meta name="twitter:card" content="summary_large_image" />
     {% block meta %}{% endblock %}
     <link
@@ -41,7 +35,7 @@
     </p>
     <header class="header">
       <div class="header-section header-heading">
-        <h1>Tessellation</h1>
+        <h1>{% if heading %}{{ heading }}{% else %}{{ title }}{% endif %}</h1>
       </div>
       <div class="header-section header-nav">
         <span>
@@ -52,11 +46,15 @@
         <span>
           {% if user.is_authenticated %} Logged in as
           <a href="{% url 'accounts:profile' %}">{{ user.username }}</a> /
-          <a href="{% url 'accounts:logout' %}?next={{ request.path }}">logout</a>
+          <a href="{% url 'accounts:logout' %}?next={{ request.path }}"
+            >logout</a
+          >
           {% if user.is_staff %} /
           <a href="{% url 'admin:index' %}">go to Django Admin</a>
           {% endif %} {% else %}
-          <a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a>
+          <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+            >log in</a
+          >
           {% endif %}
         </span>
       </div>

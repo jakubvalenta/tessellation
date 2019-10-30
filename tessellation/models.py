@@ -120,5 +120,10 @@ class Composition(models.Model):
         Image.objects.filter(tiles__compositions__id=self.pk).delete()
         super().delete(*args, **kwargs)
 
+    @property
+    def title(self) -> str:
+        name = f'{self.name} / ' if self.name else ''
+        return f'Composition {name}{self.slug}'
+
     def __str__(self) -> str:
         return str(self.id)

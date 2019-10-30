@@ -2,9 +2,20 @@ from django.conf import settings
 from django.views import generic
 from rest_framework import permissions, viewsets
 
+from tessellation import __description__, __title__
 from tessellation.models import Composition
 from tessellation.permissions import IsOwnerOrReadOnly
 from tessellation.serializers import CompositionSerializer
+
+
+def add_basic_context(context: dict):
+    context.update(
+        {
+            'title': __title__,
+            'description': __description__,
+            'email': settings.CONTACT_EMAIL,
+        }
+    )
 
 
 class CompositionDetailView(generic.DetailView):
@@ -16,9 +27,11 @@ class CompositionDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
+        add_basic_context(context)
         serializer = CompositionSerializer(
             self.object, context={'request': self.request}
         )
+        context['heading'] = self.object.title
         context['data'] = serializer.data
         return context
 
@@ -27,6 +40,8 @@ class CompositionCreateView(generic.base.TemplateView):
     template_name = 'create.html'
 
     def get_context_data(self) -> dict:
+        context = {}
+        add_basic_context(context)
         oldest_sample_composition = (
             Composition.objects.get_sample_compositions()
             .prefetch_related('tiles__image')
@@ -35,7 +50,8 @@ class CompositionCreateView(generic.base.TemplateView):
         serializer = CompositionSerializer(
             oldest_sample_composition, context={'request': self.request}
         )
-        return {'data': serializer.data, 'email': settings.CONTACT_EMAIL}
+        context['data'] = serializer.data
+        return context
 
 
 class CompositionAPIViewSet(viewsets.ModelViewSet):
