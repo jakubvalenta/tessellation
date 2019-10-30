@@ -93,5 +93,5 @@ make help
 
 ## Contributing
 
-__Feel free to remix this project__ under the terms of the [Apache License,
-Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+__Feel free to remix this project__ under the terms of the GNU General Public
+License version 3 or later. See [COPYING](./COPYING) and [NOTICE](./NOTICE).
