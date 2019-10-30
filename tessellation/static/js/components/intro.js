@@ -38,7 +38,7 @@ function addImagesIntro() {
   addIntro(
     document.querySelector('.image:nth-child(2) .conn-button-2') ||
       document.querySelector('.image:nth-child(1) .conn-button-2'),
-    'Click these buttons to specify how the tiles connect. In the resulting composition, a pink side of one tile must always be placed next to a pink side of a another tile, same for the green sides etc.'
+    'Click these buttons to specify how the tiles connect. In the resulting composition, a pink edge of one tile must always be placed next to a pink edge of a another tile, same for the green edges etc.'
   );
 }
 
