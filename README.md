@@ -1,7 +1,12 @@
 # Tessellation
 
-Tessellation is a tool to create large compositions from smaller images. The
-input images are repeated, rotated, and assembled according to specified rules.
+Tessellation is a tool to arrange tiles (several small images) into one large
+composition.
+
+Tessellation takes the input images and then repeats, rotates and arranges them
+in such a way that their matching edges appear side by side. The resulting
+composition is diverse yet smooth. This is similar to the [Wang tiles
+problem](https://en.wikipedia.org/wiki/Wang_tile).
 
 ![Tessellation](./tessellation/static/img/tessellation.png)
 
