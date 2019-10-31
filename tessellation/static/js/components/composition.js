@@ -2,7 +2,22 @@ import * as CompositionLib from '../composition.js';
 import * as HTML from '../html.js';
 import * as State from '../state.js';
 import * as Tile from './tile.js';
-import { error } from '../log.js';
+import { error, log } from '../log.js';
+
+const MAX_NATURAL_TILE_SIZE = 500;
+
+function getNaturalFirstImageWidth(images) {
+  if (images) {
+    let i, image;
+    for (i = 0; i < images.length; i++) {
+      image = images[i];
+      if (image.htmlImage) {
+        return Math.min(image.htmlImage.naturalWidth, MAX_NATURAL_TILE_SIZE);
+      }
+    }
+  }
+  return null;
+}
 
 function renderCompositionOverlay(composition, elOverlay, tileSize) {
   HTML.clearElement(elOverlay);
@@ -27,7 +42,7 @@ function calcTileSize(composition, canvas, elContainer) {
 
 function renderCompositionOnCanvas(composition, canvas, tileSize) {
   const ctx = canvas.getContext('2d');
-  if (!composition) {
+  if (!composition || !composition.length) {
     HTML.fillCanvas(canvas, ctx, '#fff');
     return;
   }
@@ -60,9 +75,13 @@ function bindDownloadEvents(localState) {
   elButton.addEventListener(
     'click',
     evt => {
+      const { composition, naturalTileSize } = localState;
+      if (!composition || !composition.length || !naturalTileSize) {
+        return;
+      }
       const canvas = document.createElement('canvas');
-      const tileSize = 200; // TODO
-      renderCompositionOnCanvas(localState.composition, canvas, tileSize);
+      log(`Rendering composition to download, tileSize=${naturalTileSize}`);
+      renderCompositionOnCanvas(composition, canvas, naturalTileSize);
       evt.target.href = HTML.canvasToDataUrl(canvas);
     },
     false
@@ -71,7 +90,8 @@ function bindDownloadEvents(localState) {
 
 export default function Composition(state) {
   const localState = {
-    composition: null
+    composition: null,
+    naturalFirstTileWidth: null
   };
   const elContainer = document.getElementById('js-composition-container');
   const canvas = document.getElementById('js-composition-canvas');
@@ -93,6 +113,7 @@ export default function Composition(state) {
       state.size.width,
       state.size.height
     ]);
+    localState.naturalTileSize = getNaturalFirstImageWidth(state.images);
     const tileSize = calcTileSize(localState.composition, canvas, elContainer);
     renderCompositionOnCanvas(localState.composition, canvas, tileSize);
     renderCompositionOverlay(localState.composition, elOverlay);
