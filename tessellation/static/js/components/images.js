@@ -63,7 +63,9 @@ function renderImage(elContainer, state, image) {
   const elImageInner = document.createElement('div');
   elImageInner.className = 'image-inner';
   const elTile = Tile.createTileElement({ image, rotation: 0 });
-  HTML.setBackgroundImage(elTile, image.url);
+  if (image.url) {
+    HTML.setBackgroundImage(elTile, image.url);
+  }
   renderImageConnections(state, image, elTile, elContainer);
   elImageInner.appendChild(elTile);
   const elControls = document.createElement('div');
@@ -74,6 +76,7 @@ function renderImage(elContainer, state, image) {
   elButtonDelete.textContent = TEXT_DELETE;
   elButtonDelete.addEventListener('click', () => {
     State.deleteImage(state, image);
+    // TODO: Reindex rendered images
     elContainer.removeChild(elImage);
   });
   elControls.appendChild(elButtonDelete);

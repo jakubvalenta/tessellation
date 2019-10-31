@@ -14,6 +14,7 @@ export function createHtmlImage(url) {
       },
       false
     );
+    // TODO: Error message when failed to load.
     htmlImage.src = url;
   });
 }
