@@ -265,9 +265,36 @@ button,
 }
 .composition-inner {
   position: relative;
+}
+.composition {
+  width: 100%;
+}
+.composition-error {
+  display: none;
 
-  canvas {
+  &:before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+  .alert-error {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.error {
+  .composition {
+    display: none;
+  }
+  .composition-error {
+    display: block;
   }
 }
 .composition-overlay {

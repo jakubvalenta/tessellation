@@ -3,6 +3,7 @@ import { log } from './log.js';
 export const SIDES = [0, 1, 2, 3];
 export const CONNECTIONS = [1, 2, 3, 4, 5];
 const [LEFT, TOP, RIGHT, BOTTOM] = SIDES;
+const MAX_TILES_TRIED = Math.pow(10, 4);
 
 export function isImageComplete(image) {
   return (
@@ -109,7 +110,7 @@ export function generateComposition(tiles, [width, height]) {
     col = 0,
     tile,
     i = 0;
-  for (i = 0; i < 1000; i++) {
+  for (i = 0; i < MAX_TILES_TRIED; i++) {
     log(`Choosing tile [${row}, ${col}]`);
     tile = chooseTile(
       stack,

@@ -115,8 +115,11 @@ export default function Composition(state) {
     ]);
     if (!localState.composition) {
       error('Failed to create a composition from these tiles');
+      elContainer.classList.add('error');
+      HTML.clearElement(elOverlay);
       return;
     }
+    elContainer.classList.remove('error');
     localState.naturalTileSize = getNaturalFirstImageWidth(state.images);
     const tileSize = calcTileSize(localState.composition, canvas, elContainer);
     renderCompositionOnCanvas(localState.composition, canvas, tileSize);
