@@ -1,24 +1,14 @@
+import { log } from './log.js';
+
 export const SIDES = [0, 1, 2, 3];
 export const CONNECTIONS = [1, 2, 3, 4, 5];
 const [LEFT, TOP, RIGHT, BOTTOM] = SIDES;
-import { log } from './log.js';
 
 export function isImageComplete(image) {
   return (
     image.url !== null &&
     image.connections.every(connection => connection !== null)
   );
-}
-
-function createEmptyTile() {
-  return {
-    image: {
-      i: null,
-      ref: 'none',
-      connections: SIDES.map(() => 0)
-    },
-    rotation: 0
-  };
 }
 
 export function generateTiles(images) {
@@ -51,6 +41,26 @@ function findTopTile(composition, col, row) {
   return composition[row - 1][col];
 }
 
+function calcPrevCoords(row, col, width) {
+  if (col === 0) {
+    if (row === 0) {
+      return [null, null];
+    }
+    return [row - 1, width - 1];
+  }
+  return [row, col - 1];
+}
+
+function calcNextCoords(row, col, width, height) {
+  if (col === width - 1) {
+    if (row === height - 1) {
+      return [null, null];
+    }
+    return [row + 1, 0];
+  }
+  return [row, col + 1];
+}
+
 function getConnection(tile, i) {
   return tile.image.connections[(i + tile.rotation) % SIDES.length];
 }
@@ -58,19 +68,15 @@ function getConnection(tile, i) {
 function findRequirements(composition, col, row) {
   const leftTile = findLeftTile(composition, col, row);
   const topTile = findTopTile(composition, col, row);
-  log('Left tile', leftTile);
-  log('Top tile', topTile);
   const requirements = [
     [LEFT, leftTile ? getConnection(leftTile, RIGHT) : null],
     [TOP, topTile ? getConnection(topTile, BOTTOM) : null]
   ];
-  log('Tile requirements', requirements);
   return requirements;
 }
 
 function fits(tile, requirements) {
   let i, side, requirement;
-  log(`Trying if tile fits`, tile);
   for (i = 0; i < requirements.length; i++) {
     [side, requirement] = requirements[i];
     if (requirement !== null && getConnection(tile, side) !== requirement) {
@@ -80,11 +86,11 @@ function fits(tile, requirements) {
   return true;
 }
 
-function chooseTile(stack, requirements) {
+function chooseTile(stack, requirements, excl = []) {
   let i, tile;
   for (i = 0; i < stack.length; i++) {
     tile = stack[i];
-    if (fits(tile, requirements)) {
+    if (excl.indexOf(tile) === -1 && fits(tile, requirements)) {
       stack.splice(i, 1);
       stack.push(tile);
       return tile;
@@ -95,27 +101,34 @@ function chooseTile(stack, requirements) {
 
 export function generateComposition(tiles, [width, height]) {
   const composition = Array.from(Array(height), () => new Array(width));
+  const tried = Array.from(Array(height), () =>
+    Array.from(Array(width), () => [])
+  );
   const stack = Array.from(tiles);
-  let row, col, tile;
-  let stop = false;
-  for (row = 0; row < height; row++) {
-    for (col = 0; col < width; col++) {
-      log(`Choosing tile for position ${row} ${col}`);
-      tile = chooseTile(stack, findRequirements(composition, col, row));
-      if (tile !== null) {
-        log('Inserting tile on position', tile, row, col);
-        composition[row][col] = tile;
-      } else {
-        log('No fitting tile found, stopping composition generation');
-        stop = true;
+  let row = 0,
+    col = 0,
+    tile,
+    i = 0;
+  for (i = 0; i < 1000; i++) {
+    log(`Choosing tile [${row}, ${col}]`);
+    tile = chooseTile(
+      stack,
+      findRequirements(composition, col, row),
+      tried[row][col]
+    );
+    tried[row][col].push(tile);
+    if (tile !== null) {
+      composition[row][col] = tile;
+      [row, col] = calcNextCoords(row, col, width, height);
+      if (row === null) {
+        return composition;
       }
-      if (stop) {
-        composition[row][col] = createEmptyTile();
+    } else {
+      log('No fitting tile found, going one step back');
+      [row, col] = calcPrevCoords(row, col, width, height);
+      if (row === null) {
+        return null;
       }
-    }
-    if (stop) {
-      return composition;
     }
   }
-  return composition;
 }

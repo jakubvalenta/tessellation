@@ -113,6 +113,10 @@ export default function Composition(state) {
       state.size.width,
       state.size.height
     ]);
+    if (!localState.composition) {
+      error('Failed to create a composition from these tiles');
+      return;
+    }
     localState.naturalTileSize = getNaturalFirstImageWidth(state.images);
     const tileSize = calcTileSize(localState.composition, canvas, elContainer);
     renderCompositionOnCanvas(localState.composition, canvas, tileSize);
