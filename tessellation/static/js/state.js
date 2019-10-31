@@ -2,6 +2,7 @@ import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
 import { call } from './utils/func.js';
 import { CONNECTIONS, isImageComplete } from './composition.js';
+import { log } from './log.js';
 import { shuffle } from './utils/array.js';
 
 export function initState() {
@@ -100,7 +101,7 @@ export function findImage(state, ref) {
 
 export function newImage(state) {
   const ref = uuidv4();
-  console.log(`Adding new image ${ref}`);
+  log(`Adding new image ${ref}`);
   state.images.push({
     index: state.images.length,
     ref,
@@ -110,7 +111,7 @@ export function newImage(state) {
 }
 
 export function updateImage(state, imageCopy, url) {
-  console.log(`Picked file ${url}`);
+  log(`Picked file ${url}`);
   const image = findImage(state, imageCopy.ref);
   const oldIsImageComplete = isImageComplete(image);
   const oldUrl = image.url;
@@ -130,7 +131,7 @@ export function updateImage(state, imageCopy, url) {
 }
 
 export function deleteImage(state, { ref }) {
-  console.log(`Deleting image ${ref}`);
+  log(`Deleting image ${ref}`);
   const image = findImage(state, ref);
   state.images.splice(image.index, 1);
   state.images = state.images.map((image, i) => {

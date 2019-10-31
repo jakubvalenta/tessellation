@@ -1,6 +1,7 @@
 import * as HTTP from './http.js';
 import * as State from './state.js';
 import { isImageComplete, SIDES } from './composition.js';
+import { log } from './log.js';
 
 const API_URL = '/api';
 
@@ -142,7 +143,7 @@ export function validateStateBeforePublish(state) {
 }
 
 export function publishState(state) {
-  console.log('Publishing the state');
+  log('Publishing the state');
   const data = serializeState(state);
   const promises = data.images.map(image => {
     return HTTP.httpImageData(image.url).then(data => {

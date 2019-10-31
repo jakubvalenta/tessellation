@@ -1,3 +1,4 @@
+import { error, log } from '../log.js';
 import * as HTML from '../html.js';
 import * as State from '../state.js';
 import * as StorageLib from '../storage.js';
@@ -8,7 +9,7 @@ const CLASS_BUTTON_SECONDARY = 'button-secondary';
 
 function createDraftsLoadButtonClickHandler(dataIndex) {
   return state => {
-    console.log(`Loading stored state ${dataIndex}`);
+    log(`Loading stored state ${dataIndex}`);
     const data = StorageLib.getStorageItem(dataIndex);
     const newState = StorageLib.deserializeState(data);
     State.updateState(state, newState);
@@ -17,7 +18,7 @@ function createDraftsLoadButtonClickHandler(dataIndex) {
 
 function createDraftsDeleteButtonClickHandler(dataIndex) {
   return state => {
-    console.log(`Deleting stored state ${dataIndex}`);
+    log(`Deleting stored state ${dataIndex}`);
     StorageLib.deleteStorageItem(dataIndex);
     initDraftsForm(state);
   };
@@ -75,7 +76,7 @@ function initDraftsForm(state) {
 
 function createPublishedLoadButtonClickHandler(compositionId, func) {
   return state => {
-    console.log(`Loading published state ${compositionId}`);
+    log(`Loading published state ${compositionId}`);
     func(compositionId).then(data => {
       const newState = StorageLib.deserializeState(data);
       State.updateState(state, newState);
@@ -89,7 +90,7 @@ function createPublishedDeleteButtonClickHandler(
   elStatus
 ) {
   return state => {
-    console.log(`Deleting published state ${compositionId}`);
+    log(`Deleting published state ${compositionId}`);
     StorageLib.deletePublishedComposition(compositionId).then(
       () => {
         elStatus.textContent = 'Composition was successfully deleted';
@@ -237,7 +238,7 @@ function initSamplesForm(state, elStatus) {
 function bindDraftsEvents(state) {
   const elButton = document.getElementById('js-drafts-save');
   elButton.addEventListener('click', () => {
-    console.log('Saving the state');
+    log('Saving the state');
     StorageLib.storeState(state);
     initDraftsForm(state);
   });
@@ -300,7 +301,7 @@ function bindPublishEvents(state, localState, elStatus) {
         elStatus.textContent = 'Error while publishing the composition';
         elStatus.classList.remove('success');
         elStatus.classList.add('error');
-        console.error(err);
+        error(err);
       });
   });
 }

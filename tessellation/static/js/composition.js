@@ -1,6 +1,7 @@
 export const SIDES = [0, 1, 2, 3];
 export const CONNECTIONS = [1, 2, 3, 4, 5];
 const [LEFT, TOP, RIGHT, BOTTOM] = SIDES;
+import { log } from './log.js';
 
 export function isImageComplete(image) {
   return (
@@ -57,19 +58,19 @@ function getConnection(tile, i) {
 function findRequirements(composition, col, row) {
   const leftTile = findLeftTile(composition, col, row);
   const topTile = findTopTile(composition, col, row);
-  console.log('Left tile', leftTile);
-  console.log('Top tile', topTile);
+  log('Left tile', leftTile);
+  log('Top tile', topTile);
   const requirements = [
     [LEFT, leftTile ? getConnection(leftTile, RIGHT) : null],
     [TOP, topTile ? getConnection(topTile, BOTTOM) : null]
   ];
-  console.log('Tile requirements', requirements);
+  log('Tile requirements', requirements);
   return requirements;
 }
 
 function fits(tile, requirements) {
   let i, side, requirement;
-  console.log(`Trying if tile fits`, tile);
+  log(`Trying if tile fits`, tile);
   for (i = 0; i < requirements.length; i++) {
     [side, requirement] = requirements[i];
     if (requirement !== null && getConnection(tile, side) !== requirement) {
@@ -99,13 +100,13 @@ export function generateComposition(tiles, [width, height]) {
   let stop = false;
   for (row = 0; row < height; row++) {
     for (col = 0; col < width; col++) {
-      console.log(`Choosing tile for position ${row} ${col}`);
+      log(`Choosing tile for position ${row} ${col}`);
       tile = chooseTile(stack, findRequirements(composition, col, row));
       if (tile !== null) {
-        console.log('Inserting tile on position', tile, row, col);
+        log('Inserting tile on position', tile, row, col);
         composition[row][col] = tile;
       } else {
-        console.log('No fitting tile found, stopping composition generation');
+        log('No fitting tile found, stopping composition generation');
         stop = true;
       }
       if (stop) {
