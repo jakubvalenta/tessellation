@@ -3,6 +3,6 @@
 .pytest_cache
 .tox
 __pycache__
-db.sqlite3
 media
 public
+webpack-stats.json

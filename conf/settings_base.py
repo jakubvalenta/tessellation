@@ -13,6 +13,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'django_unused_media',
+    'webpack_loader',
     'sass_processor',
     'accounts',
     'tessellation',
@@ -86,6 +87,7 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 ]
+STATICFILES_DIRS = [str(BASE_DIR / 'frontend/dist')]
 
 LOGGING = {
     'version': 1,
@@ -102,3 +104,10 @@ MAX_COMPOSITIONS_PER_USER = 10
 MAX_UPLOAD_SIZE_BYTES = 1_000_000
 
 CONTACT_EMAIL = 'tessellation@mailbox.org'
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': '/',  # must end with slash
+        'STATS_FILE': str(BASE_DIR / 'frontend' / 'webpack-stats.json'),
+    }
+}

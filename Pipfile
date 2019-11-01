@@ -21,6 +21,7 @@ django-compressor = "*"
 django-sass-processor = "*"
 django-cleanup = "*"
 django-unused-media = "*"
+django-webpack-loader = "*"
 
 [requires]
 python_version = "3.7"

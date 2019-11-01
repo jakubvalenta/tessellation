@@ -1,4 +1,7 @@
-{% extends 'base.html' %}{% load static %}{% load email_extras %}{% block meta %}
+{% extends 'base.html' %}
+{% load static %}
+{% load email_extras %}
+{% block meta %}
 <meta property="og:image" content="{% static 'img/tessellation.png' %}" />
 <meta property="og:url" content="{% url 'index' %}" />
 {% endblock %} {% block header %}first time here?
@@ -85,7 +88,9 @@
     <table class="storage-list" id="js-samples-list"></table>
   </div>
 </div>
-{% endblock %}{% block scripts %}{{ data|json_script:'composition-data' }}
+{% endblock %}
+{% block scripts %}
+{{ data|json_script:'composition-data' }}
 <script>
   import('/static/js/pages/create.js').then(Page =>
     Page.init(

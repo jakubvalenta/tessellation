@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from conf.settings_base import *  # noqa: F401, F403
-from conf.settings_base import DATABASES, TEMPLATES
+from conf.settings_base import DATABASES, TEMPLATES, WEBPACK_LOADER
 
 ALLOWED_HOSTS = [os.environ['ALLOWED_HOST']]
 DEBUG = os.environ.get('DEBUG', False)
@@ -24,3 +24,4 @@ DATABASES['default']['CONN_MAX_AGE'] = 300
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
+WEBPACK_LOADER['DEFAULT']['CACHE'] = True
