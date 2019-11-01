@@ -18,6 +18,24 @@ def add_basic_context(context: dict):
     )
 
 
+class IndexView(generic.base.TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self) -> dict:
+        context = {}
+        add_basic_context(context)
+        oldest_sample_composition = (
+            Composition.objects.get_sample_compositions()
+            .prefetch_related('tiles__image')
+            .last()
+        )
+        serializer = CompositionSerializer(
+            oldest_sample_composition, context={'request': self.request}
+        )
+        context['data'] = serializer.data
+        return context
+
+
 class CompositionDetailView(generic.DetailView):
     model = Composition
     template_name = 'detail.html'
@@ -32,24 +50,6 @@ class CompositionDetailView(generic.DetailView):
             self.object, context={'request': self.request}
         )
         context['heading'] = self.object.title
-        context['data'] = serializer.data
-        return context
-
-
-class CompositionCreateView(generic.base.TemplateView):
-    template_name = 'create.html'
-
-    def get_context_data(self) -> dict:
-        context = {}
-        add_basic_context(context)
-        oldest_sample_composition = (
-            Composition.objects.get_sample_compositions()
-            .prefetch_related('tiles__image')
-            .last()
-        )
-        serializer = CompositionSerializer(
-            oldest_sample_composition, context={'request': self.request}
-        )
         context['data'] = serializer.data
         return context
 

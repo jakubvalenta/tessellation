@@ -12,7 +12,7 @@ router.register(
 router.register('api/samples', views.SampleAPIViewSet, basename='sample')
 
 urlpatterns = [
-    path('', views.CompositionCreateView.as_view(), name='index'),
+    path('', views.IndexView.as_view(), name='index'),
     path(
         'c/<slug:slug>/', views.CompositionDetailView.as_view(), name='detail'
     ),
