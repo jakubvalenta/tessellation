@@ -6,7 +6,7 @@ from tessellation import __title__
 
 setup(
     name='tessellation',
-    version='0.1.3',
+    version='0.2.0',
     description=__title__,
     long_description=(Path(__file__).parent / 'README.md').read_text(),
     url='https://www.github.com/jakubvalenta/tessellation',
@@ -29,9 +29,6 @@ setup(
         'django-extensions',
         'drf-base64',
         'django-debug-toolbar',
-        'libsass',
-        'django-compressor',
-        'django-sass-processor',
         'Pillow',
         'django-cleanup',
         'django-unused-media',

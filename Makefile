@@ -18,7 +18,7 @@ run-wsgi: $(tmp_secret_key_file)  ## Collect static files and start the producti
 	SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	gunicorn conf.wsgi
 
-run-frontend:  ## Build the frontend assets and watch for changesx
+run-frontend:  ## Build the frontend assets and watch for changes
 	cd frontend && yarn build --mode production --watch
 
 check-prod: $(tmp_secret_key_file)  ## Check production settings

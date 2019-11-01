@@ -14,7 +14,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_unused_media',
     'webpack_loader',
-    'sass_processor',
     'accounts',
     'tessellation',
     'django_cleanup.apps.CleanupConfig',
@@ -85,7 +84,6 @@ STATIC_ROOT = str(BASE_DIR / 'public')
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
 ]
 STATICFILES_DIRS = [str(BASE_DIR / 'frontend/dist')]
 

@@ -1,6 +1,5 @@
 {% load static %}
 {% load render_bundle from webpack_loader %}
-{% load sass_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,13 +17,6 @@
       rel="stylesheet"
       type="text/css"
       media="screen"
-    />
-    <link
-      href="{% sass_src 'css/main.scss' %}"
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-      title="main"
     />
     {% render_bundle 'app' 'css' %}
   </head>
