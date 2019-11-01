@@ -1,0 +1,32 @@
+env:
+  es6: true
+  browser: true
+  commonjs: true
+extends:
+  - eslint:recommended
+  - plugin:vue/base
+parserOptions:
+  ecmaFeatures:
+    experimentalObjectRestSpread: true
+    experimentalDecorators: true
+  sourceType: module
+plugins:
+  - prettier
+  - sort-imports-es6-autofix
+  - compat
+rules:
+  compat/compat: error
+  prettier/prettier:
+    - error
+    - singleQuote: true
+  camelcase:
+    - error
+    - properties: never
+  eol-last: error
+  no-multiple-empty-lines: error
+  radix: error
+  eqeqeq: error
+  sort-imports-es6-autofix/sort-imports-es6: [error, { "ignoreCase": true, "memberSyntaxSortOrder": ["none", "all", "single", "multiple"] }]
+globals:
+  process:
+    - false

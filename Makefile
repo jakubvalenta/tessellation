@@ -3,7 +3,7 @@ db_name = tessellation
 db_user = tessellation
 tmp_secret_key_file = /tmp/tessellation-secret-key
 
-.PHONY: run run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media test lint tox reformat help
+.PHONY: run run-prod run-wsgi run-frontend check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media test lint tox reformat help
 
 run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
@@ -17,6 +17,9 @@ run-wsgi: $(tmp_secret_key_file)  ## Collect static files and start the producti
 	$(MAKE) manage args="collectstatic --no-input"
 	SECRET_KEY_FILE="$(tmp_secret_key_file)" \
 	gunicorn conf.wsgi
+
+run-frontend:  ## Build the frontend assets and watch for changesx
+	cd frontend && yarn build --mode production --watch
 
 check-prod: $(tmp_secret_key_file)  ## Check production settings
 	DJANGO_SETTINGS_MODULE=conf.settings_prod_ssl \

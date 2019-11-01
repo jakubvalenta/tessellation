@@ -86,6 +86,7 @@
     </script>
     <script src="{% static 'node_modules/intro.js/minified/intro.min.js' %}"></script>
     {% block scripts %}{% endblock %}
+    {% render_bundle 'chunk-vendors' 'js' %}
     {% render_bundle 'app' 'js' %}
   </body>
 </html>
