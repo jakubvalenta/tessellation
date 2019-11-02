@@ -29,9 +29,8 @@
 </template>
 
 <script>
-import Composition from '../components/Composition.vue'; // eslint-disable-line no-unused-vars
+import Composition from '../components/Composition.vue';
 import InputImages from '../components/InputImages.vue';
-import Intro from '../components/Intro.vue';
 import Settings from '../components/Settings.vue';
 // import Storage from '../components/Storage.vue';
 
@@ -40,7 +39,6 @@ export default {
   components: {
     Composition,
     InputImages,
-    Intro,
     Settings
     // Storage
   },

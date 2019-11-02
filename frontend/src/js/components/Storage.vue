@@ -2,7 +2,12 @@
   <div>
     <div class="storage-header">
       <h2 class="section-heading">Drafts</h2>
-      <button id="js-drafts-save">save draft</button>
+      <button
+        id="js-drafts-save"
+        data-intro="You can save the generated composition to your device using this button. Note that when you open Tessellation on a second device, you will not see the compositions you saved on the first device."
+      >
+        save draft
+      </button>
     </div>
     <p class="storage-empty" id="js-drafts-empty">empty</p>
     <table class="storage-list" id="js-drafts-list"></table>

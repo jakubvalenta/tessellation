@@ -1,7 +1,12 @@
 <template>
   <div class="composition-controls">
     <p class="composition-shuffle">
-      <button @click="shuffle">shuffle</button>
+      <button
+        @click="shuffle"
+        data-intro="The composition is automatically generated when you change the input images. You can also click this button to generate another composition that matches the specified connections between the tiles."
+      >
+        shuffle
+      </button>
       <download
         v-bind:composition="composition"
         v-bind:naturalTileSize="naturalTileSize"

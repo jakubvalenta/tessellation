@@ -1,6 +1,12 @@
 <template>
   <div class="image">
-    <div class="image-inner">
+    <div
+      class="image-inner"
+      v-bind:data-intro="
+        image.index === 0 &&
+          'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
+      "
+    >
       <tile v-bind:image="image" v-bind:rotation="0" v-bind:background="true">
         <edge
           v-for="(connection, side) in image.connections"
