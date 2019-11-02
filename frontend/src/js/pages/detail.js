@@ -13,7 +13,9 @@ new Vue({
     );
     const newState = StorageLib.deserializeState(data);
     state.updateState(newState);
-    return state;
+    return {
+      state
+    };
   },
   render: h => h(Detail)
 }).$mount('#app');

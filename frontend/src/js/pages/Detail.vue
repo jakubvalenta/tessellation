@@ -2,9 +2,9 @@
   <div>
     <div class="composition-container">
       <composition
-        v-bind:images="images"
-        v-bind:tiles="tiles"
-        v-bind:size="size"
+        v-bind:composition="composition"
+        v-bind:tileSize="tileSize"
+        v-bind:loading="loading"
       ></composition>
     </div>
     <div class="composition-controls">
@@ -25,6 +25,13 @@ export default {
   components: {
     Composition,
     Download
+  },
+  data: function() {
+    return this.$root.state;
   }
 };
 </script>
+
+<style lang="scss">
+@import '../../css/main.scss';
+</style>
