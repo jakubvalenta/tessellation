@@ -106,7 +106,7 @@ a {
 
 button,
 .label-file,
-.introjs-button {
+body .introjs-button {
   padding: 0.5em 1em;
   border: 0;
   border-radius: 0.25em;
@@ -550,48 +550,50 @@ $rotations: (
   }
 }
 
-.introjs-helperLayer {
-  background: $color-background;
-  opacity: 1;
-}
-.introjs-tooltip {
-  color: $color-highlight;
-  background: $color-background;
-}
-.introjs-arrow {
-  &.top,
-  &.top-right,
-  &.top-middle {
-    border-bottom-color: $color-background-light;
+body {
+  .introjs-helperLayer {
+    background: $color-background;
+    opacity: 1;
   }
-  &.right,
-  &.right-bottom {
-    border-left-color: $color-background-light;
+  .introjs-tooltip {
+    color: $color-highlight;
+    background: $color-background;
   }
-  &.bottom,
-  &.bottom-right,
-  &.bottom-middle {
-    border-top-color: $color-background-light;
+  .introjs-arrow {
+    &.top,
+    &.top-right,
+    &.top-middle {
+      border-bottom-color: $color-background-light;
+    }
+    &.right,
+    &.right-bottom {
+      border-left-color: $color-background-light;
+    }
+    &.bottom,
+    &.bottom-right,
+    &.bottom-middle {
+      border-top-color: $color-background-light;
+    }
+    &.left,
+    &.left-bottom {
+      border-right-color: $color-background-light;
+    }
   }
-  &.left,
-  &.left-bottom {
-    border-right-color: $color-background-light;
-  }
-}
-.introjs-button {
-  text-shadow: none;
+  .introjs-button {
+    text-shadow: none;
 
-  &:hover {
-    box-shadow: 0 0 0.1em $color-background-darker;
+    &:hover {
+      box-shadow: 0 0 0.1em $color-background-darker;
+    }
   }
-}
-.introjs-skipbutton,
-.introjs-prevbutton {
-  margin-right: 0.5em;
-}
-.introjs-progress {
-  background-color: $color-border;
-}
-.introjs-progressbar {
-  background-color: $color-blue;
+  .introjs-skipbutton,
+  .introjs-prevbutton {
+    margin-right: 0.5em;
+  }
+  .introjs-progress {
+    background-color: $color-border;
+  }
+  .introjs-progressbar {
+    background-color: $color-blue;
+  }
 }
