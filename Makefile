@@ -3,7 +3,7 @@ db_name = tessellation
 db_user = tessellation
 tmp_secret_key_file = /tmp/tessellation-secret-key
 
-.PHONY: run frontend run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media test lint-backend lint-frontend lint tox reformat help
+.PHONY: run frontend run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media build-frontend test lint-backend lint-frontend lint tox reformat help
 
 run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
@@ -64,6 +64,9 @@ populate-db:  ## Populate database with fixtures
 
 cleanup-media:  ## Remove unused media files
 	$(MAKE) manage args="cleanup_unused_media --no-input"
+
+build-frontend:  ## Build frontend files with Webpack for production
+	cd frontend && yarn build
 
 test: | start-postgresql  ## Run unit tests
 	$(MAKE) manage args="test"

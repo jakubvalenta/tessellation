@@ -11,12 +11,9 @@
     <meta property="og:title" content="{% if heading %}{{ heading }}{% else %}{{ title }}{% endif %}" />
     <meta property="og:description" content="{{ description }}" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link
-      href="{% static 'node_modules/intro.js/minified/introjs.min.css' %}"
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-    />
+    {% render_bundle 'chunk-vendors' 'css' %}
+    {% render_bundle 'index' 'css' %}
+    {% render_bundle 'detail' 'css' %}
     {% block head %}{% endblock %}
   </head>
   <body class="mode-final">
