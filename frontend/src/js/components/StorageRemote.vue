@@ -5,8 +5,8 @@
       <button v-if="hasCreatePermission" @click="createItem">publish</button>
     </div>
     <div v-if="hasListPermission">
-      <p class="storage-status success" v-show="successMsg"></p>
-      <p class="storage-status error" v-show="errorMsg"></p>
+      <p class="storage-status success" v-show="successMsg">{{ successMsg }}</p>
+      <p class="storage-status error" v-show="errorMsg">{{ errorMsg }}</p>
       <p class="storage-empty" v-show="!items.length">empty</p>
       <p class="storage-empty" v-show="loading">
         loading
@@ -62,11 +62,11 @@ function validate(func) {
   return false;
 }
 
-function validateAll(funcs, elStatus) {
+function validateAll(funcs) {
   let i, func;
   for (i = 0; i < funcs.length; i++) {
     func = funcs[i];
-    if (!validate(func, elStatus)) {
+    if (!validate(func)) {
       return false;
     }
   }
@@ -123,7 +123,7 @@ export default {
     createItem: function() {
       if (
         !validateAll([
-          () => validateLocalStateBeforePublish(),
+          validateLocalStateBeforePublish.bind(this),
           () => StorageLib.validateStateBeforePublish(this.$root.state)
         ])
       ) {

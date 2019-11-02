@@ -31,7 +31,7 @@ export default {
   },
   data: function() {
     return {
-      isAuthenticated: false, // TODO
+      isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED,
       StorageLib: StorageLib
     };
   }

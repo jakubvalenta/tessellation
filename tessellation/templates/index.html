@@ -8,12 +8,15 @@
 {% render_bundle 'index' 'css' %}
 {% endblock %}
 {% block header %}
-<div id="app-intro"></div><!-- TODO -->
+<div id="app-intro"></div>
 {% endblock %}
 {% block content %}
 <div id="app"></div>
 {% endblock %}
 {% block scripts %}
+<script>
+  window.TESSELLATION_IS_AUTHENTICATED = {{ user.is_authenticated|lower }};
+</script>
 {{ data|json_script:'composition-data' }}
 {% render_bundle 'index' 'js' %}
 {% endblock %}{% block footer %}
