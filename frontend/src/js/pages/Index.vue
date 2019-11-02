@@ -22,7 +22,7 @@
         ></settings>
       </div>
       <div class="section section-storage">
-        <!-- <storage></storage> -->
+        <storage></storage>
       </div>
     </div>
   </div>
@@ -32,15 +32,15 @@
 import Composition from '../components/Composition.vue';
 import InputImages from '../components/InputImages.vue';
 import Settings from '../components/Settings.vue';
-// import Storage from '../components/Storage.vue';
+import Storage from '../components/Storage.vue';
 
 export default {
   name: 'app',
   components: {
     Composition,
     InputImages,
-    Settings
-    // Storage
+    Settings,
+    Storage
   },
   data: function() {
     return this.$root.state;
