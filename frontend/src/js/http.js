@@ -1,3 +1,14 @@
+import Cookies from 'js-cookie';
+
+/**
+ * These HTTP methods do not require CSRF protection.
+ *
+ * @see https://docs.djangoproject.com/en/2.2/ref/csrf/
+ */
+function csrfSafeMethod(method) {
+  return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+}
+
 export function http(method, url, data) {
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
@@ -20,9 +31,9 @@ export function http(method, url, data) {
     };
     req.open(method, url, true);
     req.setRequestHeader('Content-Type', 'application/json');
-    const elsCSRFToken = document.getElementsByName('csrfmiddlewaretoken');
-    if (elsCSRFToken.length) {
-      req.setRequestHeader('X-CSRFToken', elsCSRFToken[0].value);
+    if (!csrfSafeMethod(method)) {
+      const csrftoken = Cookies.get('csrftoken');
+      req.setRequestHeader('X-CSRFToken', csrftoken);
     }
     req.send(JSON.stringify(data));
   });

@@ -13,7 +13,6 @@
       ></download>
     </p>
     <form action="javascript:void(0)" class="composition-settings">
-      <!-- TODO {% csrf_token %} -->
       <p>
         <span class="sr-only">Size:</span>
         <label for="js-width" class="sr-only">columns</label>
