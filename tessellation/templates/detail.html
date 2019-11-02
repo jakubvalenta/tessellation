@@ -1,23 +1,15 @@
-{% extends 'base.html' %}{% block header %}
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% block head %}
+{% render_bundle 'detail' 'css' %}
+{% endblock %}
+{% block header %}
 <a href="{% url 'index' %}">back to homepage</a>
-{% endblock %}{% block content %}
-<div class="composition-container">
-  <div class="composition-inner" id="js-composition-container">
-    <canvas id="js-composition-canvas"></canvas>
-    <div class="composition-overlay" id="js-composition-overlay"></div>
-  </div>
-</div>
-<div class="composition-controls">
-  <a href="javascript:void(0)" download="composition.png" id="js-download"
-    >download</a
-  >
-</div>
-{% endblock %}{% block scripts %}{{ data|json_script:'composition-data' }}
-<script>
-  import('/static/js/pages/detail.js').then(Page =>
-    Page.init(
-      JSON.parse(document.getElementById('composition-data').textContent)
-    )
-  );
-</script>
+{% endblock %}
+{% block content %}
+<div id="app"></div>
+{% endblock %}
+{% block scripts %}
+{{ data|json_script:'composition-data' }}
+{% render_bundle 'detail' 'js' %}
 {% endblock %}

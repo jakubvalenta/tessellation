@@ -6,16 +6,15 @@ extends:
   - eslint:recommended
   - plugin:vue/base
 parserOptions:
-  ecmaFeatures:
-    experimentalObjectRestSpread: true
-    experimentalDecorators: true
+  ecmaVersion: 9
   sourceType: module
 plugins:
   - prettier
   - sort-imports-es6-autofix
   - compat
 rules:
-  compat/compat: error
+  compat/compat:
+    - error
   prettier/prettier:
     - error
     - singleQuote: true
@@ -30,3 +29,7 @@ rules:
 globals:
   process:
     - false
+settings:
+  polyfills:
+    - Array.from
+    - Promise

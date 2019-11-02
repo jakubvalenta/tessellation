@@ -3,7 +3,7 @@ db_name = tessellation
 db_user = tessellation
 tmp_secret_key_file = /tmp/tessellation-secret-key
 
-.PHONY: run run-prod run-wsgi run-frontend check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media test lint tox reformat help
+.PHONY: run run-prod run-wsgi run-frontend check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media test lint-backend lint-frontend lint tox reformat help
 
 run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
@@ -19,7 +19,7 @@ run-wsgi: $(tmp_secret_key_file)  ## Collect static files and start the producti
 	gunicorn conf.wsgi
 
 run-frontend:  ## Build the frontend assets and watch for changes
-	cd frontend && yarn build --mode production --watch
+	cd frontend && yarn build --mode development --watch
 
 check-prod: $(tmp_secret_key_file)  ## Check production settings
 	DJANGO_SETTINGS_MODULE=conf.settings_prod_ssl \
@@ -68,10 +68,15 @@ cleanup-media:  ## Remove unused media files
 test: | start-postgresql  ## Run unit tests
 	$(MAKE) manage args="test"
 
-lint:  ## Run linting
+lint-backend:  ## Run Python linting
 	pipenv run flake8 $(_python_pkg)
 	pipenv run mypy $(_python_pkg) --ignore-missing-imports
 	pipenv run isort -c -rc $(_python_pkg)
+
+lint-frontend: ## Run JavaScript
+	cd frontend && yarn lint
+
+lint: | lint-backend lint-frontend  ## Run all linting
 
 tox:  ## Test with tox
 	tox -r

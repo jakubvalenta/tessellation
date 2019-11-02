@@ -11,14 +11,13 @@
     <meta property="og:title" content="{% if heading %}{{ heading }}{% else %}{{ title }}{% endif %}" />
     <meta property="og:description" content="{{ description }}" />
     <meta name="twitter:card" content="summary_large_image" />
-    {% block meta %}{% endblock %}
     <link
       href="{% static 'node_modules/intro.js/minified/introjs.min.css' %}"
       rel="stylesheet"
       type="text/css"
       media="screen"
     />
-    {% render_bundle 'app' 'css' %}
+    {% block head %}{% endblock %}
   </head>
   <body class="mode-final">
     <noscript>
@@ -76,9 +75,8 @@
         }
       })();
     </script>
-    <script src="{% static 'node_modules/intro.js/minified/intro.min.js' %}"></script>
-    {% block scripts %}{% endblock %}
     {% render_bundle 'chunk-vendors' 'js' %}
-    {% render_bundle 'app' 'js' %}
+    {% render_bundle 'chunk-common' 'js' %}
+    {% block scripts %}{% endblock %}
   </body>
 </html>
