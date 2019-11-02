@@ -50,6 +50,7 @@ const state = {
   loading: true,
 
   onImagesLoaded: function() {
+    log('Images loaded');
     this.composition = CompositionLib.generateComposition(this.tiles, [
       this.size.width,
       this.size.height
@@ -58,12 +59,14 @@ const state = {
   },
 
   onImagesChanged: function() {
+    log('Images changed');
     const newTiles = CompositionLib.generateTiles(this.images);
     this.naturalTileSize = getNaturalFirstImageWidth(this.images);
     this.setTiles(newTiles);
   },
 
   onTilesChanged: function() {
+    log('Tiles changed');
     this.composition = CompositionLib.generateComposition(this.tiles, [
       this.size.width,
       this.size.height
@@ -121,13 +124,11 @@ const state = {
     log(`Picked file ${url}`);
     const oldIsImageComplete = isImageComplete(image);
     image.url = url;
-    return new Promise(resolve => {
-      loadHtmlImage(image).then(() => {
-        resolve();
-        if (oldIsImageComplete !== isImageComplete(image)) {
-          this.onImagesChanged();
-        }
-      });
+    loadHtmlImage(image).then(() => {
+      this.onImagesLoaded();
+      if (oldIsImageComplete !== isImageComplete(image)) {
+        this.onImagesChanged();
+      }
     });
   },
 
