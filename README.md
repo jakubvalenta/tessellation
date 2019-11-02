@@ -46,6 +46,7 @@ Start a development server
 
 ``` shell
 $ make run
+$ make frontend
 ```
 
 Create database:
