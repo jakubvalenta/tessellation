@@ -2,7 +2,7 @@
   <div v-bind:class="outerClassObject" v-bind:style="outerStyleObject">
     <div v-bind:class="innerClassObject">
       <div class="tile-text">
-        {{ index + 1 }}
+        {{ image.index + 1 }}
       </div>
     </div>
     <slot></slot>
@@ -13,9 +13,7 @@
 export default {
   name: 'Tile',
   props: {
-    index: Number,
-    url: String,
-    connections: Array,
+    image: Object,
     rotation: Number,
     background: {
       type: Boolean,
@@ -30,16 +28,18 @@ export default {
     innerClassObject: function() {
       const classNames = [
         'tile-inner',
-        ...this.connections.map((connection, i) => `conn-${i}-${connection}`)
+        ...this.image.connections.map(
+          (connection, i) => `conn-${i}-${connection}`
+        )
       ];
       return Object.fromEntries(classNames.map(className => [className, true]));
     },
     outerStyleObject: function() {
-      if (!this.background || !this.url) {
+      if (!this.background || !this.image.url) {
         return {};
       }
       return {
-        backgroundImage: `url('${this.url}')`
+        backgroundImage: `url('${this.image.url}')`
       };
     }
   }

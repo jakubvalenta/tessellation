@@ -2,10 +2,7 @@
   <div class="images">
     <input-image
       v-for="image in images"
-      v-bind:index="image.index"
-      v-bind:url="image.url"
-      v-bind:imgRef="image.ref"
-      v-bind:connections="image.connections"
+      v-bind:image="image"
       v-bind:key="image.ref"
     ></input-image>
     <div class="image">

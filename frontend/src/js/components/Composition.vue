@@ -16,9 +16,7 @@
       <div v-for="rowTiles in composition" class="row">
         <tile
           v-for="(tile, index) in rowTiles"
-          v-bind:index="tile.image.index"
-          v-bind:url="tile.image.url"
-          v-bind:connections="tile.image.connections"
+          v-bind:image="tile.image"
           v-bind:rotation="tile.rotation"
           v-bind:key="index"
         ></tile>

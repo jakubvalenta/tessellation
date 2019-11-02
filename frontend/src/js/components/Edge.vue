@@ -1,6 +1,6 @@
 <template>
   <button @click="shift" v-bind:class="classObject" title="change connection">
-    {{ connection || '\u00b7' }}
+    {{ image.connections[side] || '\u00b7' }}
   </button>
 </template>
 
@@ -8,8 +8,7 @@
 export default {
   name: 'Edge',
   props: {
-    imgRef: String,
-    connection: Number,
+    image: Object,
     side: Number
   },
   computed: {
@@ -17,14 +16,14 @@ export default {
       const classNames = [
         'conn-button',
         `conn-button-${this.side}`,
-        `conn-${this.connection}`
+        `conn-${this.image.connections[this.side]}`
       ];
       return Object.fromEntries(classNames.map(className => [className, true]));
     }
   },
   methods: {
     shift: function() {
-      this.$root.state.shiftImageConnection(this.imgRef, this.side);
+      this.$root.state.shiftImageConnection(this.image, this.side);
     }
   }
 };

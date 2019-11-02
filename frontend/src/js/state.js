@@ -117,9 +117,8 @@ const state = {
     });
   },
 
-  updateImage: function(ref, url) {
+  updateImage: function(image, url) {
     log(`Picked file ${url}`);
-    const image = findImage(this.images, ref);
     const oldIsImageComplete = isImageComplete(image);
     image.url = url;
     return new Promise(resolve => {
@@ -132,7 +131,7 @@ const state = {
     });
   },
 
-  deleteImage: function(ref) {
+  deleteImage: function({ ref }) {
     log(`Deleting image ${ref}`);
     const image = findImage(this.images, ref);
     this.images.splice(image.index, 1);
@@ -144,13 +143,12 @@ const state = {
     }
   },
 
-  shiftImageConnection: function(ref, side) {
-    const image = findImage(this.images, ref);
+  shiftImageConnection: function(image, side) {
     const connection =
       image.connections[side] === null
         ? CONNECTIONS[0]
         : (image.connections[side] % CONNECTIONS.length) + 1;
-    image.connections[side] = connection;
+    image.connections.splice(side, 1, connection); // Use splice to trigger Vue update.
     if (isImageComplete(image)) {
       this.onImagesChanged();
     }

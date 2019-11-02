@@ -1,17 +1,10 @@
 <template>
   <div class="image">
     <div class="image-inner">
-      <tile
-        v-bind:index="index"
-        v-bind:url="url"
-        v-bind:connections="connections"
-        v-bind:rotation="0"
-        v-bind:background="true"
-      >
+      <tile v-bind:image="image" v-bind:rotation="0" v-bind:background="true">
         <edge
-          v-for="(connection, side) in connections"
-          v-bind:imgRef="imgRef"
-          v-bind:connection="connection"
+          v-for="(connection, side) in image.connections"
+          v-bind:image="image"
           v-bind:side="side"
           v-bind:key="side"
         ></edge>
@@ -42,16 +35,13 @@ export default {
     Tile
   },
   props: {
-    index: Number,
-    url: String,
-    imgRef: String,
-    connections: Array
+    image: Object
   },
   data: function() {
     const reader = new window.FileReader();
     reader.addEventListener('load', () => {
       const url = reader.result;
-      this.$root.state.updateImage(this.imgRef, url);
+      this.$root.state.updateImage(this.image, url);
     });
     return {
       reader
@@ -59,7 +49,7 @@ export default {
   },
   computed: {
     name: function() {
-      return `image-upload-${this.imgRef}`;
+      return `image-upload-${this.image.ref}`;
     }
   },
   methods: {
@@ -70,7 +60,7 @@ export default {
       }
     },
     deleteImage: function() {
-      this.$root.state.deleteImage(this.imgRef);
+      this.$root.state.deleteImage(this.image);
     }
   }
 };

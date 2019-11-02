@@ -22,9 +22,7 @@
         ></settings>
       </div>
       <div class="section section-storage">
-        <!--
-        <storage></storage>
--->
+        <!-- <storage></storage> -->
       </div>
     </div>
   </div>
