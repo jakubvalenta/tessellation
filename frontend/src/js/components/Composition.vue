@@ -5,7 +5,7 @@
       :tile-size="tileSize"
       v-show="!loading && !error"
       ref="canvas"
-    ></CompositionCanvas>
+    />
     <div v-show="loading" class="composition-message">
       <div class="alert box-info">Processing...</div>
     </div>
@@ -22,7 +22,7 @@
           :image="tile && tile.image"
           :rotation="tile && tile.rotation"
           :key="j"
-        ></Tile>
+        />
       </div>
     </div>
   </div>

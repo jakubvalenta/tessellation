@@ -7,13 +7,13 @@
         :loading="loading"
         :error="error"
         :warn="warn"
-      ></Composition>
+      />
     </div>
     <div class="composition-controls">
       <Download
         :composition="composition"
         :natural-tile-size="naturalTileSize"
-      ></Download>
+      />
     </div>
   </div>
 </template>

@@ -1,10 +1,6 @@
 <template>
   <div class="images">
-    <InputImage
-      v-for="image in images"
-      :image="image"
-      :key="image.ref"
-    ></InputImage>
+    <InputImage v-for="image in images" :image="image" :key="image.ref" />
     <div class="image">
       <div class="image-inner image-inner-add">
         <button @click="newImage">add more</button>

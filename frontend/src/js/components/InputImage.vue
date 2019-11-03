@@ -13,7 +13,7 @@
           :image="image"
           :side="side"
           :key="`${image.ref}-${side}`"
-        ></Edge>
+        />
       </Tile>
       <div class="image-controls">
         <label :for="name" class="label-file">upload image</label>

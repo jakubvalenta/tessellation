@@ -10,7 +10,7 @@
       <Download
         :composition="composition"
         :natural-tile-size="naturalTileSize"
-      ></Download>
+      />
     </p>
     <form action="javascript:void(0)" class="composition-settings">
       <p>

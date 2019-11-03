@@ -4,7 +4,7 @@
       <h2 class="sr-only">Create new composition</h2>
       <div class="section section-input">
         <h2 class="section-heading">Input</h2>
-        <InputImages :images="images"></InputImages>
+        <InputImages :images="images" />
       </div>
       <div class="section section-composition">
         <h2 class="sr-only">Composition</h2>
@@ -15,17 +15,17 @@
             :loading="loading"
             :error="error"
             :warn="warn"
-          ></Composition>
+          />
         </div>
         <Settings
           :width="size.width"
           :height="size.height"
           :composition="composition"
           :natural-tile-size="naturalTileSize"
-        ></Settings>
+        />
       </div>
       <div class="section section-storage">
-        <Storage></Storage>
+        <Storage />
       </div>
     </div>
   </div>

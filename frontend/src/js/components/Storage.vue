@@ -1,20 +1,20 @@
 <template>
   <div>
-    <StorageLocal heading="Drafts"></StorageLocal>
+    <StorageLocal heading="Drafts" />
     <StorageRemote
       heading="Published"
       :has-list-permission="isAuthenticated"
       :has-create-permission="isAuthenticated"
       :func-list="StorageLib.getPublishedCompositions"
       :func-load="StorageLib.getPublishedComposition"
-    ></StorageRemote>
+    />
     <StorageRemote
       heading="Samples"
       :has-create-permission="false"
       :has-delete-permission="false"
       :func-list="StorageLib.getSampleCompositions"
       :func-load="StorageLib.getSampleComposition"
-    ></StorageRemote>
+    />
   </div>
 </template>
 
