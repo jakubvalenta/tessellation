@@ -16,12 +16,12 @@
     </div>
     <div v-show="warn" class="alert box-error">{{ warn }}</div>
     <div class="composition-overlay">
-      <div v-for="rowTiles in composition" class="tile-row">
+      <div v-for="(rowTiles, i) in composition" :key="i" class="tile-row">
         <Tile
-          v-for="(tile, index) in rowTiles"
+          v-for="(tile, j) in rowTiles"
           :image="tile && tile.image"
           :rotation="tile && tile.rotation"
-          :key="index"
+          :key="j"
         ></Tile>
       </div>
     </div>

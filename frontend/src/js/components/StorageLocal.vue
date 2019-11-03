@@ -11,7 +11,7 @@
     </div>
     <p class="storage-empty" v-show="!items.length">empty</p>
     <table class="storage-list">
-      <tr v-for="item in items">
+      <tr v-for="item in items" :key="`${item.dataIndex}-${item.name}`">
         <td>{{ item.id }} {{ item.name }}</td>
         <td>
           <button @click="loadItem(item.dataIndex)">load</button>

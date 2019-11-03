@@ -14,7 +14,7 @@
         loading
       </p>
       <table class="storage-list">
-        <tr v-for="item in items">
+        <tr v-for="item in items" :key="item.compositionId">
           <td>{{ item.id }} {{ item.name }}</td>
           <td><a :href="item.compositionUrl">permalink</a></td>
           <td>

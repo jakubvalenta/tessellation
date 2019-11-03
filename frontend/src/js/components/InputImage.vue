@@ -12,7 +12,7 @@
           v-for="(connection, side) in image.connections"
           :image="image"
           :side="side"
-          :key="side"
+          :key="`${image.ref}-${side}`"
         ></Edge>
       </Tile>
       <div class="image-controls">
