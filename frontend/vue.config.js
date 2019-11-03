@@ -3,8 +3,9 @@ const BundleTracker = require('webpack-bundle-tracker');
 module.exports = {
   publicPath:
     process.env.NODE_ENV === 'production'
-      ? '/static/'
-      : 'http://localhost:8080/static/',
+      ? '/static/bundles/'
+      : 'http://localhost:8080/static/bundles/',
+  outputDir: 'dist/bundles',
   pages: {
     index: {
       entry: 'src/js/pages/index.js'

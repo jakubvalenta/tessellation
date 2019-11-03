@@ -105,7 +105,7 @@ CONTACT_EMAIL = 'tessellation@mailbox.org'
 
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'BUNDLE_DIR_NAME': '/',  # must end with slash
+        'BUNDLE_DIR_NAME': 'bundles/',  # must end with slash
         'STATS_FILE': str(BASE_DIR / 'frontend' / 'webpack-stats.json'),
     }
 }
