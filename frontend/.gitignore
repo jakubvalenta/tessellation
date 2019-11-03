@@ -1,7 +1,9 @@
 .DS_Store
 node_modules
-/dist/*
-!/dist/.gitkeep
+/dist/bundles/*
+!/dist/bundles/.gitkeep
+/src/js/vendor/*
+!/src/js/vendor/.gitkeep
 webpack-stats.json
 
 # local env files

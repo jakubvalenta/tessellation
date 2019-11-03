@@ -15,7 +15,7 @@ problem](https://en.wikipedia.org/wiki/Wang_tile).
 ### Mac
 
 ``` shell
-$ brew install python
+$ brew install python yarn
 $ pip install pipenv
 $ make setup
 ```
@@ -23,7 +23,7 @@ $ make setup
 ### Arch Linux
 
 ``` shell
-# pacman -S pipenv
+# pacman -S pipenv yarn
 $ make setup
 ```
 
@@ -32,6 +32,7 @@ $ make setup
 Install these dependencies manually:
 
 - Python 3.7
+- yarn
 - pipenv
 
 Then run:
