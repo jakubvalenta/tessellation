@@ -3,7 +3,7 @@
     <div class="composition-container">
       <Composition
         v-bind:composition="composition"
-        v-bind:tileSize="tileSize"
+        v-bind:tile-size="tileSize"
         v-bind:loading="loading"
         v-bind:error="error"
         v-bind:warn="warn"
@@ -12,7 +12,7 @@
     <div class="composition-controls">
       <Download
         v-bind:composition="composition"
-        v-bind:naturalTileSize="naturalTileSize"
+        v-bind:natural-tile-size="naturalTileSize"
       ></Download>
     </div>
   </div>

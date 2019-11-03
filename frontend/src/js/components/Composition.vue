@@ -1,8 +1,8 @@
 <template>
-  <div class="composition-inner" ref="main">
+  <div class="composition-inner" ref="inner">
     <CompositionCanvas
       v-bind:composition="composition"
-      v-bind:tileSize="tileSize"
+      v-bind:tile-size="tileSize"
       v-show="!loading && !error"
       ref="canvas"
     ></CompositionCanvas>
@@ -71,10 +71,11 @@ export default {
       if (!this.composition.length) {
         return;
       }
+      const elContainer = this.$refs.inner.parentNode;
       const tileSize = calcTileSize(
         this.composition,
         this.$refs.canvas,
-        this.$refs.main.parentNode
+        elContainer
       );
       log(`Calculated tile size ${tileSize}`);
       this.$root.state.setTileSize(tileSize);

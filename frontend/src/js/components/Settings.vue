@@ -9,7 +9,7 @@
       </button>
       <Download
         v-bind:composition="composition"
-        v-bind:naturalTileSize="naturalTileSize"
+        v-bind:natural-tile-size="naturalTileSize"
       ></Download>
     </p>
     <form action="javascript:void(0)" class="composition-settings">

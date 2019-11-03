@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <canvas class="composition" ref="main"></canvas>
-  </div>
+  <canvas class="composition" ref="canvas"></canvas>
 </template>
 
 <script>
@@ -12,7 +10,7 @@ function render() {
   log(`Rendering composition on canvas, tileSize=${this.tileSize}`);
   CompositionLib.renderCompositionOnCanvas(
     this.composition,
-    this.$refs.main,
+    this.$refs.canvas,
     this.tileSize
   );
 }

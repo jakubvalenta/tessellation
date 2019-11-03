@@ -11,7 +11,7 @@
         <div class="composition-container">
           <Composition
             v-bind:composition="composition"
-            v-bind:tileSize="tileSize"
+            v-bind:tile-size="tileSize"
             v-bind:loading="loading"
             v-bind:error="error"
             v-bind:warn="warn"
@@ -21,7 +21,7 @@
           v-bind:width="size.width"
           v-bind:height="size.height"
           v-bind:composition="composition"
-          v-bind:naturalTileSize="naturalTileSize"
+          v-bind:natural-tile-size="naturalTileSize"
         ></Settings>
       </div>
       <div class="section section-storage">
