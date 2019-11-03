@@ -188,6 +188,12 @@ body .introjs-button {
   grid-column: 3 / 4;
   grid-row: 1;
   justify-content: right;
+  text-align: right;
+
+  > span { // Fix Chrome not aligning to the right
+    display: block;
+    width: 100%;
+  }
 }
 @media screen and (max-width: 799px) {
   .header-heading {
