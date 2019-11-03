@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "supportedBrowsers": "echo \"module.exports = $(browserslist-useragent-regexp --allowHigherVersions);\" > src/js/vendor/supportedBrowsers.js"
+    "supportedBrowsers": "echo \"window.SUPPORTED_BROWSERS = $(browserslist-useragent-regexp --allowHigherVersions);\" > public/supportedBrowsers.js"
   },
   "dependencies": {
     "core-js": "^3.3.2",

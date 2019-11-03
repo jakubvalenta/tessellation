@@ -2,8 +2,7 @@
 node_modules
 /dist/bundles/*
 !/dist/bundles/.gitkeep
-/src/js/vendor/*
-!/src/js/vendor/.gitkeep
+/public/supportedBrowsers.js
 webpack-stats.json
 
 # local env files

@@ -8,7 +8,7 @@ tmp_secret_key_file = /tmp/tessellation-secret-key
 run: | start-postgresql  ## Start the development server
 	pipenv run python manage.py runserver
 
-frontend: frontend/src/js/vendor/supportedBrowsers.js  ## Start the frontend development server
+frontend: frontend/public/supportedBrowsers.js  ## Start the frontend development server
 	cd frontend && yarn serve
 
 run-prod: $(tmp_secret_key_file) | start-postgresql  ## Start the development server with production settings
@@ -66,10 +66,10 @@ populate-db:  ## Populate database with fixtures
 cleanup-media:  ## Remove unused media files
 	$(MAKE) manage args="cleanup_unused_media --no-input"
 
-frontend/src/js/vendor/supportedBrowsers.js:
+frontend/public/supportedBrowsers.js:
 	cd frontend && yarn supportedBrowsers
 
-build-frontend: frontend/src/js/vendor/supportedBrowsers.js  ## Build frontend files with Webpack for production
+build-frontend: frontend/public/supportedBrowsers.js  ## Build frontend files with Webpack for production
 	cd frontend && yarn build
 
 test: | start-postgresql  ## Run unit tests
