@@ -15,7 +15,6 @@
             v-bind:loading="loading"
             v-bind:error="error"
             v-bind:warn="warn"
-            v-bind:foo="null"
           ></composition>
         </div>
         <settings
