@@ -4,7 +4,7 @@ import { error, log } from './log.js';
 export const SIDES = [0, 1, 2, 3];
 export const CONNECTIONS = [1, 2, 3, 4, 5];
 const [LEFT, TOP, RIGHT, BOTTOM] = SIDES;
-const MAX_TILES_TRIED = Math.pow(10, 4);
+const MAX_TILES_TO_TRY = Math.pow(10, 4);
 
 export function isImageComplete(image) {
   return (
@@ -110,7 +110,7 @@ export function generateComposition(tiles, [width, height]) {
     col = 0,
     tile,
     i = 0;
-  for (i = 0; i < MAX_TILES_TRIED; i++) {
+  for (i = 0; i < MAX_TILES_TO_TRY; i++) {
     log(`Choosing tile [${row}, ${col}]`);
     tile = chooseTile(
       stack,
@@ -122,19 +122,32 @@ export function generateComposition(tiles, [width, height]) {
       composition[row][col] = tile;
       [row, col] = calcNextCoords(row, col, width, height);
       if (row === null) {
-        return composition;
+        return {
+          composition: composition,
+          error: null,
+          warn: null
+        };
       }
     } else {
       log('No fitting tile found, going one step back');
       [row, col] = calcPrevCoords(row, col, width, height);
       if (row === null) {
         error('Failed to create a composition from these tiles');
-        return null;
+        return {
+          composition: null,
+          error: "Input tiles don't connect.",
+          warn: null
+        };
       }
     }
   }
-  error('Maximum tiles exceeded, returning an incomplete composition');
-  return composition;
+  error('Maximum tiles to try reached, returning an incomplete composition');
+  return {
+    composition,
+    error: null,
+    warn:
+      'Maximum number of tiles reached. Please decrease the composition size.'
+  };
 }
 
 export function renderCompositionOnCanvas(composition, canvas, tileSize) {

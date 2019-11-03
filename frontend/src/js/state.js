@@ -48,13 +48,22 @@ const state = {
   naturalTileSize: 0,
   tileSize: 0,
   loading: true,
+  error: null,
+  warn: null,
 
-  onImagesLoaded: function() {
-    log('Images loaded');
-    this.composition = CompositionLib.generateComposition(this.tiles, [
+  _generateComposition: function() {
+    const res = CompositionLib.generateComposition(this.tiles, [
       this.size.width,
       this.size.height
     ]);
+    this.composition = res.composition;
+    this.error = res.error;
+    this.warn = res.warn;
+  },
+
+  onImagesLoaded: function() {
+    log('Images loaded');
+    this._generateComposition();
     this.naturalTileSize = getNaturalFirstImageWidth(this.images);
   },
 
@@ -67,10 +76,7 @@ const state = {
 
   onTilesChanged: function() {
     log('Tiles changed');
-    this.composition = CompositionLib.generateComposition(this.tiles, [
-      this.size.width,
-      this.size.height
-    ]);
+    this._generateComposition();
   },
 
   updateState: function(newState) {

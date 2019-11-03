@@ -3,21 +3,24 @@
     <composition-canvas
       v-bind:composition="composition"
       v-bind:tileSize="tileSize"
-      v-show="!loading"
+      v-show="!loading && !error"
       ref="canvas"
     ></composition-canvas>
-    <div v-show="!loading && !composition" class="composition-error">
-      <div class="alert box-error">impossible connections defined</div>
+    <div v-show="loading" class="composition-message">
+      <div class="alert box-info">Processing...</div>
     </div>
-    <div v-show="loading" class="composition-loading">
-      <div class="alert box-info">processing</div>
+    <div v-show="error" class="composition-message">
+      <div class="alert box-error">
+        {{ error }}
+      </div>
     </div>
+    <div v-show="warn" class="alert box-error">{{ warn }}</div>
     <div class="composition-overlay">
-      <div v-for="rowTiles in composition" class="row">
+      <div v-for="rowTiles in composition" class="tile-row">
         <tile
           v-for="(tile, index) in rowTiles"
-          v-bind:image="tile.image"
-          v-bind:rotation="tile.rotation"
+          v-bind:image="tile && tile.image"
+          v-bind:rotation="tile && tile.rotation"
           v-bind:key="index"
         ></tile>
       </div>
@@ -50,7 +53,9 @@ export default {
   props: {
     composition: Array,
     tileSize: Number,
-    loading: Boolean
+    loading: Boolean,
+    error: String,
+    warn: String
   },
   watch: {
     composition: function() {

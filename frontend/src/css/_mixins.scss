@@ -1,13 +1,21 @@
 // The micro clearfix http://nicolasgallagher.com/micro-clearfix-hack/
 %clearfix {
-  *zoom:1;
+  *zoom: 1;
 
   &:before,
   &:after {
-    content:"";
-    display:table;
+    content: '';
+    display: table;
   }
   &:after {
-    clear:both;
+    clear: both;
+  }
+}
+
+@mixin square {
+  &:before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
   }
 }

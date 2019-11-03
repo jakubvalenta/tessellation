@@ -13,6 +13,8 @@
             v-bind:composition="composition"
             v-bind:tileSize="tileSize"
             v-bind:loading="loading"
+            v-bind:error="error"
+            v-bind:warn="warn"
           ></composition>
         </div>
         <settings

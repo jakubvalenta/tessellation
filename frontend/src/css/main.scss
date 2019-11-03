@@ -274,15 +274,10 @@ body .introjs-button {
 .composition {
   width: 100%;
 }
-.composition-error {
-  display: none;
+.composition-message {
+  @include square;
 
-  &:before {
-    content: '';
-    display: block;
-    padding-top: 100%;
-  }
-  .alert-error {
+  .alert {
     position: absolute;
     left: 0;
     top: 0;
@@ -305,18 +300,15 @@ body .introjs-button {
     visibility: hidden;
   }
 }
-.row {
+
+.tile-row {
   display: flex;
 }
 .tile {
+  @include square;
+
   flex-grow: 1;
   position: relative;
-
-  &:before {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
-  }
 }
 .tile-inner {
   display: block;
@@ -411,16 +403,12 @@ body .introjs-button {
   box-shadow: none;
 }
 .image-inner-add {
+  @include square;
+
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &:before {
-    content: '';
-    display: block;
-    padding-bottom: 100%;
-  }
 }
 
 .conn-button {
