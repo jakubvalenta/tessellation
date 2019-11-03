@@ -15,10 +15,12 @@
             v-bind:loading="loading"
             v-bind:error="error"
             v-bind:warn="warn"
+            v-bind:foo="null"
           ></composition>
         </div>
         <settings
-          v-bind:size="size"
+          v-bind:width="size.width"
+          v-bind:height="size.height"
           v-bind:composition="composition"
           v-bind:naturalTileSize="naturalTileSize"
         ></settings>

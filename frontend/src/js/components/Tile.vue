@@ -13,8 +13,14 @@
 export default {
   name: 'Tile',
   props: {
-    image: Object,
-    rotation: Number,
+    image: {
+      type: Object,
+      required: false
+    },
+    rotation: {
+      type: Number,
+      default: 0
+    },
     background: {
       type: Boolean,
       default: false

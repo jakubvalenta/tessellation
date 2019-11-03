@@ -52,14 +52,25 @@ export default {
     Download
   },
   props: {
-    size: Object,
-    composition: Array,
-    naturalTileSize: Number
+    width: {
+      type: Number,
+      required: true
+    },
+    height: {
+      type: Number,
+      required: true
+    },
+    composition: {
+      type: Array,
+      required: true
+    },
+    naturalTileSize: {
+      type: Number,
+      required: true
+    }
   },
   data: function() {
     return {
-      width: this.size.width,
-      height: this.size.height,
       modeFinal: true
     };
   },
@@ -72,12 +83,10 @@ export default {
       document.body.classList.toggle('mode-final', this.modeFinal);
     },
     changeWidth: function(evt) {
-      this.width = evt.currentTarget.value;
-      this.$root.state.setSize({ width: this.width });
+      this.$root.state.setSize({ width: evt.currentTarget.value });
     },
     changeHeight: function(evt) {
-      this.height = evt.currentTarget.value;
-      this.$root.state.setSize({ height: this.height });
+      this.$root.state.setSize({ height: evt.currentTarget.value });
     }
   }
 };

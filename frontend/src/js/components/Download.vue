@@ -11,13 +11,19 @@
 <script>
 import * as CompositionLib from '../composition.js';
 import * as HTML from '../html.js';
-import { log } from '../log.js';
+import { error, log } from '../log.js';
 
 export default {
   name: 'Download',
   props: {
-    composition: Array,
-    naturalTileSize: Number
+    composition: {
+      type: Array,
+      required: true
+    },
+    naturalTileSize: {
+      type: Number,
+      required: true
+    }
   },
   data: function() {
     return {
@@ -26,11 +32,8 @@ export default {
   },
   methods: {
     download: function(evt) {
-      if (
-        !this.composition ||
-        !this.composition.length ||
-        !this.naturalTileSize
-      ) {
+      if (!this.composition.length || !this.naturalTileSize) {
+        error("Can't download composition, it's not rendered.");
         return;
       }
       log(

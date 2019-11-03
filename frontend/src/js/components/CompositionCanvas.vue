@@ -20,8 +20,14 @@ function render() {
 export default {
   name: 'CompositionCanvas',
   props: {
-    composition: Array,
-    tileSize: Number
+    composition: {
+      type: Array,
+      required: true
+    },
+    tileSize: {
+      type: Number,
+      required: true
+    }
   },
   watch: {
     composition: render,

@@ -34,7 +34,10 @@ import { log } from '../log.js';
 export default {
   name: 'StorageLocal',
   props: {
-    heading: String
+    heading: {
+      type: String,
+      required: true
+    }
   },
   data: function() {
     return {

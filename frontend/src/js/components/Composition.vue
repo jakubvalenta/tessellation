@@ -51,14 +51,26 @@ export default {
     Tile
   },
   props: {
-    composition: Array,
-    tileSize: Number,
-    loading: Boolean,
+    composition: {
+      type: Array,
+      required: true
+    },
+    tileSize: {
+      type: Number,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      required: true
+    },
     error: String,
     warn: String
   },
   watch: {
     composition: function() {
+      if (!this.composition.length) {
+        return;
+      }
       const tileSize = calcTileSize(
         this.composition,
         this.$refs.canvas,

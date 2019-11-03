@@ -22,7 +22,10 @@ export default {
     InputImage
   },
   props: {
-    images: Array
+    images: {
+      type: Array,
+      required: true
+    }
   },
   methods: {
     newImage: function() {

@@ -134,7 +134,7 @@ export function generateComposition(tiles, [width, height]) {
       if (row === null) {
         error('Failed to create a composition from these tiles');
         return {
-          composition: null,
+          composition: [],
           error: "Input tiles don't connect.",
           warn: null
         };

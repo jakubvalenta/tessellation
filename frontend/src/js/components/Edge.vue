@@ -17,8 +17,14 @@
 export default {
   name: 'Edge',
   props: {
-    image: Object,
-    side: Number
+    image: {
+      type: Object,
+      required: true
+    },
+    side: {
+      type: Number,
+      required: true
+    }
   },
   computed: {
     classObject: function() {

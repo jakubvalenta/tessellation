@@ -78,7 +78,10 @@ function validateAll(funcs) {
 export default {
   name: 'StorageRemote',
   props: {
-    heading: String,
+    heading: {
+      type: String,
+      required: true
+    },
     hasListPermission: {
       type: Boolean,
       default: true
@@ -91,8 +94,14 @@ export default {
       type: Boolean,
       default: true
     },
-    funcList: Function,
-    funcLoad: Function
+    funcList: {
+      type: Function,
+      required: true
+    },
+    funcLoad: {
+      type: Function,
+      required: true
+    }
   },
   data: function() {
     return {
