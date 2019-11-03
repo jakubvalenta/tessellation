@@ -3,5 +3,5 @@
 .pytest_cache
 .tox
 __pycache__
-media
-public
+/media
+/public
