@@ -7,10 +7,10 @@
       ref="canvas"
     ></composition-canvas>
     <div v-show="!loading && !composition" class="composition-error">
-      <div class="alert-error">impossible connections defined</div>
+      <div class="alert box-error">impossible connections defined</div>
     </div>
     <div v-show="loading" class="composition-loading">
-      loading
+      <div class="alert box-info">processing</div>
     </div>
     <div class="composition-overlay">
       <div v-for="rowTiles in composition" class="row">

@@ -45,10 +45,8 @@ body {
   margin: 0;
 }
 
-.alert-error {
+.alert {
   text-align: center;
-  color: $color-text-inverse;
-  background: $color-red;
   margin: 0;
   padding: 2em;
 }
@@ -57,6 +55,20 @@ body {
 }
 .is-unsupported .error-unsupported {
   display: block;
+}
+.test-success {
+  color: $color-green;
+}
+.text-error {
+  color: $color-red;
+}
+.box-error {
+  color: $color-text-inverse;
+  background: $color-red;
+}
+.box-info {
+  color: $color-text-inverse;
+  background: $color-white;
 }
 
 p,
@@ -140,13 +152,6 @@ body .introjs-button {
 .input-number {
   line-height: 2;
   width: 3em;
-}
-
-.success {
-  color: $color-green;
-}
-.error {
-  color: $color-red;
 }
 
 .header,

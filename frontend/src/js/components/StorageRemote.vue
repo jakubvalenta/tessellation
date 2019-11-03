@@ -5,8 +5,10 @@
       <button v-if="hasCreatePermission" @click="createItem">publish</button>
     </div>
     <div v-if="hasListPermission">
-      <p class="storage-status success" v-show="successMsg">{{ successMsg }}</p>
-      <p class="storage-status error" v-show="errorMsg">{{ errorMsg }}</p>
+      <p class="storage-status text-success" v-show="successMsg">
+        {{ successMsg }}
+      </p>
+      <p class="storage-status text-error" v-show="errorMsg">{{ errorMsg }}</p>
       <p class="storage-empty" v-show="!items.length">empty</p>
       <p class="storage-empty" v-show="loading">
         loading
