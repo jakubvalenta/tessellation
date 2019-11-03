@@ -9,25 +9,21 @@ import { log } from '../log.js';
 export default {
   name: 'CompositionCanvas',
   props: {
-    composition: {
-      type: Array,
-      required: true
-    },
-    tileSize: {
-      type: Number,
+    compositionToRender: {
+      type: Object,
       required: true
     }
   },
   watch: {
-    tileSize: function() {
+    compositionToRender: function() {
       log(
-        'Tile size changed',
-        +`rendering composition on canvas, tileSize=${this.tileSize}`
+        'State of compositionToRender changed, rendering composition on ' +
+          `canvas, tileSize=${this.compositionToRender.tileSize}`
       );
       CompositionLib.renderCompositionOnCanvas(
-        this.composition,
+        this.compositionToRender.composition,
         this.$refs.canvas,
-        this.tileSize
+        this.compositionToRender.tileSize
       );
     }
   }

@@ -11,7 +11,7 @@
         <div class="composition-container">
           <Composition
             :composition="composition"
-            :tile-size="tileSize"
+            :compositionToRender="compositionToRender"
             :loading="loading"
             :error="error"
             :warn="warn"

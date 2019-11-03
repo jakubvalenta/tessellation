@@ -1,8 +1,7 @@
 <template>
   <div class="composition-inner" ref="inner">
     <CompositionCanvas
-      :composition="composition"
-      :tile-size="tileSize"
+      :compositionToRender="compositionToRender"
       v-show="!loading && !error"
       ref="canvas"
     />
@@ -55,8 +54,8 @@ export default {
       type: Array,
       required: true
     },
-    tileSize: {
-      type: Number,
+    compositionToRender: {
+      type: Object,
       required: true
     },
     loading: {
@@ -67,6 +66,7 @@ export default {
     warn: String
   },
   watch: {
+    // TODO: We could also just store the container width in the global state
     composition: function() {
       log('Composition changed');
       if (!this.composition.length) {
@@ -79,8 +79,7 @@ export default {
         elContainer
       );
       log(`Calculated tile size ${tileSize}`);
-      this.$root.state.setTileSize(tileSize);
-      this.$root.state.setLoading(false);
+      this.$root.state.setCompositionToRender(this.composition, tileSize);
     }
   }
 };

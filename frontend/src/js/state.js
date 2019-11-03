@@ -45,25 +45,30 @@ const state = {
   tiles: [],
   images: [],
   composition: [],
+  compositionToRender: {
+    composition: [],
+    tileSize: 0
+  },
   naturalTileSize: 0,
-  tileSize: 0,
   loading: true,
   error: null,
   warn: null,
 
-  _generateComposition: function() {
+  generateComposition: function() {
+    this.loading = true;
     const res = CompositionLib.generateComposition(this.tiles, [
       this.size.width,
       this.size.height
     ]);
     this.composition = res.composition;
+    this.loading = false;
     this.error = res.error;
     this.warn = res.warn;
   },
 
   onImagesLoaded: function() {
     log('Images loaded');
-    this._generateComposition();
+    this.generateComposition();
     this.naturalTileSize = getNaturalFirstImageWidth(this.images);
   },
 
@@ -76,7 +81,7 @@ const state = {
 
   onTilesChanged: function() {
     log('Tiles changed');
-    this._generateComposition();
+    this.generateComposition();
   },
 
   updateState: function(newState) {
@@ -88,7 +93,6 @@ const state = {
     const promises = this.images.map(loadHtmlImage);
     Promise.all(promises).then(() => {
       this.onImagesLoaded();
-      this.onTilesChanged();
     });
   },
 
@@ -107,8 +111,12 @@ const state = {
     this.onTilesChanged();
   },
 
-  setTileSize: function(tileSize) {
-    this.tileSize = tileSize;
+  setCompositionToRender: function(composition, tileSize) {
+    this.compositionToRender = {
+      composition,
+      tileSize
+    };
+    this.loading = false;
   },
 
   setLoading: function(loading) {
