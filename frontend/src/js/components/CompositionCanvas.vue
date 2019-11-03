@@ -6,15 +6,6 @@
 import * as CompositionLib from '../composition.js';
 import { log } from '../log.js';
 
-function render() {
-  log(`Rendering composition on canvas, tileSize=${this.tileSize}`);
-  CompositionLib.renderCompositionOnCanvas(
-    this.composition,
-    this.$refs.canvas,
-    this.tileSize
-  );
-}
-
 export default {
   name: 'CompositionCanvas',
   props: {
@@ -28,8 +19,17 @@ export default {
     }
   },
   watch: {
-    composition: render,
-    tileSize: render
+    tileSize: function() {
+      log(
+        'Tile size changed',
+        +`rendering composition on canvas, tileSize=${this.tileSize}`
+      );
+      CompositionLib.renderCompositionOnCanvas(
+        this.composition,
+        this.$refs.canvas,
+        this.tileSize
+      );
+    }
   }
 };
 </script>

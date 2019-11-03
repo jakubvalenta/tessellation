@@ -68,6 +68,7 @@ export default {
   },
   watch: {
     composition: function() {
+      log('Composition changed');
       if (!this.composition.length) {
         return;
       }
