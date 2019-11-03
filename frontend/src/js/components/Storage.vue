@@ -3,17 +3,17 @@
     <StorageLocal heading="Drafts"></StorageLocal>
     <StorageRemote
       heading="Published"
-      v-bind:has-list-permission="isAuthenticated"
-      v-bind:has-create-permission="isAuthenticated"
-      v-bind:func-list="StorageLib.getPublishedCompositions"
-      v-bind:func-load="StorageLib.getPublishedComposition"
+      :has-list-permission="isAuthenticated"
+      :has-create-permission="isAuthenticated"
+      :func-list="StorageLib.getPublishedCompositions"
+      :func-load="StorageLib.getPublishedComposition"
     ></StorageRemote>
     <StorageRemote
       heading="Samples"
-      v-bind:has-create-permission="false"
-      v-bind:has-delete-permission="false"
-      v-bind:func-list="StorageLib.getSampleCompositions"
-      v-bind:func-load="StorageLib.getSampleComposition"
+      :has-create-permission="false"
+      :has-delete-permission="false"
+      :func-list="StorageLib.getSampleCompositions"
+      :func-load="StorageLib.getSampleComposition"
     ></StorageRemote>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <div class="composition-inner" ref="inner">
     <CompositionCanvas
-      v-bind:composition="composition"
-      v-bind:tile-size="tileSize"
+      :composition="composition"
+      :tile-size="tileSize"
       v-show="!loading && !error"
       ref="canvas"
     ></CompositionCanvas>
@@ -19,9 +19,9 @@
       <div v-for="rowTiles in composition" class="tile-row">
         <Tile
           v-for="(tile, index) in rowTiles"
-          v-bind:image="tile && tile.image"
-          v-bind:rotation="tile && tile.rotation"
-          v-bind:key="index"
+          :image="tile && tile.image"
+          :rotation="tile && tile.rotation"
+          :key="index"
         ></Tile>
       </div>
     </div>

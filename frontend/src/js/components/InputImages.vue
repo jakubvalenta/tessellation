@@ -2,8 +2,8 @@
   <div class="images">
     <InputImage
       v-for="image in images"
-      v-bind:image="image"
-      v-bind:key="image.ref"
+      :image="image"
+      :key="image.ref"
     ></InputImage>
     <div class="image">
       <div class="image-inner image-inner-add">

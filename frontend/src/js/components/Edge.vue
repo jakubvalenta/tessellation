@@ -1,9 +1,9 @@
 <template>
   <button
     @click="shift"
-    v-bind:class="classObject"
+    :class="classObject"
     title="change connection"
-    v-bind:data-intro="
+    :data-intro="
       image.index === 0 &&
         side === 2 &&
         'Click these buttons to specify how the tiles connect. In the resulting composition, a pink edge of one tile must always be placed next to a pink edge of a another tile, same for the green edges etc.'

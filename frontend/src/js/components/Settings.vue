@@ -8,8 +8,8 @@
         shuffle
       </button>
       <Download
-        v-bind:composition="composition"
-        v-bind:natural-tile-size="naturalTileSize"
+        :composition="composition"
+        :natural-tile-size="naturalTileSize"
       ></Download>
     </p>
     <form action="javascript:void(0)" class="composition-settings">
@@ -18,7 +18,7 @@
         <label for="js-width" class="sr-only">columns</label>
         <input
           type="number"
-          v-bind:value="width"
+          :value="width"
           @change="changeWidth"
           min="1"
           class="input-number"
@@ -27,7 +27,7 @@
         <label for="js-height" class="sr-only">rows</label>
         <input
           type="number"
-          v-bind:value="height"
+          :value="height"
           @change="changeHeight"
           min="1"
           class="input-number"

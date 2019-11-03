@@ -2,17 +2,17 @@
   <div>
     <div class="composition-container">
       <Composition
-        v-bind:composition="composition"
-        v-bind:tile-size="tileSize"
-        v-bind:loading="loading"
-        v-bind:error="error"
-        v-bind:warn="warn"
+        :composition="composition"
+        :tile-size="tileSize"
+        :loading="loading"
+        :error="error"
+        :warn="warn"
       ></Composition>
     </div>
     <div class="composition-controls">
       <Download
-        v-bind:composition="composition"
-        v-bind:natural-tile-size="naturalTileSize"
+        :composition="composition"
+        :natural-tile-size="naturalTileSize"
       ></Download>
     </div>
   </div>

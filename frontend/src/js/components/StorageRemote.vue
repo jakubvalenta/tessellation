@@ -16,7 +16,7 @@
       <table class="storage-list">
         <tr v-for="item in items">
           <td>{{ item.id }} {{ item.name }}</td>
-          <td><a v-bind:href="item.compositionUrl">permalink</a></td>
+          <td><a :href="item.compositionUrl">permalink</a></td>
           <td>
             <button @click="loadItem(item.compositionId)">
               load

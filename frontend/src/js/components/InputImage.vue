@@ -2,23 +2,23 @@
   <div class="image">
     <div
       class="image-inner"
-      v-bind:data-intro="
+      :data-intro="
         image.index === 0 &&
           'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
       "
     >
-      <Tile v-bind:image="image" v-bind:background="true">
+      <Tile :image="image" :background="true">
         <Edge
           v-for="(connection, side) in image.connections"
-          v-bind:image="image"
-          v-bind:side="side"
-          v-bind:key="side"
+          :image="image"
+          :side="side"
+          :key="side"
         ></Edge>
       </Tile>
       <div class="image-controls">
-        <label v-bind:for="name" class="label-file">upload image</label>
+        <label :for="name" class="label-file">upload image</label>
         <input
-          v-bind:id="name"
+          :id="name"
           type="file"
           accept="image/*"
           class="input-file"

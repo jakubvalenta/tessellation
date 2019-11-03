@@ -1,6 +1,6 @@
 <template>
-  <div v-bind:class="outerClassObject" v-bind:style="outerStyleObject">
-    <div v-bind:class="innerClassObject">
+  <div :class="outerClassObject" :style="outerStyleObject">
+    <div :class="innerClassObject">
       <div class="tile-text">
         {{ image ? image.index + 1 : '' }}
       </div>
