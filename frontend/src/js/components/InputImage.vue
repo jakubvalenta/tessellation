@@ -7,14 +7,14 @@
           'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
       "
     >
-      <tile v-bind:image="image" v-bind:background="true">
-        <edge
+      <Tile v-bind:image="image" v-bind:background="true">
+        <Edge
           v-for="(connection, side) in image.connections"
           v-bind:image="image"
           v-bind:side="side"
           v-bind:key="side"
-        ></edge>
-      </tile>
+        ></Edge>
+      </Tile>
       <div class="image-controls">
         <label v-bind:for="name" class="label-file">upload image</label>
         <input

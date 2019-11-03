@@ -1,20 +1,20 @@
 <template>
   <div>
-    <storage-local heading="Drafts"></storage-local>
-    <storage-remote
+    <StorageLocal heading="Drafts"></StorageLocal>
+    <StorageRemote
       heading="Published"
       v-bind:hasListPermission="isAuthenticated"
       v-bind:hasCreatePermission="isAuthenticated"
       v-bind:funcList="StorageLib.getPublishedCompositions"
       v-bind:funcLoad="StorageLib.getPublishedComposition"
-    ></storage-remote>
-    <storage-remote
+    ></StorageRemote>
+    <StorageRemote
       heading="Samples"
       v-bind:hasCreatePermission="false"
       v-bind:hasDeletePermission="false"
       v-bind:funcList="StorageLib.getSampleCompositions"
       v-bind:funcLoad="StorageLib.getSampleComposition"
-    ></storage-remote>
+    ></StorageRemote>
   </div>
 </template>
 

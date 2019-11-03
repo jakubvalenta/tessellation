@@ -1,11 +1,11 @@
 <template>
   <div class="composition-inner" ref="main">
-    <composition-canvas
+    <CompositionCanvas
       v-bind:composition="composition"
       v-bind:tileSize="tileSize"
       v-show="!loading && !error"
       ref="canvas"
-    ></composition-canvas>
+    ></CompositionCanvas>
     <div v-show="loading" class="composition-message">
       <div class="alert box-info">Processing...</div>
     </div>
@@ -17,12 +17,12 @@
     <div v-show="warn" class="alert box-error">{{ warn }}</div>
     <div class="composition-overlay">
       <div v-for="rowTiles in composition" class="tile-row">
-        <tile
+        <Tile
           v-for="(tile, index) in rowTiles"
           v-bind:image="tile && tile.image"
           v-bind:rotation="tile && tile.rotation"
           v-bind:key="index"
-        ></tile>
+        ></Tile>
       </div>
     </div>
   </div>

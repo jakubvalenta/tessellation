@@ -4,28 +4,28 @@
       <h2 class="sr-only">Create new composition</h2>
       <div class="section section-input">
         <h2 class="section-heading">Input</h2>
-        <input-images v-bind:images="images"></input-images>
+        <InputImages v-bind:images="images"></InputImages>
       </div>
       <div class="section section-composition">
         <h2 class="sr-only">Composition</h2>
         <div class="composition-container">
-          <composition
+          <Composition
             v-bind:composition="composition"
             v-bind:tileSize="tileSize"
             v-bind:loading="loading"
             v-bind:error="error"
             v-bind:warn="warn"
-          ></composition>
+          ></Composition>
         </div>
-        <settings
+        <Settings
           v-bind:width="size.width"
           v-bind:height="size.height"
           v-bind:composition="composition"
           v-bind:naturalTileSize="naturalTileSize"
-        ></settings>
+        ></Settings>
       </div>
       <div class="section section-storage">
-        <storage></storage>
+        <Storage></Storage>
       </div>
     </div>
   </div>

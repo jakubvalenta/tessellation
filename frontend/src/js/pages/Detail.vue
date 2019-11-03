@@ -1,19 +1,19 @@
 <template>
   <div>
     <div class="composition-container">
-      <composition
+      <Composition
         v-bind:composition="composition"
         v-bind:tileSize="tileSize"
         v-bind:loading="loading"
         v-bind:error="error"
         v-bind:warn="warn"
-      ></composition>
+      ></Composition>
     </div>
     <div class="composition-controls">
-      <download
+      <Download
         v-bind:composition="composition"
         v-bind:naturalTileSize="naturalTileSize"
-      ></download>
+      ></Download>
     </div>
   </div>
 </template>

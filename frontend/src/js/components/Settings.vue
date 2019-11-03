@@ -7,10 +7,10 @@
       >
         shuffle
       </button>
-      <download
+      <Download
         v-bind:composition="composition"
         v-bind:naturalTileSize="naturalTileSize"
-      ></download>
+      ></Download>
     </p>
     <form action="javascript:void(0)" class="composition-settings">
       <p>
