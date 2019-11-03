@@ -54,10 +54,10 @@
       {% block content %}{% endblock %}
     </main>
     {% block footer %}{% endblock %}
-    <script src="{% static 'bundles/supportedBrowsers.js' }"></script>
+    <script src="{% static 'bundles/supportedBrowsers.js' %}"></script>
     <script>
       if (!window.SUPPORTED_BROWSERS.test(navigator.userAgent)) {
-        document.body.className = 'is-unsupported';
+        document.body.className += ' is-unsupported';
       }
     </script>
     {% render_bundle 'chunk-vendors' 'js' %}
