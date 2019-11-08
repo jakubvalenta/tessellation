@@ -102,6 +102,13 @@ function chooseTile(stack, requirements, excl = []) {
 
 export function generateComposition(tiles, [width, height]) {
   const composition = Array.from(Array(height), () => new Array(width));
+  if (!tiles.length) {
+    return {
+      composition: composition,
+      error: null,
+      warn: null
+    };
+  }
   const tried = Array.from(Array(height), () =>
     Array.from(Array(width), () => [])
   );
