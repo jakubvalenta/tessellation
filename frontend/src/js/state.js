@@ -134,6 +134,10 @@ const state = {
     });
   },
 
+  clearImages: function() {
+    this.images.splice(0);
+  },
+
   updateImage: function(image, url) {
     log(`Picked file ${url}`);
     const oldIsImageComplete = isImageComplete(image);

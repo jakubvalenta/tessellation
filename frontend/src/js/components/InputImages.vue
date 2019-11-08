@@ -2,8 +2,13 @@
   <div class="images">
     <InputImage v-for="image in images" :image="image" :key="image.ref" />
     <div class="image">
-      <div class="image-inner image-inner-add">
-        <button @click="newImage">add more</button>
+      <div class="image-inner">
+        <div class="tile-add">
+          <button @click="newImage">add more</button>
+        </div>
+        <div class="image-controls">
+          <button @click="clearImages">clear all</button>
+        </div>
       </div>
     </div>
   </div>
@@ -26,6 +31,9 @@ export default {
   methods: {
     newImage: function() {
       this.$root.state.newImage();
+    },
+    clearImages: function() {
+      this.$root.state.clearImages();
     }
   }
 };

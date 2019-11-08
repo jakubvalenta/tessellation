@@ -124,7 +124,7 @@ body .introjs-button {
   border-radius: 0.25em;
   font-family: $font-family;
   font-size: 100%;
-  line-height: 1.5;
+  // line-height: 1.5; // TODO
   color: $color-text;
   background: $color-background-dark;
   box-shadow: 0 0 0.1em $color-background-darker;
@@ -190,7 +190,8 @@ body .introjs-button {
   justify-content: right;
   text-align: right;
 
-  > span { // Fix Chrome not aligning to the right
+  > span {
+    // Fix Chrome not aligning to the right
     display: block;
     width: 100%;
   }
@@ -310,7 +311,8 @@ body .introjs-button {
 .tile-row {
   display: flex;
 }
-.tile {
+.tile,
+.tile-add {
   @include square;
 
   flex-grow: 1;
@@ -340,6 +342,11 @@ body .introjs-button {
   color: $color-highlight;
   background: $color-background-darker;
   border-radius: 100%;
+}
+.tile-add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .composition-controls {
   display: flex;
@@ -400,6 +407,7 @@ body .introjs-button {
   margin-left: -3em;
   margin-right: -3em;
   text-align: center;
+  height: 2.2em; // TODO
 }
 .image-delete {
   position: absolute;
@@ -407,14 +415,6 @@ body .introjs-button {
   right: 0;
   background: transparent;
   box-shadow: none;
-}
-.image-inner-add {
-  @include square;
-
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .conn-button {
