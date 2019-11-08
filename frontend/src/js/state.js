@@ -135,7 +135,10 @@ const state = {
   },
 
   clearImages: function() {
-    this.images.splice(0);
+    if (this.images.length) {
+      this.images.splice(0);
+      this.onImagesChanged();
+    }
   },
 
   updateImage: function(image, url) {
