@@ -7,7 +7,9 @@
           <button @click="newImage">add more</button>
         </div>
         <div class="image-controls">
-          <button @click="clearImages">clear all</button>
+          <button @click="clearImages" class="button-secondary">
+            remove all
+          </button>
         </div>
       </div>
     </div>

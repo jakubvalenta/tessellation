@@ -119,12 +119,13 @@ a {
 button,
 .label-file,
 body .introjs-button {
+  display: inline-block;
   padding: 0.5em 1em;
   border: 0;
   border-radius: 0.25em;
   font-family: $font-family;
   font-size: 100%;
-  // line-height: 1.5; // TODO
+  line-height: 1.5;
   color: $color-text;
   background: $color-background-dark;
   box-shadow: 0 0 0.1em $color-background-darker;
@@ -407,7 +408,6 @@ body .introjs-button {
   margin-left: -3em;
   margin-right: -3em;
   text-align: center;
-  height: 2.2em; // TODO
 }
 .image-delete {
   position: absolute;
