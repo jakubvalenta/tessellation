@@ -118,7 +118,6 @@ export function generateComposition(tiles, [width, height]) {
     tile,
     i = 0;
   for (i = 0; i < MAX_TILES_TO_TRY; i++) {
-    log(`Choosing tile [${row}, ${col}]`);
     tile = chooseTile(
       stack,
       findRequirements(composition, col, row),
@@ -126,6 +125,7 @@ export function generateComposition(tiles, [width, height]) {
     );
     tried[row][col].push(tile);
     if (tile !== null) {
+      log(`[${row}, ${col}] Chose tile ${tile.imgRef} ${tile.rotation}`);
       composition[row][col] = tile;
       [row, col] = calcNextCoords(row, col, width, height);
       if (row === null) {
@@ -136,7 +136,8 @@ export function generateComposition(tiles, [width, height]) {
         };
       }
     } else {
-      log('No fitting tile found, going one step back');
+      log(`[${row}, ${col}] No fitting tile found, going one step back`);
+      tried[row][col].splice(0);
       [row, col] = calcPrevCoords(row, col, width, height);
       if (row === null) {
         error('Failed to create a composition from these tiles');
