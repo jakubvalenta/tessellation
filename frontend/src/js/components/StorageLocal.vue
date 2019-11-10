@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="storage-header">
-      <h2 class="section-heading">{{ heading }}</h2>
+      <h2 class="section-heading">Drafts</h2>
       <button
         @click="createItem"
         data-intro="You can save the generated composition to your device using this button. Note that when you open Tessellation on a second device, you will not see the compositions you saved on the first device."
@@ -9,7 +9,7 @@
         save draft
       </button>
     </div>
-    <p class="storage-empty" v-show="!items.length">empty</p>
+    <p class="text-status" v-show="!items.length">empty</p>
     <table class="storage-list">
       <tr v-for="item in items" :key="`${item.dataIndex}-${item.name}`">
         <td>{{ item.id }} {{ item.name }}</td>
@@ -33,12 +33,6 @@ import { log } from '../log.js';
 
 export default {
   name: 'StorageLocal',
-  props: {
-    heading: {
-      type: String,
-      required: true
-    }
-  },
   data: function() {
     return {
       items: []

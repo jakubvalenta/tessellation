@@ -1,28 +1,30 @@
 <template>
   <div>
     <div class="storage-header">
-      <h2 class="section-heading">{{ heading }}</h2>
-      <button v-if="hasCreatePermission" @click="createItem">publish</button>
+      <h2 class="section-heading">Published</h2>
+      <button v-if="hasPermissions" @click="createItem">publish</button>
     </div>
-    <div v-if="hasListPermission">
-      <p class="storage-status text-success" v-show="successMsg">
+    <div v-if="hasPermissions">
+      <p class="text-status text-success" v-show="successMsg">
         {{ successMsg }}
       </p>
-      <p class="storage-status text-error" v-show="errorMsg">{{ errorMsg }}</p>
-      <p class="storage-empty" v-show="!items.length">empty</p>
-      <p class="storage-empty" v-show="loading">
+      <p class="text-status text-error" v-show="errorMsg">{{ errorMsg }}</p>
+      <p class="text-status" v-show="!items.length">empty</p>
+      <p class="text-status" v-show="loading">
         loading
       </p>
       <table class="storage-list">
         <tr v-for="item in items" :key="item.compositionId">
-          <td>{{ item.id }} {{ item.name }}</td>
-          <td><a :href="item.compositionUrl">permalink</a></td>
+          <td class="has-permalink">
+            {{ item.id }} {{ item.name }}
+            <a :href="item.compositionUrl" title="permalink">§</a>
+          </td>
           <td>
             <button @click="loadItem(item.compositionId)">
               load
             </button>
           </td>
-          <td v-if="hasDeletePermission">
+          <td v-if="hasPermissions">
             <button
               class="button-secondary"
               @click="deleteItem(item.compositionId)"
@@ -34,7 +36,7 @@
       </table>
     </div>
     <div v-else>
-      <p class="storage-empty">
+      <p class="text-status">
         <a href="/accounts/login?next=/">log in</a>
         to publish compositions
       </p>
@@ -78,28 +80,8 @@ function validateAll(funcs) {
 export default {
   name: 'StorageRemote',
   props: {
-    heading: {
-      type: String,
-      required: true
-    },
-    hasListPermission: {
+    hasPermissions: {
       type: Boolean,
-      default: true
-    },
-    hasCreatePermission: {
-      type: Boolean,
-      default: true
-    },
-    hasDeletePermission: {
-      type: Boolean,
-      default: true
-    },
-    funcList: {
-      type: Function,
-      required: true
-    },
-    funcLoad: {
-      type: Function,
       required: true
     }
   },
@@ -117,7 +99,7 @@ export default {
   methods: {
     listItems: function() {
       this.loading = true;
-      this.funcList().then(data => {
+      StorageLib.getPublishedCompositions().then(data => {
         this.loading = false;
         this.items = data.map((composition, index) => {
           return {
@@ -155,7 +137,7 @@ export default {
     },
     loadItem: function(compositionId) {
       log(`Loading published composition ${compositionId}`);
-      this.funcLoad(compositionId).then(data => {
+      StorageLib.getPublishedComposition(compositionId).then(data => {
         const newState = StorageLib.deserializeState(data);
         this.$root.state.updateState(newState);
         this.listItems();

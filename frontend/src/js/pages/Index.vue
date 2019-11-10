@@ -1,14 +1,15 @@
 <template>
   <div id="app">
+    <h2 class="sr-only">Featured compositions</h2>
+    <StoragePublic />
     <div class="sections">
-      <h2 class="sr-only">Create new composition</h2>
       <div class="section section-input">
-        <h2 class="section-heading">Input</h2>
+        <h2 class="section-heading">Edit composition</h2>
         <InputImages :images="images" />
       </div>
       <div class="section section-composition">
         <h2 class="sr-only">Composition</h2>
-        <div class="composition-container">
+        <div class="box-dark">
           <Composition
             :composition="composition"
             :compositionToRender="compositionToRender"
@@ -25,7 +26,8 @@
         />
       </div>
       <div class="section section-storage">
-        <Storage />
+        <StorageLocal />
+        <StorageRemote :has-permissions="isAuthenticated" />
       </div>
     </div>
   </div>
@@ -35,7 +37,9 @@
 import Composition from '../components/Composition.vue';
 import InputImages from '../components/InputImages.vue';
 import Settings from '../components/Settings.vue';
-import Storage from '../components/Storage.vue';
+import StorageLocal from '../components/StorageLocal.vue';
+import StoragePublic from '../components/StoragePublic.vue';
+import StorageRemote from '../components/StorageRemote.vue';
 
 export default {
   name: 'app',
@@ -43,7 +47,9 @@ export default {
     Composition,
     InputImages,
     Settings,
-    Storage
+    StorageLocal,
+    StoragePublic,
+    StorageRemote
   },
   data: function() {
     return this.$root.state;

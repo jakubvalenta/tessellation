@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="composition-container">
+    <div class="box-dark">
       <Composition
         :composition="composition"
         :compositionToRender="compositionToRender"

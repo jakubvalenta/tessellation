@@ -56,6 +56,9 @@ body {
 .is-unsupported .error-unsupported {
   display: block;
 }
+.text-status {
+  font-style: italic;
+}
 .text-success {
   color: $color-green;
 }
@@ -153,6 +156,15 @@ body .introjs-button {
 .input-number {
   line-height: 2;
   width: 3em;
+}
+
+.has-permalink {
+  a {
+    visibility: hidden;
+  }
+  &:hover a {
+    visibility: visible;
+  }
 }
 
 .header,
@@ -267,10 +279,49 @@ body .introjs-button {
   }
 }
 
-.composition-container {
+.composition-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  margin-bottom: 1.5em;
+  padding: 0;
+
+  li {
+    display: block;
+    margin: 0;
+  }
+}
+.composition-list__item {
+  width: 12em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+
+  h3 {
+    margin-top: 0;
+  }
+  button {
+    background-color: $color-background-light;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+.composition-list__item__images {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+
+  img {
+    display: block;
+    width: 50%;
+    background: $color-white;
+  }
+}
+
+.box-dark {
   position: relative;
   padding: 1em;
-  margin-bottom: 1em;
   border-radius: 0.25em;
   box-sizing: border-box;
   background: $color-background-dark;
@@ -352,7 +403,7 @@ body .introjs-button {
 .composition-controls {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1em;
+  margin: 1em 0;
 
   p {
     margin: 0;
@@ -469,10 +520,6 @@ body .introjs-button {
 .storage-empty {
   border-top: 1px solid $color-border;
   padding: 0.5em 0;
-  font-style: italic;
-}
-.storage-status {
-  font-style: italic;
 }
 .storage-list {
   min-height: 1em;
