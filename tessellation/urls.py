@@ -13,8 +13,5 @@ router.register('api/samples', views.SampleAPIViewSet, basename='sample')
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    path(
-        'c/<slug:slug>/', views.CompositionDetailView.as_view(), name='detail'
-    ),
     path('', include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

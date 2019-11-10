@@ -8,50 +8,15 @@ from tessellation.permissions import IsOwnerOrReadOnly
 from tessellation.serializers import CompositionSerializer
 
 
-def add_basic_context(context: dict):
-    context.update(
-        {
-            'title': __title__,
-            'description': __description__,
-            'email': settings.CONTACT_EMAIL,
-        }
-    )
-
-
 class IndexView(generic.base.TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self) -> dict:
-        context = {}
-        add_basic_context(context)
-        oldest_sample_composition = (
-            Composition.objects.get_sample_compositions()
-            .prefetch_related('tiles__image')
-            .last()
-        )
-        serializer = CompositionSerializer(
-            oldest_sample_composition, context={'request': self.request}
-        )
-        context['data'] = serializer.data
-        return context
-
-
-class CompositionDetailView(generic.DetailView):
-    model = Composition
-    template_name = 'detail.html'
-    queryset = Composition.objects.filter(public=True).prefetch_related(
-        'tiles__image'
-    )
-
-    def get_context_data(self, **kwargs) -> dict:
-        context = super().get_context_data(**kwargs)
-        add_basic_context(context)
-        serializer = CompositionSerializer(
-            self.object, context={'request': self.request}
-        )
-        context['heading'] = self.object.title
-        context['data'] = serializer.data
-        return context
+        return {
+            'title': __title__,
+            'description': __description__,
+            'email': settings.CONTACT_EMAIL,
+        }
 
 
 class CompositionAPIViewSet(viewsets.ModelViewSet):

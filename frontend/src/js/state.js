@@ -54,7 +54,6 @@ const state = {
   error: null,
   warn: null,
   isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED,
-  edit: false,
 
   generateComposition: function() {
     this.loading = true;
@@ -96,10 +95,6 @@ const state = {
     Promise.all(promises).then(() => {
       this.onImagesLoaded();
     });
-  },
-
-  setEdit: function(edit) {
-    this.edit = edit;
   },
 
   setSize: function({ width, height }) {

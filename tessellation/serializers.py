@@ -41,9 +41,6 @@ class SizeSerializer(serializers.ModelSerializer):
 
 
 class CompositionSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(
-        view_name='detail', lookup_field='slug'
-    )
     name = serializers.CharField(read_only=True)
     size = SizeSerializer()
     images = ImageSerializer(many=True)
@@ -54,7 +51,6 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
         model = Composition
         fields = [
             'id',
-            'url',
             'created_at',
             'name',
             'size',

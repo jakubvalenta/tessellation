@@ -13,8 +13,7 @@
 <script>
   window.TESSELLATION_IS_AUTHENTICATED = {{ user.is_authenticated|lower }};
 </script>
-{{ data|json_script:'composition-data' }}
-{% render_bundle 'index' 'js' %}
+{% render_bundle 'main' 'js' %}
 {% endblock %}{% block footer %}
 <footer class="footer">
   <p>

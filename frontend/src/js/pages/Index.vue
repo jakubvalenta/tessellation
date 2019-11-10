@@ -1,7 +1,11 @@
 <template>
-  <div id="app">
+  <div>
     <h2 class="sr-only">Featured compositions</h2>
-    <StoragePublic />
+    <div v-if="list">
+      <StoragePublic v-if="list" />
+      <button @click="toggleList(false)">hide</button>
+    </div>
+    <button v-else @click="toggleList(true)">show featured composition</button>
     <div class="edit">
       <button v-show="!edit" @click="toggleEdit(true)" class="button-start">
         start editing
@@ -47,6 +51,7 @@
 </template>
 
 <script>
+import * as StorageLib from '../storage.js';
 import Composition from '../components/Composition.vue';
 import CompositionControls from '../components/CompositionControls.vue';
 import InputImages from '../components/InputImages.vue';
@@ -56,7 +61,7 @@ import StoragePublic from '../components/StoragePublic.vue';
 import StorageRemote from '../components/StorageRemote.vue';
 
 export default {
-  name: 'app',
+  name: 'Index',
   components: {
     Composition,
     CompositionControls,
@@ -66,17 +71,44 @@ export default {
     StoragePublic,
     StorageRemote
   },
+  props: {
+    compositionId: {
+      type: String,
+      required: false
+    },
+    edit: {
+      type: Boolean,
+      required: true
+    },
+    list: {
+      type: Boolean,
+      required: true
+    }
+  },
   data: function() {
     return this.$root.state;
   },
+  mounted: function() {
+    if (this.compositionId) {
+      StorageLib.getPublishedComposition(this.compositionId).then(data => {
+        const newState = StorageLib.deserializeState(data);
+        this.$root.state.updateState(newState);
+      });
+    } else {
+      StorageLib.getSampleCompositions().then(data => {
+        const firstData = data[0];
+        const newState = StorageLib.deserializeState(firstData);
+        this.$root.state.updateState(newState);
+      });
+    }
+  },
   methods: {
     toggleEdit: function(edit) {
-      this.$root.state.setEdit(edit);
+      this.edit = edit;
+    },
+    toggleList: function(list) {
+      this.list = list;
     }
   }
 };
 </script>
-
-<style lang="scss">
-@import '../../css/main.scss';
-</style>
