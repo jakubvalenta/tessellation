@@ -11,7 +11,7 @@
       </button>
     </div>
     <div class="sections">
-      <div class="section section-input">
+      <div v-show="edit" class="section section-input">
         <div class="header-row">
           <h2 class="section-heading">Input</h2>
           <Intro />
@@ -24,19 +24,21 @@
           <Composition
             :composition="composition"
             :compositionToRender="compositionToRender"
+            :edit="edit"
             :loading="loading"
             :error="error"
             :warn="warn"
           />
         </div>
-        <Settings
+        <CompositionControls
+          :edit="edit"
           :width="size.width"
           :height="size.height"
           :composition="composition"
           :natural-tile-size="naturalTileSize"
         />
       </div>
-      <div class="section section-storage">
+      <div v-show="edit" class="section section-storage">
         <StorageLocal />
         <StorageRemote :has-permissions="isAuthenticated" />
       </div>
@@ -46,9 +48,9 @@
 
 <script>
 import Composition from '../components/Composition.vue';
+import CompositionControls from '../components/CompositionControls.vue';
 import InputImages from '../components/InputImages.vue';
 import Intro from '../components/Intro.vue';
-import Settings from '../components/Settings.vue';
 import StorageLocal from '../components/StorageLocal.vue';
 import StoragePublic from '../components/StoragePublic.vue';
 import StorageRemote from '../components/StorageRemote.vue';
@@ -57,9 +59,9 @@ export default {
   name: 'app',
   components: {
     Composition,
+    CompositionControls,
     InputImages,
     Intro,
-    Settings,
     StorageLocal,
     StoragePublic,
     StorageRemote
@@ -68,8 +70,8 @@ export default {
     return this.$root.state;
   },
   methods: {
-    toggleEdit: function(value) {
-      this.edit = value;
+    toggleEdit: function(edit) {
+      this.$root.state.setEdit(edit);
     }
   }
 };

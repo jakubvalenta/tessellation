@@ -43,6 +43,21 @@ function calcTileSize(composition, canvas, elContainer) {
   return tileSize;
 }
 
+function render() {
+  log('Composition changed');
+  if (!this.composition.length) {
+    return;
+  }
+  const elContainer = this.$refs.inner.parentNode;
+  const tileSize = calcTileSize(
+    this.composition,
+    this.$refs.canvas,
+    elContainer
+  );
+  log(`Calculated tile size ${tileSize}`);
+  this.$root.state.setCompositionToRender(this.composition, tileSize);
+}
+
 export default {
   name: 'Composition',
   components: {
@@ -58,6 +73,10 @@ export default {
       type: Object,
       required: true
     },
+    edit: {
+      type: Boolean,
+      required: true
+    },
     loading: {
       type: Boolean,
       required: true
@@ -68,18 +87,10 @@ export default {
   watch: {
     // TODO: We could also just store the container width in the global state
     composition: function() {
-      log('Composition changed');
-      if (!this.composition.length) {
-        return;
-      }
-      const elContainer = this.$refs.inner.parentNode;
-      const tileSize = calcTileSize(
-        this.composition,
-        this.$refs.canvas,
-        elContainer
-      );
-      log(`Calculated tile size ${tileSize}`);
-      this.$root.state.setCompositionToRender(this.composition, tileSize);
+      render.call(this);
+    },
+    edit: function() {
+      render.call(this);
     }
   }
 };

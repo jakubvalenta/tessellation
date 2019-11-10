@@ -98,6 +98,10 @@ const state = {
     });
   },
 
+  setEdit: function(edit) {
+    this.edit = edit;
+  },
+
   setSize: function({ width, height }) {
     if (width) {
       this.size.width = Math.max(width, 1);
