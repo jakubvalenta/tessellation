@@ -61,7 +61,7 @@ import StoragePublic from '../components/StoragePublic.vue';
 import StorageRemote from '../components/StorageRemote.vue';
 
 export default {
-  name: 'Index',
+  name: 'Detail',
   components: {
     Composition,
     CompositionControls,

@@ -1,6 +1,6 @@
 import * as State from './state.js';
 import App from './App.vue';
-import Index from './pages/Index.vue';
+import Detail from './pages/Detail.vue';
 import NotFound from './pages/NotFound.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -27,7 +27,7 @@ const router = new VueRouter({
     {
       path: '/:compositionId',
       name: 'detail',
-      component: Index,
+      component: Detail,
       props: route => {
         return {
           compositionId: route.params.compositionId,
