@@ -11,6 +11,7 @@
 {% endblock %}
 {% block scripts %}
 <script>
+  window.TESSELLATION_COMPOSITION_ID = '{{ compositionId }}';
   window.TESSELLATION_IS_AUTHENTICATED = {{ user.is_authenticated|lower }};
 </script>
 {% render_bundle 'main' 'js' %}

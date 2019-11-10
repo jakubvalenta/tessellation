@@ -7,7 +7,14 @@
     >
       <h3 class="has-permalink">
         {{ item.name }}
-        <a :href="item.compositionUrl" title="permalink">§</a>
+        <router-link
+          :to="{
+            name: 'detail',
+            params: { compositionId: item.compositionId }
+          }"
+          title="permalink"
+          >§</router-link
+        >
       </h3>
       <div class="composition-list__item__images">
         <img v-for="image in item.images" :key="item.imgRef" :src="image.url" />
@@ -55,10 +62,11 @@ export default {
       });
     },
     loadItem: function(compositionId) {
-      log(`Loading published composition ${compositionId}`);
-      StorageLib.getSampleComposition(compositionId).then(data => {
-        const newState = StorageLib.deserializeState(data);
-        this.$root.state.updateState(newState);
+      log(`Loading sample composition ${compositionId}`);
+      this.$router.push({
+        name: 'detail',
+        params: { compositionId },
+        query: this.$route.query
       });
     }
   }

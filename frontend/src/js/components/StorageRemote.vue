@@ -17,7 +17,14 @@
         <tr v-for="item in items" :key="item.compositionId">
           <td class="has-permalink">
             {{ item.id }} {{ item.name }}
-            <a :href="item.compositionUrl" title="permalink">§</a>
+            <router-link
+              :to="{
+                name: 'detail',
+                params: { compositionId: item.compositionId }
+              }"
+              title="permalink"
+              >§</router-link
+            >
           </td>
           <td>
             <button @click="loadItem(item.compositionId)">
@@ -137,10 +144,10 @@ export default {
     },
     loadItem: function(compositionId) {
       log(`Loading published composition ${compositionId}`);
-      StorageLib.getPublishedComposition(compositionId).then(data => {
-        const newState = StorageLib.deserializeState(data);
-        this.$root.state.updateState(newState);
-        this.listItems();
+      this.$router.push({
+        name: 'detail',
+        params: { compositionId },
+        query: this.$route.query
       });
     },
     deleteItem: function(compositionId) {

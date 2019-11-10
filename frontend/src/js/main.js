@@ -12,12 +12,27 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
+      name: 'index',
+      redirect: route => {
+        return {
+          name: 'detail',
+          params: { compositionId: window.TESSELLATION_COMPOSITION_ID },
+          query: {
+            edit: route.query.edit !== undefined ? route.query.edit : false,
+            list: route.query.list !== undefined ? route.query.list : true
+          }
+        };
+      }
+    },
+    {
+      path: '/:compositionId',
+      name: 'detail',
       component: Index,
       props: route => {
         return {
-          compositionId: route.query.c,
-          edit: route.query.edit || false,
-          list: route.query.list || false
+          compositionId: route.params.compositionId,
+          edit: route.query.edit === 'true' || false,
+          list: route.query.list === 'true' || false
         };
       }
     },

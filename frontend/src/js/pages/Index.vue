@@ -2,11 +2,11 @@
   <div>
     <h2 class="sr-only">Featured compositions</h2>
     <div v-if="list">
-      <StoragePublic v-if="list" />
+      <StoragePublic />
       <button @click="toggleList(false)">hide</button>
     </div>
-    <button v-else @click="toggleList(true)">show featured composition</button>
-    <div class="edit">
+    <button v-else @click="toggleList(true)">show featured compositions</button>
+    <div v-show="!loading" class="edit">
       <button v-show="!edit" @click="toggleEdit(true)" class="button-start">
         start editing
       </button>
@@ -74,7 +74,7 @@ export default {
   props: {
     compositionId: {
       type: String,
-      required: false
+      required: true
     },
     edit: {
       type: Boolean,
@@ -89,25 +89,34 @@ export default {
     return this.$root.state;
   },
   mounted: function() {
-    if (this.compositionId) {
-      StorageLib.getPublishedComposition(this.compositionId).then(data => {
-        const newState = StorageLib.deserializeState(data);
-        this.$root.state.updateState(newState);
-      });
-    } else {
-      StorageLib.getSampleCompositions().then(data => {
-        const firstData = data[0];
-        const newState = StorageLib.deserializeState(firstData);
-        this.$root.state.updateState(newState);
-      });
+    const func = this.edit
+      ? StorageLib.getPublishedComposition
+      : StorageLib.getSampleComposition;
+    func(this.compositionId).then(data => {
+      const newState = StorageLib.deserializeState(data);
+      this.$root.state.updateState(newState);
+    });
+  },
+  watch: {
+    $route: function(to) {
+      this.edit = to.query.edit;
+      this.list = to.query.list;
     }
   },
   methods: {
     toggleEdit: function(edit) {
-      this.edit = edit;
+      this.$router.push({
+        name: 'detail',
+        params: { compositionId: this.compositionId },
+        query: { edit: edit, list: this.list }
+      });
     },
     toggleList: function(list) {
-      this.list = list;
+      this.$router.push({
+        name: 'detail',
+        params: { compositionId: this.compositionId },
+        query: { edit: this.edit, list: list }
+      });
     }
   }
 };

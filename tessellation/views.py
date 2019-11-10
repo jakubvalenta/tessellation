@@ -12,10 +12,16 @@ class IndexView(generic.base.TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self) -> dict:
+        oldest_sample_composition = (
+            Composition.objects.get_sample_compositions()
+            .prefetch_related('tiles__image')
+            .last()
+        )
         return {
             'title': __title__,
             'description': __description__,
             'email': settings.CONTACT_EMAIL,
+            'compositionId': oldest_sample_composition.pk,
         }
 
 
