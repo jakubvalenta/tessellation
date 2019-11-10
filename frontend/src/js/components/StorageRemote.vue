@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="storage-header">
+    <div class="header-row">
       <h2 class="section-heading">Published</h2>
       <button v-if="hasPermissions" @click="createItem">publish</button>
     </div>

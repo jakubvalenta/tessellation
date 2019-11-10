@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="storage-header">
+    <div class="header-row">
       <h2 class="section-heading">Drafts</h2>
       <button
         @click="createItem"

@@ -1,12 +1,15 @@
 <template>
-  <span>first time here? <button @click="start">show intro</button></span>
+  <span
+    >editing for the first time?
+    <button @click="start">show intro</button></span
+  >
 </template>
 
 <script>
 import introJs from 'intro.js';
 
 export default {
-  name: 'add-intro',
+  name: 'Intro',
   data: function() {
     return {
       intro: introJs().setOptions({

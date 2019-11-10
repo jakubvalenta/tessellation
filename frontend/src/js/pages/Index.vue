@@ -2,9 +2,20 @@
   <div id="app">
     <h2 class="sr-only">Featured compositions</h2>
     <StoragePublic />
+    <div class="edit">
+      <button v-show="!edit" @click="toggleEdit(true)" class="button-start">
+        start editing
+      </button>
+      <button v-show="edit" @click="toggleEdit(false)" class="button-stop">
+        stop editing
+      </button>
+    </div>
     <div class="sections">
       <div class="section section-input">
-        <h2 class="section-heading">Edit composition</h2>
+        <div class="header-row">
+          <h2 class="section-heading">Input</h2>
+          <Intro />
+        </div>
         <InputImages :images="images" />
       </div>
       <div class="section section-composition">
@@ -36,6 +47,7 @@
 <script>
 import Composition from '../components/Composition.vue';
 import InputImages from '../components/InputImages.vue';
+import Intro from '../components/Intro.vue';
 import Settings from '../components/Settings.vue';
 import StorageLocal from '../components/StorageLocal.vue';
 import StoragePublic from '../components/StoragePublic.vue';
@@ -46,6 +58,7 @@ export default {
   components: {
     Composition,
     InputImages,
+    Intro,
     Settings,
     StorageLocal,
     StoragePublic,
@@ -53,6 +66,11 @@ export default {
   },
   data: function() {
     return this.$root.state;
+  },
+  methods: {
+    toggleEdit: function(value) {
+      this.edit = value;
+    }
   }
 };
 </script>

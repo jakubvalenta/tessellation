@@ -146,6 +146,19 @@ body .introjs-button {
   background: transparent;
   box-shadow: 0;
 }
+.button-start {
+  background-color: $color-green;
+  color: $color-text-inverse;
+}
+.button-stop {
+  background-color: $color-red;
+  color: $color-text-inverse;
+}
+
+.header-row {
+  display: flex;
+  flex-direction: columns;
+}
 
 .input-file {
   width: 0.1px;
@@ -284,7 +297,6 @@ body .introjs-button {
   flex-wrap: wrap;
   justify-content: center;
   margin: 0;
-  margin-bottom: 1.5em;
   padding: 0;
 
   li {
@@ -317,6 +329,11 @@ body .introjs-button {
     width: 50%;
     background: $color-white;
   }
+}
+
+.edit {
+  margin: 1.5em 0;
+  text-align: center;
 }
 
 .box-dark {
@@ -508,10 +525,6 @@ body .introjs-button {
   bottom: -2em;
 }
 
-.storage-header {
-  display: flex;
-  flex-direction: columns;
-}
 .section-heading {
   flex-grow: 1;
   margin: 0;

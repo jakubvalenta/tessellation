@@ -54,6 +54,7 @@ const state = {
   error: null,
   warn: null,
   isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED,
+  edit: false,
 
   generateComposition: function() {
     this.loading = true;
