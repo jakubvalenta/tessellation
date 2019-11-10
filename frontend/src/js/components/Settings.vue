@@ -36,8 +36,8 @@
     </form>
     <p>
       <button @click="showConnections" class="button-secondary">
-        <span v-show="modeFinal">show connections</span>
-        <span v-show="!modeFinal">hide connections</span>
+        <span v-show="modeFinal">show edges</span>
+        <span v-show="!modeFinal">hide edges</span>
       </button>
     </p>
   </div>
