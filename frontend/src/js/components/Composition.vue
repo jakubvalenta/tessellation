@@ -6,14 +6,14 @@
       ref="canvas"
     />
     <div v-show="loading" class="composition__message">
-      <div class="box-alert box-info">processing...</div>
+      <div class="box-alert box-info">calculating...</div>
     </div>
     <div v-show="error" class="composition__message">
       <div class="box-alert box-error">
         {{ error }}
       </div>
     </div>
-    <div v-show="warn" class="alert box-error">{{ warn }}</div>
+    <div v-show="warn" class="box-alert box-error">{{ warn }}</div>
     <div class="composition__overlay">
       <div
         v-for="(rowTiles, i) in composition"

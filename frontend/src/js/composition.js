@@ -155,7 +155,8 @@ export function generateComposition(tiles, [width, height]) {
     composition,
     error: null,
     warn:
-      'Maximum number of tiles reached. Please decrease the composition size.'
+      'This composition is taking too long to calculate. Try shuffling it, ' +
+      'decreasing its size or changing how the tiles connect.'
   };
 }
 

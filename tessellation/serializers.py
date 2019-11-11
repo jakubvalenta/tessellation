@@ -41,6 +41,7 @@ class SizeSerializer(serializers.ModelSerializer):
 
 
 class CompositionSerializer(serializers.HyperlinkedModelSerializer):
+    slug = serializers.SlugField(read_only=True)
     name = serializers.CharField(read_only=True)
     size = SizeSerializer()
     images = ImageSerializer(many=True)
