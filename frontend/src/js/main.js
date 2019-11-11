@@ -30,9 +30,7 @@ const router = new VueRouter({
       component: Detail,
       props: route => {
         return {
-          compositionId: route.params.compositionId,
-          edit: route.query.edit === 'true' || false,
-          list: route.query.list === 'true' || false
+          compositionId: route.params.compositionId
         };
       }
     },

@@ -6,7 +6,7 @@
       <button @click="toggleList(false)">hide</button>
     </div>
     <button v-else @click="toggleList(true)">show featured compositions</button>
-    <div v-show="!loading" class="edit">
+    <div v-show="!state.loading" class="edit">
       <button v-show="!edit" @click="toggleEdit(true)" class="button-start">
         start editing
       </button>
@@ -20,31 +20,31 @@
           <h2 class="section-heading">Input</h2>
           <Intro />
         </div>
-        <InputImages :images="images" />
+        <InputImages :images="state.images" />
       </div>
       <div class="section section-composition">
         <h2 class="sr-only">Composition</h2>
         <div class="box-dark">
           <Composition
-            :composition="composition"
-            :compositionToRender="compositionToRender"
+            :composition="state.composition"
+            :compositionToRender="state.compositionToRender"
             :edit="edit"
-            :loading="loading"
-            :error="error"
-            :warn="warn"
+            :loading="state.loading"
+            :error="state.error"
+            :warn="state.warn"
           />
         </div>
         <CompositionControls
           :edit="edit"
-          :width="size.width"
-          :height="size.height"
-          :composition="composition"
-          :natural-tile-size="naturalTileSize"
+          :width="state.size.width"
+          :height="state.size.height"
+          :composition="state.composition"
+          :natural-tile-size="state.naturalTileSize"
         />
       </div>
       <div v-show="edit" class="section section-storage">
         <StorageLocal />
-        <StorageRemote :has-permissions="isAuthenticated" />
+        <StorageRemote :has-permissions="state.isAuthenticated" />
       </div>
     </div>
   </div>
@@ -59,6 +59,18 @@ import Intro from '../components/Intro.vue';
 import StorageLocal from '../components/StorageLocal.vue';
 import StoragePublic from '../components/StoragePublic.vue';
 import StorageRemote from '../components/StorageRemote.vue';
+
+function loadComposition(compositionId) {
+  StorageLib.getPublishedComposition(compositionId).then(data => {
+    const newState = StorageLib.deserializeState(data);
+    this.$root.state.updateState(newState);
+  });
+}
+
+function updateDataFromQuery(data, query) {
+  data.edit = query.edit === 'true' || query.edit === true;
+  data.list = query.list === 'true' || query.list === true;
+}
 
 export default {
   name: 'Detail',
@@ -75,32 +87,22 @@ export default {
     compositionId: {
       type: String,
       required: true
-    },
-    edit: {
-      type: Boolean,
-      required: true
-    },
-    list: {
-      type: Boolean,
-      required: true
     }
   },
   data: function() {
-    return this.$root.state;
+    const data = {
+      state: this.$root.state
+    };
+    updateDataFromQuery(data, this.$route.query);
+    return data;
   },
   mounted: function() {
-    const func = this.edit
-      ? StorageLib.getPublishedComposition
-      : StorageLib.getSampleComposition;
-    func(this.compositionId).then(data => {
-      const newState = StorageLib.deserializeState(data);
-      this.$root.state.updateState(newState);
-    });
+    loadComposition.call(this, this.compositionId);
   },
   watch: {
     $route: function(to) {
-      this.edit = to.query.edit;
-      this.list = to.query.list;
+      loadComposition.call(this, to.params.compositionId);
+      updateDataFromQuery(this, to.query);
     }
   },
   methods: {
