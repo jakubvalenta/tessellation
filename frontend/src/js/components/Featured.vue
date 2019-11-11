@@ -42,13 +42,15 @@
 .featured {
   position: relative;
   background: $color-background-dark;
-  padding: 2em;
+  padding: 2em 0.75em;
+  padding-bottom: 0;
   margin-bottom: 1em;
 }
 .featured__heading {
   position: absolute;
   left: 2em;
   top: 1em;
+  color: $color-text;
 }
 .featured__list {
   display: flex;
@@ -57,10 +59,24 @@
   margin: 0;
   padding: 0;
 }
+@media screen and (max-width: 1023px) {
+  .featured {
+    padding-top: 0;
+  }
+  .featured__heading {
+    position: static;
+    margin: 0;
+    padding: 1em 1.25em;
+  }
+  .featured__list {
+    justify-content: flex-start;
+  }
+}
 .featured__list__item {
   display: flex;
   width: 15em;
   margin: 0 1.25em;
+  margin-bottom: 2em;
   flex-direction: column;
 
   h3 {
