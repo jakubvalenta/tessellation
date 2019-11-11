@@ -1,5 +1,5 @@
 <template>
-  <div class="featured">
+  <div v-show="items.length" class="featured">
     <h2 class="featured__heading">Featured compositions</h2>
     <ul class="featured__list">
       <li
@@ -28,9 +28,6 @@
         <button @click="loadItem(item.compositionId)">
           load
         </button>
-      </li>
-      <li class="featured__list__item text-status" v-show="loading">
-        loading
       </li>
     </ul>
   </div>
@@ -109,12 +106,10 @@ import { formatDate } from '../utils/date.js';
 import { log } from '../log.js';
 
 function loadItems() {
-  this.loading = true;
   StorageLib.getSampleCompositions().then(data => {
-    this.loading = false;
     this.items = data.map(composition => {
       return {
-        compositionId: composition.id,
+        compositionId: composition.slug,
         compositionUrl: composition.url,
         name: composition.name || formatDate(new Date(composition.created_at)),
         images: composition.images.slice(0, 4)
@@ -127,8 +122,7 @@ export default {
   name: 'CompositionFeatured',
   data: function() {
     return {
-      items: [],
-      loading: null
+      items: []
     };
   },
   mounted: function() {

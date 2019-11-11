@@ -9,6 +9,7 @@
         shuffle
       </button>
       <a
+        href="javascript:void(0)"
         @click="download"
         download="composition.png"
         class="button button-link"

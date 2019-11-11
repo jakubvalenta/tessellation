@@ -8,5 +8,5 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('api/samples/', views.SampleList.as_view()),
     path('api/compositions/', views.CompositionList.as_view()),
-    path('api/compositions/<pk>', views.CompositionDetail.as_view()),
+    path('api/compositions/<slug>', views.CompositionDetail.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

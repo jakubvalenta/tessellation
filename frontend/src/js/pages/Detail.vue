@@ -1,5 +1,8 @@
 <template>
   <div class="app">
+    <div v-show="notFound" class="box-alert box-error">
+      Composition not found
+    </div>
     <Header :title="title">
       <span>
         <button v-if="!edit" @click="toggleEdit(true)" class="button-success">
@@ -127,12 +130,18 @@ import Intro from '../components/Intro.vue';
 import Storage from '../components/Storage.vue';
 
 function loadComposition(compositionId) {
+  this.notFound = false;
   this.$root.state.setLoading(true);
-  StorageLib.getPublishedComposition(compositionId).then(data => {
-    const newState = StorageLib.deserializeState(data);
-    this.$root.state.updateState(newState);
-    document.title = this.title;
-  });
+  StorageLib.getPublishedComposition(compositionId).then(
+    data => {
+      const newState = StorageLib.deserializeState(data);
+      this.$root.state.updateState(newState);
+      document.title = this.title;
+    },
+    () => {
+      this.notFound = true;
+    }
+  );
 }
 
 function updateDataFromQuery(data, query) {
@@ -159,7 +168,8 @@ export default {
   },
   data: function() {
     const data = {
-      state: this.$root.state
+      state: this.$root.state,
+      notFound: false
     };
     updateDataFromQuery(data, this.$route.query);
     return data;

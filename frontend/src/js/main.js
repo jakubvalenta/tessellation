@@ -16,7 +16,7 @@ const router = new VueRouter({
       redirect: route => {
         return {
           name: 'detail',
-          params: { compositionId: window.TESSELLATION_COMPOSITION_ID },
+          params: { compositionId: window.TESSELLATION_COMPOSITION_SLUG },
           query: {
             edit: route.query.edit !== undefined ? route.query.edit : true,
             featured:

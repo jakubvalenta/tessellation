@@ -22,7 +22,7 @@ class IndexView(generic.base.TemplateView):
             'title': __title__,
             'description': __description__,
             'email': settings.CONTACT_EMAIL,
-            'compositionId': oldest_sample_composition.pk,
+            'composition': oldest_sample_composition,
         }
 
 
@@ -55,6 +55,7 @@ class CompositionList(CompositionMixin, generics.ListCreateAPIView):
 
 class CompositionDetail(CompositionMixin, generics.RetrieveDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
+    lookup_field = 'slug'
 
     def get_queryset(self):
         if self.request.method == 'GET':

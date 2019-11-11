@@ -9,6 +9,7 @@
         save draft
       </button>
     </div>
+    <p class="text-status">these compositions are stored only on this device</p>
     <p class="text-status" v-show="!items.length">empty</p>
     <table class="storage-list">
       <tr v-for="item in items" :key="`${item.dataIndex}-${item.name}`">

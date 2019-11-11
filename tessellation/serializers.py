@@ -50,7 +50,7 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Composition
         fields = [
-            'id',
+            'slug',
             'created_at',
             'name',
             'size',

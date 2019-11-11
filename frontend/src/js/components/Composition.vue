@@ -6,7 +6,7 @@
       ref="canvas"
     />
     <div v-show="loading" class="composition__message">
-      <div class="box-alert box-info">Processing...</div>
+      <div class="box-alert box-info">processing...</div>
     </div>
     <div v-show="error" class="composition__message">
       <div class="box-alert box-error">

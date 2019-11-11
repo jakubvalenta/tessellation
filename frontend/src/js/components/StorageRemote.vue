@@ -4,6 +4,9 @@
       <h2>Published</h2>
       <button v-if="hasPermissions" @click="createItem">publish</button>
     </div>
+    <p class="text-status">
+      these compositions can be shared with other people
+    </p>
     <div v-if="hasPermissions">
       <p class="text-status text-success" v-show="successMsg">
         {{ successMsg }}
@@ -111,7 +114,7 @@ export default {
         this.items = data.map((composition, index) => {
           return {
             id: data.length - index,
-            compositionId: composition.id,
+            compositionId: composition.slug,
             compositionUrl: composition.url,
             name:
               composition.name || formatDate(new Date(composition.created_at)),

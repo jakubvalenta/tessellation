@@ -1,8 +1,8 @@
 <template>
-  <span
-    >editing for the first time?
-    <button @click="start">show intro</button></span
-  >
+  <p class="text-status">
+    editing for the first time?
+    <a href="javascript:void(0)" @click="start">show intro</a>
+  </p>
 </template>
 
 <style lang="scss">
