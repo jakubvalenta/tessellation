@@ -1,0 +1,10 @@
+{% load email_extras %}
+<footer class="footer">
+  <p>
+    created by
+    <a href="https://uttarayan.tumblr.com/">Sébastien Mazauric</a> and
+    <a href="https://www.jakubvalenta.cz/">Jakub Valenta</a> |
+    {{ email|obfuscate_email|safe }} |
+    <a href="https://www.github.com/jakubvalenta/tessellation">code</a>
+  </p>
+</footer>

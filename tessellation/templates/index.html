@@ -1,28 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}o
 {% load static %}
 {% load render_bundle from webpack_loader %}
-{% load email_extras %}
 {% block head %}
 <meta property="og:image" content="{% static 'img/tessellation.png' %}" />
 <meta property="og:url" content="{% url 'index' %}" />
 {% endblock %}
 {% block content %}
+<noscript>
+  <p class="box-alert box-error">This app requires JavaScript</p>
+</noscript>
+<p class="box-alert box-error error-unsupported">
+  This app only supports the latest versions of common web browsers. Please
+  upgrade your browser.
+</p>
+<span id="js-header" style="display: none">
+  {% include 'partials/header_user.html' %}
+</span>
 <div id="app"></div>
-{% endblock %}
-{% block scripts %}
+{% include 'partials/footer.html' %}
+<script src="{% static 'bundles/supportedBrowsers.js' %}"></script>
 <script>
   window.TESSELLATION_COMPOSITION_ID = '{{ compositionId }}';
   window.TESSELLATION_IS_AUTHENTICATED = {{ user.is_authenticated|lower }};
+  if (!window.SUPPORTED_BROWSERS.test(navigator.userAgent)) {
+    document.body.className += ' is-unsupported';
+  }
 </script>
+{% render_bundle 'chunk-vendors' 'js' %}
 {% render_bundle 'main' 'js' %}
-{% endblock %}{% block footer %}
-<footer class="footer">
-  <p>
-    created by
-    <a href="https://uttarayan.tumblr.com/">Sébastien Mazauric</a> and
-    <a href="https://www.jakubvalenta.cz/">Jakub Valenta</a> |
-    {{ email|obfuscate_email|safe }} |
-    <a href="https://www.github.com/jakubvalenta/tessellation">code</a>
-  </p>
-</footer>
 {% endblock %}

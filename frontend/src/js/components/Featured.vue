@@ -1,52 +1,38 @@
 <template>
   <div class="featured">
-    <div v-if="show">
-      <h2 class="featured__heading">Featured compositions</h2>
-      <ul class="featured__list">
-        <li
-          v-for="item in items"
-          :key="item.compositionId"
-          class="featured__list__item"
-        >
-          <h3 class="sr-only has-permalink">
-            {{ item.name }}
-            <router-link
-              :to="{
-                name: 'detail',
-                params: { compositionId: item.compositionId }
-              }"
-              title="permalink"
-              >§</router-link
-            >
-          </h3>
-          <div class="featured__list__item__images">
-            <img
-              v-for="image in item.images"
-              :key="item.imgRef"
-              :src="image.url"
-            />
-          </div>
-          <button @click="loadItem(item.compositionId)">
-            load
-          </button>
-        </li>
-        <li class="featured__list__item text-status" v-show="loading">
-          loading
-        </li>
-      </ul>
-      <button
-        @click="toggle(false)"
-        class="button-close"
-        title="Hide featured compositions"
+    <h2 class="featured__heading">Featured compositions</h2>
+    <ul class="featured__list">
+      <li
+        v-for="item in items"
+        :key="item.compositionId"
+        class="featured__list__item"
       >
-        x
-      </button>
-    </div>
-    <div v-else>
-      <button @click="toggle(true)" class="button-secondary">
-        browse featured compositions
-      </button>
-    </div>
+        <h3 class="sr-only has-permalink">
+          {{ item.name }}
+          <router-link
+            :to="{
+              name: 'detail',
+              params: { compositionId: item.compositionId }
+            }"
+            title="permalink"
+            >§</router-link
+          >
+        </h3>
+        <div class="featured__list__item__images">
+          <img
+            v-for="image in item.images"
+            :key="item.imgRef"
+            :src="image.url"
+          />
+        </div>
+        <button @click="loadItem(item.compositionId)">
+          load
+        </button>
+      </li>
+      <li class="featured__list__item text-status" v-show="loading">
+        loading
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -106,9 +92,6 @@ import { formatDate } from '../utils/date.js';
 import { log } from '../log.js';
 
 function loadItems() {
-  if (!this.show) {
-    return;
-  }
   this.loading = true;
   StorageLib.getSampleCompositions().then(data => {
     this.loading = false;
@@ -123,26 +106,19 @@ function loadItems() {
   });
 }
 
-function updateDataFromQuery(data, query) {
-  data.show = query.featured === 'true' || query.featured === true;
-}
-
 export default {
   name: 'CompositionFeatured',
   data: function() {
-    const data = {
+    return {
       items: [],
       loading: null
     };
-    updateDataFromQuery(data, this.$route.query);
-    return data;
   },
   mounted: function() {
     loadItems.call(this);
   },
   watch: {
-    $route: function(to) {
-      updateDataFromQuery(this, to.query);
+    $route: function() {
       loadItems.call(this);
     }
   },
@@ -152,12 +128,6 @@ export default {
       this.$router.push({
         ...this.$route,
         params: { compositionId }
-      });
-    },
-    toggle: function(show) {
-      this.$router.push({
-        ...this.$route,
-        query: { ...this.$route.query, featured: show }
       });
     }
   }

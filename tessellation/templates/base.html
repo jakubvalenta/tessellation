@@ -16,50 +16,6 @@
     {% block head %}{% endblock %}
   </head>
   <body class="mode-final">
-    <noscript>
-      <p class="alert box-error">This app requires JavaScript</p>
-    </noscript>
-    <p class="alert box-error error-unsupported">
-      This app only supports the latest versions of common web browsers. Please
-      upgrade your browser.
-    </p>
-    <header class="header">
-      <div class="header-section header-heading">
-        <h1>{% if heading %}{{ heading }}{% else %}{{ title }}{% endif %}</h1>
-      </div>
-      <div class="header-section header-nav">
-        <span>
-          {% block header %}{% endblock %}
-        </span>
-      </div>
-      <div class="header-section header-user">
-        <span>
-          {% if user.is_authenticated %} Logged in as
-          <a href="{% url 'accounts:profile' %}">{{ user.username }}</a> /
-          <a href="{% url 'accounts:logout' %}?next={{ request.path }}"
-            >logout</a
-          >
-          {% if user.is_staff %} /
-          <a href="{% url 'admin:index' %}">go to Django Admin</a>
-          {% endif %} {% else %}
-          <a href="{% url 'accounts:login' %}?next={{ request.path }}"
-            >log in</a
-          >
-          {% endif %}
-        </span>
-      </div>
-    </header>
-    <main class="main">
-      {% block content %}{% endblock %}
-    </main>
-    {% block footer %}{% endblock %}
-    <script src="{% static 'bundles/supportedBrowsers.js' %}"></script>
-    <script>
-      if (!window.SUPPORTED_BROWSERS.test(navigator.userAgent)) {
-        document.body.className += ' is-unsupported';
-      }
-    </script>
-    {% render_bundle 'chunk-vendors' 'js' %}
-    {% block scripts %}{% endblock %}
+    {% block content %}{% endblock %}
   </body>
 </html>

@@ -1,6 +1,9 @@
-{% extends "base.html" %}{% load email_extras %}{% block header %}
+{% extends 'page.html' %}
+{% load email_extras %}
+{% block header %}
 <a href="/">back to homepage</a>
-{% endblock %}{% block content %}
+{% endblock %}
+{% block content %}
 <h3>Login</h3>
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
@@ -29,4 +32,5 @@
 </p>
 {% comment %}
 <p><a href="{% url 'accounts:password_reset' %}">Lost password?</a></p>
-{% endcomment %}{% endblock %}
+{% endcomment %}
+{% endblock %}

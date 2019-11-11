@@ -1,0 +1,10 @@
+{% if user.is_authenticated %}
+Logged in as
+<a href="{% url 'accounts:profile' %}">{{ user.username }}</a> /
+<a href="{% url 'accounts:logout' %}?next={{ request.path }}">logout</a>
+{% if user.is_staff %} /
+<a href="{% url 'admin:index' %}">go to Django Admin</a>
+{% endif %}
+{% else %}
+<a href="{% url 'accounts:login' %}?next={{ request.path }}">log in</a>
+{% endif %}

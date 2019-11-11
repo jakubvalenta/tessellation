@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="header">
+  <div class="header-section header-heading">
+    <h1>{{ title }}</h1>
+  </div>
+  <div class="header-section header-nav">
+    <span>
+      {% block header %}{% endblock %}
+    </span>
+  </div>
+  <div class="header-section header-user">
+    <span>
+      {% include 'partials/header_user.html' %}
+    </span>
+  </div>
+</header>
+<main class="main">
+  <div class="page">
+    {% block content %}{% endblock %}
+  </div>
+</main>
+{% endblock %}

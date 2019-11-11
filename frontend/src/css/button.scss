@@ -34,6 +34,10 @@ body .introjs-button {
   background: transparent;
   box-shadow: none;
 }
+.button-success {
+  color: $color-text-inverse;
+  background: $color-green;
+}
 
 .input-file {
   width: 0.1px;
@@ -44,4 +48,8 @@ body .introjs-button {
 .input-number {
   line-height: 2;
   width: 3em;
+}
+
+button + button {
+  margin-left: 1em;
 }

@@ -43,7 +43,7 @@ export default {
     StorageLocal,
     StorageRemote
   },
-  params: {
+  props: {
     isAuthenticated: {
       type: Boolean,
       required: true
