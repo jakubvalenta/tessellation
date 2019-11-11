@@ -17,7 +17,7 @@
       </span>
     </Header>
     <Featured v-if="featured" />
-    <main class="detail">
+    <main class="main detail">
       <div v-if="edit" class="detail__input">
         <div class="heading-row">
           <h2>Edit composition</h2>
@@ -51,9 +51,6 @@
 </template>
 
 <style lang="scss">
-.detail {
-  padding: 1em 2em;
-}
 @media screen and (min-width: 800px) {
   .detail {
     display: flex;
