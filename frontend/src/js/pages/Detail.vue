@@ -1,17 +1,19 @@
 <template>
   <div>
     <h2 class="sr-only">Featured compositions</h2>
-    <div v-if="list">
-      <StoragePublic />
-      <button @click="toggleList(false)">hide</button>
-    </div>
-    <button v-else @click="toggleList(true)">show featured compositions</button>
-    <div v-show="!state.loading" class="edit">
-      <button v-show="!edit" @click="toggleEdit(true)" class="button-start">
-        start editing
+    <StoragePublic v-if="list" />
+    <div class="row-view">
+      <button v-if="list" @click="toggleList(false)" class="button-secondary">
+        hide featured compositions
       </button>
-      <button v-show="edit" @click="toggleEdit(false)" class="button-stop">
-        stop editing
+      <button v-else @click="toggleList(true)" class="button-secondary">
+        browse featured compositions
+      </button>
+      <button v-if="edit" @click="toggleEdit(false)" class="button-secondary">
+        full screen
+      </button>
+      <button v-else @click="toggleEdit(true)" class="button-secondary">
+        exit full screen
       </button>
     </div>
     <div class="sections">
@@ -61,6 +63,7 @@ import StoragePublic from '../components/StoragePublic.vue';
 import StorageRemote from '../components/StorageRemote.vue';
 
 function loadComposition(compositionId) {
+  this.$root.state.setLoading(true);
   StorageLib.getPublishedComposition(compositionId).then(data => {
     const newState = StorageLib.deserializeState(data);
     this.$root.state.updateState(newState);

@@ -24,7 +24,9 @@
           class="input-file"
           @change="changeImage"
         />
-        <button @click="deleteImage" class="image-delete">x</button>
+        <button @click="deleteImage" class="button-close" title="remove image">
+          x
+        </button>
       </div>
     </div>
   </div>

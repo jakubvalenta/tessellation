@@ -297,42 +297,41 @@ body .introjs-button {
   flex-wrap: wrap;
   justify-content: center;
   margin: 0;
+  margin-bottom: 1.5em;
   padding: 0;
-
-  li {
-    display: block;
-    margin: 0;
-  }
 }
 .composition-list__item {
-  width: 12em;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
+  display: flex;
+  width: 15em;
+  margin: 0 1em;
+  flex-direction: column;
 
   h3 {
     margin-top: 0;
   }
   button {
-    background-color: $color-background-light;
     display: block;
     width: 100%;
     box-sizing: border-box;
+    background-color: $color-background-light;
   }
 }
 .composition-list__item__images {
   display: flex;
+  flex-grow: 1;
   flex-wrap: wrap;
+  align-items: flex-start;
   margin-bottom: 1em;
+  background: $color-white;
 
   img {
     display: block;
     width: 50%;
-    background: $color-white;
   }
 }
 
-.edit {
-  margin: 1.5em 0;
+.row-view {
+  margin-bottom: 1.5em;
   text-align: center;
 }
 
@@ -477,7 +476,7 @@ body .introjs-button {
   margin-right: -3em;
   text-align: center;
 }
-.image-delete {
+.button-close {
   position: absolute;
   top: 0;
   right: 0;

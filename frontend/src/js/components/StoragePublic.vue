@@ -5,7 +5,7 @@
       :key="item.compositionId"
       class="composition-list__item box-dark"
     >
-      <h3 class="has-permalink">
+      <h3 class="sr-only has-permalink">
         {{ item.name }}
         <router-link
           :to="{
@@ -23,7 +23,7 @@
         load
       </button>
     </li>
-    <li class="text-status" v-show="loading">
+    <li class="composition-list__item text-status" v-show="loading">
       loading
     </li>
   </ul>
