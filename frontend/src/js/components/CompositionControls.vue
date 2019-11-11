@@ -8,10 +8,13 @@
       >
         shuffle
       </button>
-      <Download
-        :composition="composition"
-        :natural-tile-size="naturalTileSize"
-      />
+      <a
+        @click="download"
+        download="composition.png"
+        class="button button-link"
+        title="Render the composition as a PNG. The size of each tile will be equal to the width of the first input image but not larger than 500px."
+        >download</a
+      >
     </p>
     <form
       v-show="edit"
@@ -60,10 +63,6 @@
 }
 .composition-shuffle {
   width: 33.33%;
-
-  button {
-    margin-right: 1em;
-  }
 }
 .composition-settings {
   width: 33.33%;
@@ -71,13 +70,12 @@
 </style>
 
 <script>
-import Download from './Download.vue';
+import * as CompositionLib from '../composition.js';
+import * as HTML from '../html.js';
+import { error, log } from '../log.js';
 
 export default {
-  name: 'Settings',
-  components: {
-    Download
-  },
+  name: 'CompositionControls',
   props: {
     edit: {
       type: Boolean,
@@ -102,12 +100,28 @@ export default {
   },
   data: function() {
     return {
-      modeFinal: true
+      modeFinal: true,
+      canvas: document.createElement('canvas')
     };
   },
   methods: {
     shuffle: function() {
       this.$root.state.shuffleTiles();
+    },
+    download: function(evt) {
+      if (!this.composition.length || !this.naturalTileSize) {
+        error("Can't download composition, it's not rendered.");
+        return;
+      }
+      log(
+        `Rendering composition to download, tileSize=${this.naturalTileSize}`
+      );
+      CompositionLib.renderCompositionOnCanvas(
+        this.composition,
+        this.canvas,
+        this.naturalTileSize
+      );
+      evt.target.href = HTML.canvasToDataUrl(this.canvas);
     },
     showConnections: function() {
       this.modeFinal = !this.modeFinal;

@@ -1,6 +1,7 @@
 @import '_variables';
 
 button,
+.button-link,
 .label-file,
 body .introjs-button {
   display: inline-block;
@@ -37,6 +38,18 @@ body .introjs-button {
 .button-success {
   color: $color-text-inverse;
   background: $color-green;
+}
+.button-link {
+  color: $color-blue;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: none;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background: transparent;
+  }
 }
 
 .input-file {

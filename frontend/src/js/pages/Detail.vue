@@ -5,13 +5,13 @@
         <button v-if="!edit" @click="toggleEdit(true)" class="button-success">
           edit this composition
         </button>
-        <button v-else @click="toggleEdit(false)" class="button-secondary">
+        <button v-else @click="toggleEdit(false)">
           done editing
         </button>
         <button v-if="!featured" @click="toggleFeatured(true)">
           browse featured compositions
         </button>
-        <button v-else @click="toggleFeatured(false)" class="button-secondary">
+        <button v-else @click="toggleFeatured(false)">
           hide featured compositions
         </button>
       </span>
@@ -52,7 +52,7 @@
 
 <style lang="scss">
 .detail {
-  padding: 2em;
+  padding: 1em 2em;
 }
 @media screen and (min-width: 800px) {
   .detail {
@@ -60,6 +60,10 @@
   }
   .detail__composition {
     flex-grow: 1;
+  }
+  .detail__input {
+    padding-right: 2em;
+    box-sizing: border-box;
   }
 }
 @media screen and (min-width: 1440px) {
@@ -73,17 +77,9 @@
   }
 }
 @media screen and (min-width: 1024px) {
-  .detail__composition {
-    padding-right: 2em;
-  }
   .detail__storage {
+    margin-left: 2em;
     width: 28em;
-  }
-}
-@media screen and (min-width: 800px) {
-  .detail__composition {
-    padding-left: 2em;
-    box-sizing: border-box;
   }
 }
 @media screen and (min-width: 800px) and (max-width: 1023px) {
@@ -95,7 +91,6 @@
   }
   .detail__composition {
     width: 60%;
-    padding-right: 0;
   }
 }
 @media screen and (max-width: 1023px) {
@@ -107,6 +102,11 @@
 @media screen and (max-width: 799px) {
   .detail__composition {
     padding-top: 1em;
+  }
+}
+@media screen and (max-width: 1439px) {
+  .detail__input .heading-row {
+    display: block;
   }
 }
 .detail__composition {

@@ -43,6 +43,7 @@
   position: relative;
   background: $color-background-dark;
   padding: 2em;
+  margin-bottom: 1em;
 }
 .featured__heading {
   position: absolute;
