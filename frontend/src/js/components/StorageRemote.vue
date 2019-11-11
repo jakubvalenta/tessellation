@@ -15,15 +15,15 @@
       </p>
       <table class="storage-list">
         <tr v-for="item in items" :key="item.compositionId">
-          <td class="has-permalink">
-            {{ item.id }} {{ item.name }}
+          <td>{{ item.id }} {{ item.name }}</td>
+          <td>
             <router-link
               :to="{
                 name: 'detail',
                 params: { compositionId: item.compositionId }
               }"
-              title="permalink"
-              >§</router-link
+              title="permanent link"
+              >link</router-link
             >
           </td>
           <td>
