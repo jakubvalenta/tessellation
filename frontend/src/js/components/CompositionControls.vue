@@ -48,6 +48,28 @@
   </div>
 </template>
 
+<style lang="scss">
+.composition-controls {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0;
+
+  p {
+    margin: 0;
+  }
+}
+.composition-shuffle {
+  width: 33.33%;
+
+  button {
+    margin-right: 1em;
+  }
+}
+.composition-settings {
+  width: 33.33%;
+}
+</style>
+
 <script>
 import Download from './Download.vue';
 

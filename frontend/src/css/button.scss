@@ -1,0 +1,47 @@
+@import '_variables';
+
+button,
+.label-file,
+body .introjs-button {
+  display: inline-block;
+  padding: 0.5em 1em;
+  border: 0;
+  border-radius: 0.25em;
+  font-family: $font-family;
+  font-size: 100%;
+  line-height: 1.5;
+  color: $color-text;
+  background: $color-background-dark;
+  box-shadow: 0 0 0.1em $color-background-darker;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $color-highlight;
+    background: $color-background-darker;
+  }
+}
+.button-secondary {
+  background: transparent;
+  box-shadow: 0;
+}
+.button-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.input-file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+}
+.input-number {
+  line-height: 2;
+  width: 3em;
+}

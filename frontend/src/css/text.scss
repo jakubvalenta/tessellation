@@ -1,0 +1,76 @@
+@import '_variables';
+
+p,
+ul,
+ol,
+dl,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+table {
+  margin: 0.5em 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+  color: $color-highlight;
+  text-transform: lowercase;
+}
+
+a {
+  color: $color-link;
+  text-decoration: none;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $color-highlight;
+  }
+}
+
+.text-status {
+  font-style: italic;
+}
+.text-success {
+  color: $color-green;
+}
+.text-error {
+  color: $color-red;
+}
+
+.heading-row {
+  display: flex;
+  flex-direction: columns;
+
+  h2 {
+    flex-grow: 1;
+    margin: 0;
+    padding: 0.5em 0;
+  }
+}
+
+.has-permalink {
+  a {
+    visibility: hidden;
+  }
+  &:hover a {
+    visibility: visible;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

@@ -1,6 +1,12 @@
 <template>
-  <canvas class="composition" ref="canvas"></canvas>
+  <canvas class="composition__canvas" ref="canvas"></canvas>
 </template>
+
+<style lang="scss">
+.composition__canvas {
+  width: 100%;
+}
+</style>
 
 <script>
 import * as CompositionLib from '../composition.js';

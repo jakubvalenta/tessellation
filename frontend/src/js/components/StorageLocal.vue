@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="header-row">
-      <h2 class="section-heading">Drafts</h2>
+    <div class="heading-row">
+      <h2>Drafts</h2>
       <button
         @click="createItem"
         data-intro="You can save the generated composition to your device using this button. Note that when you open Tessellation on a second device, you will not see the compositions you saved on the first device."

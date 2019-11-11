@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="header-row">
-      <h2 class="section-heading">Published</h2>
+    <div class="heading-row">
+      <h2>Published</h2>
       <button v-if="hasPermissions" @click="createItem">publish</button>
     </div>
     <div v-if="hasPermissions">

@@ -1,0 +1,15 @@
+@import '_variables';
+
+.box-alert {
+  text-align: center;
+  margin: 0;
+  padding: 2em;
+}
+.box-error {
+  color: $color-text-inverse;
+  background: $color-red;
+}
+.box-info {
+  color: $color-text-inverse;
+  background: $color-white;
+}

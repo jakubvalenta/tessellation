@@ -2,6 +2,7 @@ import * as HTML from './html.js';
 import { error, log } from './log.js';
 
 export const SIDES = [0, 1, 2, 3];
+export const SIDE_NAMES = ['left', 'top', 'right', 'bottom'];
 export const CONNECTIONS = [1, 2, 3, 4, 5];
 const [LEFT, TOP, RIGHT, BOTTOM] = SIDES;
 const MAX_TILES_TO_TRY = Math.pow(10, 4);

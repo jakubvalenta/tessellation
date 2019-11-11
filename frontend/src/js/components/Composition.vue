@@ -1,21 +1,25 @@
 <template>
-  <div class="composition-inner" ref="inner">
+  <div class="composition" ref="inner">
     <CompositionCanvas
       :compositionToRender="compositionToRender"
       v-show="!loading && !error"
       ref="canvas"
     />
-    <div v-show="loading" class="composition-message">
-      <div class="alert box-info">Processing...</div>
+    <div v-show="loading" class="composition__message">
+      <div class="box-alert box-info">Processing...</div>
     </div>
-    <div v-show="error" class="composition-message">
-      <div class="alert box-error">
+    <div v-show="error" class="composition__message">
+      <div class="box-alert box-error">
         {{ error }}
       </div>
     </div>
     <div v-show="warn" class="alert box-error">{{ warn }}</div>
-    <div class="composition-overlay">
-      <div v-for="(rowTiles, i) in composition" :key="i" class="tile-row">
+    <div class="composition__overlay">
+      <div
+        v-for="(rowTiles, i) in composition"
+        :key="i"
+        class="composition__overlay__row"
+      >
         <Tile
           v-for="(tile, j) in rowTiles"
           :image="tile && tile.image"
@@ -26,6 +30,43 @@
     </div>
   </div>
 </template>
+
+<style lang="scss">
+@import '../../css/_mixins.scss';
+
+.composition {
+  position: relative;
+}
+.composition__message {
+  @include square;
+
+  .box-alert {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.composition__overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  .mode-final & {
+    visibility: hidden;
+  }
+}
+.composition__overlay__row {
+  display: flex;
+}
+</style>
 
 <script>
 import CompositionCanvas from './CompositionCanvas.vue';
