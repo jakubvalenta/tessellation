@@ -1,6 +1,7 @@
 from django.conf import settings
+from django.db.models import Q
 from django.views import generic
-from rest_framework import permissions, viewsets
+from rest_framework import generics, permissions
 
 from tessellation import __description__, __title__
 from tessellation.models import Composition
@@ -25,16 +26,21 @@ class IndexView(generic.base.TemplateView):
         }
 
 
-class CompositionAPIViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
-        IsOwnerOrReadOnly,
-    ]
-
+class CompositionMixin:
     def get_serializer(self, *args, **kwargs):
         return CompositionSerializer(
             *args, **kwargs, context={'request': self.request}
         )
+
+
+class SampleList(CompositionMixin, generics.ListAPIView):
+    queryset = Composition.objects.filter(
+        owner__is_superuser=True, public=True
+    ).prefetch_related('tiles__image')
+
+
+class CompositionList(CompositionMixin, generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -47,12 +53,13 @@ class CompositionAPIViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
-class SampleAPIViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Composition.objects.filter(
-        owner__is_superuser=True, public=True
-    ).prefetch_related('tiles__image')
+class CompositionDetail(CompositionMixin, generics.RetrieveDestroyAPIView):
+    permission_classes = [IsOwnerOrReadOnly]
 
-    def get_serializer(self, *args, **kwargs):
-        return CompositionSerializer(
-            *args, **kwargs, context={'request': self.request}
-        )
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            qs = Q(owner__is_superuser=True, public=True)
+            if self.request.user.is_authenticated:
+                qs = qs | Q(owner=self.request.user)
+            return Composition.objects.filter(qs)
+        return Composition.objects.all()

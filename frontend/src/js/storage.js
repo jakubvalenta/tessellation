@@ -162,10 +162,6 @@ export function getPublishedCompositions() {
   return HTTP.http('GET', `${API_URL}/compositions/`);
 }
 
-export function getSampleComposition(compositionId) {
-  return HTTP.http('GET', `${API_URL}/samples/${compositionId}`);
-}
-
 export function getSampleCompositions() {
   return HTTP.http('GET', `${API_URL}/samples/`);
 }
