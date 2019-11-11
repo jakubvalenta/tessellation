@@ -8,10 +8,6 @@
 <style lang="scss">
 @import '../../css/_variables.scss';
 
-.storage-empty {
-  border-top: 1px solid $color-border;
-  padding: 0.5em 0;
-}
 .storage-list {
   min-height: 1em;
   width: 100%;
@@ -30,6 +26,10 @@
   button {
     margin: 0.1em 0;
   }
+}
+.storage-empty {
+  border-top: 1px solid $color-border;
+  padding: 0.5em 0;
 }
 </style>
 

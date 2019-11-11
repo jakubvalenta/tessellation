@@ -12,9 +12,11 @@
         {{ successMsg }}
       </p>
       <p class="text-status text-error" v-show="errorMsg">{{ errorMsg }}</p>
-      <p class="text-status" v-show="!items.length">empty</p>
-      <p class="text-status" v-show="loading">
+      <p class="storage-empty text-status" v-show="loading">
         loading
+      </p>
+      <p class="storage-empty text-status" v-show="!items.length && !loading">
+        empty
       </p>
       <table class="storage-list">
         <tr v-for="item in items" :key="item.compositionId">
@@ -46,7 +48,7 @@
       </table>
     </div>
     <div v-else>
-      <p class="text-status">
+      <p class="storage-empty text-status">
         <a href="/accounts/login?next=/">log in</a>
         to publish compositions
       </p>
