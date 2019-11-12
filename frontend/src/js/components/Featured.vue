@@ -5,7 +5,9 @@
       <li
         v-for="item in items"
         :key="item.compositionId"
-        class="featured__list__item"
+        @click="loadItem(item.compositionId)"
+        class="featured__list__item button-box"
+        title="click to view the composition"
       >
         <h3 class="sr-only has-permalink">
           {{ item.name }}
@@ -25,9 +27,6 @@
             :src="image.url"
           />
         </div>
-        <button @click="loadItem(item.compositionId)">
-          load
-        </button>
       </li>
     </ul>
     <button

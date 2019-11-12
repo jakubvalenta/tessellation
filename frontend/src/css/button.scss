@@ -18,7 +18,6 @@ body .introjs-button {
   cursor: pointer;
 
   &:hover,
-  &:active,
   &:focus {
     color: $color-highlight;
     background: $color-background-darker;
@@ -28,6 +27,16 @@ body .introjs-button {
   background: transparent;
   box-shadow: 0;
 }
+.button-link {
+  color: $color-blue;
+  background: transparent;
+  box-shadow: none;
+
+  &:hover,
+  &:focus {
+    background: transparent;
+  }
+}
 .button-close {
   position: absolute;
   top: 0;
@@ -35,19 +44,13 @@ body .introjs-button {
   background: transparent;
   box-shadow: none;
 }
-.button-success {
-  color: $color-text-inverse;
-  background: $color-green;
-}
-.button-link {
-  color: $color-blue;
-  background: transparent;
-  box-shadow: none;
+.button-box {
+  cursor: pointer;
+  box-shadow: 0 0 0.1em $color-background-darker;
 
   &:hover,
-  &:active,
   &:focus {
-    background: transparent;
+    box-shadow: 0 0 0.5em $color-background-darker;
   }
 }
 
