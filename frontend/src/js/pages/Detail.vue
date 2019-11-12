@@ -5,17 +5,11 @@
     </div>
     <Header :title="title">
       <span>
-        <button v-if="!edit" @click="toggleEdit(true)" class="button-success">
+        <button v-if="!edit" @click="toggleEditMode" class="button-success">
           edit this composition
         </button>
-        <button v-else @click="toggleEdit(false)">
-          done editing
-        </button>
-        <button v-if="!featured" @click="toggleFeatured(true)">
+        <button v-if="!featured" @click="toggleBrowseMode">
           browse featured compositions
-        </button>
-        <button v-else @click="toggleFeatured(false)">
-          hide featured compositions
         </button>
       </span>
     </Header>
@@ -191,16 +185,16 @@ export default {
     }
   },
   methods: {
-    toggleEdit: function(edit) {
+    toggleEditMode: function() {
       this.$router.push({
         ...this.$route,
-        query: { ...this.$route.query, edit }
+        query: { featured: false, edit: true }
       });
     },
-    toggleFeatured: function(featured) {
+    toggleBrowseMode: function() {
       this.$router.push({
         ...this.$route,
-        query: { ...this.$route.query, featured }
+        query: { featured: true, edit: false }
       });
     }
   }

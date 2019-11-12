@@ -30,6 +30,13 @@
         </button>
       </li>
     </ul>
+    <button
+      @click="hide"
+      class="button-close"
+      title="hide featured compositions"
+    >
+      x
+    </button>
   </div>
 </template>
 
@@ -139,6 +146,12 @@ export default {
       this.$router.push({
         ...this.$route,
         params: { compositionId }
+      });
+    },
+    hide: function() {
+      this.$router.push({
+        ...this.$route,
+        query: { ...this.$route.query, featured: false }
       });
     }
   }

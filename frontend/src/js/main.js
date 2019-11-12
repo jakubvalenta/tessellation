@@ -18,7 +18,7 @@ const router = new VueRouter({
           name: 'detail',
           params: { compositionId: window.TESSELLATION_COMPOSITION_SLUG },
           query: {
-            edit: route.query.edit !== undefined ? route.query.edit : true,
+            edit: route.query.edit !== undefined ? route.query.edit : false,
             featured:
               route.query.featured !== undefined ? route.query.featured : true
           }
