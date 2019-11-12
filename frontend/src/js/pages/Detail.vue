@@ -5,7 +5,7 @@
     </div>
     <Header :title="title">
       <span>
-        <button v-if="!edit" @click="toggleEditMode" class="button-success">
+        <button v-if="!edit" @click="toggleEditMode">
           edit this composition
         </button>
         <button v-if="!featured" @click="toggleBrowseMode">
