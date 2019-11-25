@@ -32,9 +32,18 @@
               title="permanent link"
               >link</router-link
             >
-            |
+            /
             <span v-if="item.isPublic">
               featured composition
+            </span>
+            <span
+              v-else-if="item.publicRequestedAt"
+              :title="
+                `You have applied for inclusion of this composition in the featured compositions at
+${item.publicRequestedAt}.`
+              "
+            >
+              applied for featured
             </span>
             <a
               href="javascript:void(0)"
@@ -134,7 +143,10 @@ export default {
             compositionUrl: composition.url,
             name:
               composition.name || formatDate(new Date(composition.created_at)),
-            isPublic: composition.public
+            isPublic: composition.public,
+            publicRequestedAt:
+              composition.public_requested_at &&
+              formatDate(new Date(composition.public_requested_at))
           };
         });
       });
