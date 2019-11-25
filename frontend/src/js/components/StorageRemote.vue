@@ -20,8 +20,10 @@
       </p>
       <table class="storage-list">
         <tr v-for="item in items" :key="item.compositionId">
-          <td>{{ item.id }} {{ item.name }}</td>
           <td>
+            {{ item.id }} {{ item.name }}
+            <br />
+
             <router-link
               :to="{
                 name: 'detail',
@@ -30,6 +32,18 @@
               title="permanent link"
               >link</router-link
             >
+            |
+            <span v-if="item.isPublic">
+              featured composition
+            </span>
+            <a
+              href="javascript:void(0)"
+              v-else
+              @click="makeItemPublic(item.compositionId)"
+              title="Apply for inclusion of this composition in the featured compositions"
+            >
+              apply for featured
+            </a>
           </td>
           <td>
             <button @click="loadItem(item.compositionId)">
@@ -154,6 +168,22 @@ export default {
         params: { compositionId },
         query: this.$route.query
       });
+    },
+    makeItemPublic: function(compositionId) {
+      log(`Making composition public ${compositionId}`);
+      StorageLib.makeCompositionPublic(compositionId)
+        .then(() => {
+          this.successMsg =
+            'Successfully submitted an application for inclusion of the composition in featured compositions';
+          this.errorMsg = null;
+          this.listItems();
+        })
+        .catch(err => {
+          this.successMsg = null;
+          this.errorMsg =
+            'Error while applying for inclusion of the composition in featured compositions';
+          error(err);
+        });
     },
     deleteItem: function(compositionId) {
       log(`Deleting published composition ${compositionId}`);

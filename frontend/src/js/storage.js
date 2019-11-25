@@ -169,3 +169,10 @@ export function getSampleCompositions() {
 export function deletePublishedComposition(compositionId) {
   return HTTP.http('DELETE', `${API_URL}/compositions/${compositionId}`);
 }
+
+export function makeCompositionPublic(compositionId) {
+  return HTTP.http(
+    'POST',
+    `${API_URL}/compositions/${compositionId}/make-public`
+  );
+}
