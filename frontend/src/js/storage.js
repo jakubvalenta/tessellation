@@ -171,8 +171,7 @@ export function deletePublishedComposition(compositionId) {
 }
 
 export function makeCompositionPublic(compositionId) {
-  return HTTP.http(
-    'POST',
-    `${API_URL}/compositions/${compositionId}/make-public`
-  );
+  return HTTP.http('PATCH', `${API_URL}/compositions/${compositionId}`, {
+    make_public: true
+  });
 }

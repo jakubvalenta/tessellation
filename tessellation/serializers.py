@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from django.conf import settings
@@ -47,6 +48,7 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
     images = ImageSerializer(many=True)
     tiles = TileSerializer(many=True)
     public = serializers.BooleanField(read_only=True)
+    make_public = serializers.BooleanField(write_only=True)
 
     class Meta:
         model = Composition
@@ -58,6 +60,7 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
             'images',
             'tiles',
             'public',
+            'make_public',
         ]
 
     @transaction.atomic
@@ -82,3 +85,12 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
         )
         composition.tiles.set(tiles)
         return composition
+
+    @transaction.atomic
+    def update(
+        self, instance: Composition, validated_data: dict
+    ) -> Composition:
+        if validated_data['make_public'] is True:
+            instance.public_requested_at = datetime.datetime.now()
+        instance.save()
+        return instance

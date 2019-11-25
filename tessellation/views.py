@@ -53,7 +53,9 @@ class CompositionList(CompositionMixin, generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-class CompositionDetail(CompositionMixin, generics.RetrieveDestroyAPIView):
+class CompositionDetail(
+    CompositionMixin, generics.RetrieveUpdateDestroyAPIView
+):
     permission_classes = [IsOwnerOrReadOnly]
     lookup_field = 'slug'
 
