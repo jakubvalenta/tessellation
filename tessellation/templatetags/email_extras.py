@@ -1,5 +1,6 @@
 import codecs
 from string import Template
+from typing import cast
 
 from django import template
 from django.template.defaultfilters import stringfilter
@@ -23,8 +24,7 @@ EMAIL_TEMPLATE = Template(
 @register.filter
 @stringfilter
 def obfuscate_email(value: str) -> str:
-    return EMAIL_TEMPLATE.substitute(
-        email_rot13=codecs.encode(
-            f'<a href="mailto:{value}">{value}</a>', 'rot13'
-        )
+    email_rot13 = cast(
+        str, codecs.encode(f'<a href="mailto:{value}">{value}</a>', 'rot13')
     )
+    return EMAIL_TEMPLATE.substitute(email_rot13=email_rot13)
