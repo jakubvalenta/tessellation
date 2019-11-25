@@ -22,6 +22,16 @@ body .introjs-button {
     color: $color-highlight;
     background: $color-background-darker;
   }
+  &[disabled] {
+    color: $color-text-dark;
+    cursor: default;
+
+    &:hover,
+    &:focus {
+      color: $color-text-dark;
+      background: $color-background-dark;
+    }
+  }
 }
 .button-secondary {
   background: transparent;
