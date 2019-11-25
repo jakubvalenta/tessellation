@@ -75,6 +75,7 @@ class Composition(models.Model):
     tiles = models.ManyToManyField(Tile, related_name='compositions')
     slug = models.SlugField(max_length=50)
     public = models.BooleanField(default=False)
+    public_requested_at = models.DateTimeField(null=True)
 
     MIN_SLUG_LENGTH = 8
     MAX_SLUG_LENGTH = 50

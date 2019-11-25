@@ -15,5 +15,12 @@ class TileAdmin(admin.ModelAdmin):
 
 @admin.register(Composition)
 class CompositionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'slug', 'owner', 'public', 'created_at')
-    list_filter = ('owner__username', 'public')
+    list_display = (
+        'id',
+        'slug',
+        'owner',
+        'public',
+        'public_requested_at',
+        'created_at',
+    )
+    list_filter = ('owner__username', 'public', 'public_requested_at')
