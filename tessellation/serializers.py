@@ -41,14 +41,14 @@ class SizeSerializer(serializers.ModelSerializer):
         fields = ['width', 'height']
 
 
-class CompositionSerializer(serializers.HyperlinkedModelSerializer):
+class CompositionSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
     name = serializers.CharField(read_only=True)
     size = SizeSerializer()
     images = ImageSerializer(many=True)
     tiles = TileSerializer(many=True)
     public = serializers.BooleanField(read_only=True)
-    make_public = serializers.BooleanField(write_only=True)
+    make_public = serializers.BooleanField(write_only=True, required=False)
 
     class Meta:
         model = Composition
@@ -60,6 +60,7 @@ class CompositionSerializer(serializers.HyperlinkedModelSerializer):
             'images',
             'tiles',
             'public',
+            'public_requested_at',
             'make_public',
         ]
 
