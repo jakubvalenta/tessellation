@@ -160,7 +160,12 @@ export function generateComposition(tiles, [width, height]) {
   };
 }
 
-export function renderCompositionOnCanvas(composition, canvas, tileSize) {
+export function renderCompositionOnCanvas(
+  composition,
+  canvas,
+  tileSize,
+  maxSize = 8192 // https://stackoverflow.com/a/11585939
+) {
   const ctx = canvas.getContext('2d');
   if (!composition || !composition.length) {
     HTML.fillCanvas(canvas, ctx, '#fff');
@@ -168,6 +173,12 @@ export function renderCompositionOnCanvas(composition, canvas, tileSize) {
   }
   const width = composition[0].length;
   const height = composition.length;
+  if (width * tileSize > maxSize) {
+    tileSize = Math.floor(maxSize / width);
+  }
+  if (height * tileSize > maxSize) {
+    tileSize = Math.floor(maxSize / height);
+  }
   canvas.width = width * tileSize;
   canvas.height = height * tileSize;
   HTML.fillCanvas(canvas, ctx, '#fff');
