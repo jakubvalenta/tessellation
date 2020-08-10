@@ -1,38 +1,43 @@
 <template>
-  <div class="images">
-    <div v-for="image in images" :key="image.ref" class="image">
-      <div
-        class="image__inner"
-        :data-intro="
-          image.index === 0 &&
-          'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
-        "
-      >
-        <Tile :image="image" :background="true">
-          <Edge
-            v-for="(connection, side) in image.connections"
-            :image="image"
-            :side="side"
-            :key="`${image.ref}-${side}`"
-          />
-        </Tile>
-        <div class="image__inner__controls">
-          <InputControls :image="image" />
+  <div>
+    <div class="images">
+      <div v-for="image in images" :key="image.ref" class="image">
+        <div
+          class="image__inner"
+          :data-intro="
+            image.index === 0 &&
+            'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
+          "
+        >
+          <Tile :image="image" :background="true">
+            <Edge
+              v-for="(connection, side) in image.connections"
+              :image="image"
+              :side="side"
+              :key="`${image.ref}-${side}`"
+            />
+          </Tile>
+          <div class="image__inner__controls">
+            <InputControls :image="image" />
+          </div>
+        </div>
+      </div>
+      <div class="image">
+        <div class="image__inner">
+          <div class="image__inner__add">
+            <button @click="newImage">add more</button>
+          </div>
+          <div class="image__inner__controls" style="height: 2.5em;"></div>
         </div>
       </div>
     </div>
-    <div class="image">
-      <div class="image__inner">
-        <div class="image__inner__add">
-          <button @click="newImage">add more</button>
-        </div>
-        <div class="image__inner__controls">
-          <button @click="clearImages" class="button-secondary">
-            remove all
-          </button>
-        </div>
-      </div>
-    </div>
+    <a
+      href="javascript:void(0)"
+      @click="clearImages"
+      class="button button-link"
+    >
+      remove all
+    </a>
   </div>
 </template>
 
