@@ -1,3 +1,4 @@
+root: true
 env:
   es6: true
   browser: true
@@ -26,9 +27,6 @@ rules:
   radix: error
   eqeqeq: error
   sort-imports-es6-autofix/sort-imports-es6: [error, { "ignoreCase": true, "memberSyntaxSortOrder": ["none", "all", "single", "multiple"] }]
-globals:
-  process:
-    - false
 settings:
   polyfills:
     - Array.from

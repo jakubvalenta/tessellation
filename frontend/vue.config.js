@@ -1,3 +1,5 @@
+/* global __dirname, process */
+
 const BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
@@ -19,7 +21,9 @@ module.exports = {
     // https://github.com/owais/django-webpack-loader#assumptions
     config
       .plugin('BundleTracker')
-      .use(BundleTracker, [{ filename: 'webpack-stats.json' }]);
+      .use(BundleTracker, [
+        { path: __dirname, filename: 'webpack-stats.json' }
+      ]);
 
     // https://cli.vuejs.org/guide/html-and-static-assets.html#disable-index-generation
     config.plugins.delete('html');
