@@ -21,11 +21,7 @@
           >
         </h3>
         <div class="featured__list__item__images">
-          <img
-            v-for="image in item.images"
-            :key="item.imgRef"
-            :src="image.url"
-          />
+          <img v-for="image in item.images" :key="image.ref" :src="image.url" />
         </div>
       </li>
     </ul>
@@ -126,28 +122,28 @@ function loadItems() {
 
 export default {
   name: 'CompositionFeatured',
-  data: function() {
+  data: function () {
     return {
       items: []
     };
   },
-  mounted: function() {
+  mounted: function () {
     loadItems.call(this);
   },
   watch: {
-    $route: function() {
+    $route: function () {
       loadItems.call(this);
     }
   },
   methods: {
-    loadItem: function(compositionId) {
+    loadItem: function (compositionId) {
       log(`Loading sample composition ${compositionId}`);
       this.$router.push({
         ...this.$route,
         params: { compositionId }
       });
     },
-    hide: function() {
+    hide: function () {
       this.$router.push({
         ...this.$route,
         query: { ...this.$route.query, featured: false }

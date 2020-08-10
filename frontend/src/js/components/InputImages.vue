@@ -5,7 +5,7 @@
         class="image__inner"
         :data-intro="
           image.index === 0 &&
-            'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
+          'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
         "
       >
         <Tile :image="image" :background="true">
@@ -97,10 +97,10 @@ export default {
     }
   },
   methods: {
-    newImage: function() {
+    newImage: function () {
       this.$root.state.newImage();
     },
-    clearImages: function() {
+    clearImages: function () {
       this.$root.state.clearImages();
     }
   }

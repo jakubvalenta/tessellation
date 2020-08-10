@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint && prettier --check **/*.{js,vue}",
+    "format": "prettier --write **/*.{js,vue}",
     "supportedBrowsers": "echo \"window.SUPPORTED_BROWSERS = $(browserslist-useragent-regexp --allowHigherVersions);\" > public/supportedBrowsers.js"
   },
   "dependencies": {
@@ -21,12 +22,10 @@
     "babel-eslint": "^10.1.0",
     "browserslist-useragent-regexp": "^2.1.0",
     "eslint": "^7.6.0",
-    "eslint-plugin-compat": "^3.8.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "eslint-plugin-vue": "^6.2.2",
     "intro.js": "^2.9.3",
     "js-cookie": "^2.2.1",
+    "prettier": "^2.0.5",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.3",
     "vue-template-compiler": "^2.6.11",
@@ -50,6 +49,11 @@
     "plugins": {
       "autoprefixer": {}
     }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   },
   "browserslist": [
     "> 1%",

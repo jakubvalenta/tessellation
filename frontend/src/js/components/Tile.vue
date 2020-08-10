@@ -109,14 +109,14 @@ export default {
     }
   },
   computed: {
-    outerClassObject: function() {
+    outerClassObject: function () {
       const classNames = ['tile', `rot--${this.rotation}`];
       if (this.background) {
         classNames.push('tile--with-bg');
       }
       return Object.fromEntries(classNames.map(className => [className, true]));
     },
-    innerClassObject: function() {
+    innerClassObject: function () {
       if (!this.image) {
         return {};
       }
@@ -128,7 +128,7 @@ export default {
       ];
       return Object.fromEntries(classNames.map(className => [className, true]));
     },
-    outerStyleObject: function() {
+    outerStyleObject: function () {
       if (!this.background || !this.image || !this.image.url) {
         return {};
       }

@@ -127,10 +127,10 @@ export default {
   },
   watch: {
     // TODO: We could also just store the container width in the global state
-    composition: function() {
+    composition: function () {
       render.call(this);
     },
-    edit: function() {
+    edit: function () {
       render.call(this);
     }
   }

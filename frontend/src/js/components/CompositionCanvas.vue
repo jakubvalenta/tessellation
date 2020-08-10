@@ -21,7 +21,7 @@ export default {
     }
   },
   watch: {
-    compositionToRender: function() {
+    compositionToRender: function () {
       log(
         'State of compositionToRender changed, rendering composition on ' +
           `canvas, tileSize=${this.compositionToRender.tileSize}`

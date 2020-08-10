@@ -99,17 +99,17 @@ export default {
       required: true
     }
   },
-  data: function() {
+  data: function () {
     return {
       modeFinal: true,
       canvas: document.createElement('canvas')
     };
   },
   methods: {
-    shuffle: function() {
+    shuffle: function () {
       this.$root.state.shuffleTiles();
     },
-    download: function(evt) {
+    download: function (evt) {
       if (!this.composition.length || !this.naturalTileSize) {
         error("Can't download composition, it's not rendered.");
         return;
@@ -124,14 +124,14 @@ export default {
       );
       evt.target.href = HTML.canvasToDataUrl(this.canvas);
     },
-    showConnections: function() {
+    showConnections: function () {
       this.modeFinal = !this.modeFinal;
       document.body.classList.toggle('mode-final', this.modeFinal);
     },
-    changeWidth: function(evt) {
+    changeWidth: function (evt) {
       this.$root.state.setSize({ width: evt.currentTarget.value });
     },
-    changeHeight: function(evt) {
+    changeHeight: function (evt) {
       this.$root.state.setSize({ height: evt.currentTarget.value });
     }
   }

@@ -5,8 +5,8 @@
     title="change connection"
     :data-intro="
       image.index === 0 &&
-        side === 2 &&
-        'Click these buttons to specify how the tiles connect. In the resulting composition, a pink edge of one tile must always be placed next to a pink edge of a another tile, same for the green edges etc.'
+      side === 2 &&
+      'Click these buttons to specify how the tiles connect. In the resulting composition, a pink edge of one tile must always be placed next to a pink edge of a another tile, same for the green edges etc.'
     "
   >
     {{ image.connections[side] || '\u00b7' }}
@@ -91,7 +91,7 @@ export default {
     }
   },
   computed: {
-    classObject: function() {
+    classObject: function () {
       const classNames = [
         'edge-button',
         `edge-button--${SIDE_NAMES[this.side]}`,
@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    shift: function() {
+    shift: function () {
       this.$root.state.shiftImageConnection(this.image, this.side);
     }
   }

@@ -38,10 +38,8 @@
             </span>
             <span
               v-else-if="item.publicRequestedAt"
-              :title="
-                `You have applied for inclusion of this composition in the featured compositions at
-${item.publicRequestedAt}.`
-              "
+              :title="`You have applied for inclusion of this composition in the featured compositions at
+${item.publicRequestedAt}.`"
             >
               applied for featured
             </span>
@@ -120,7 +118,7 @@ export default {
       required: true
     }
   },
-  data: function() {
+  data: function () {
     return {
       items: [],
       loading: null,
@@ -128,11 +126,11 @@ export default {
       errorMsg: null
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.listItems();
   },
   methods: {
-    listItems: function() {
+    listItems: function () {
       this.loading = true;
       StorageLib.getPublishedCompositions().then(data => {
         this.loading = false;
@@ -151,7 +149,7 @@ export default {
         });
       });
     },
-    createItem: function() {
+    createItem: function () {
       if (
         !validateAll([
           validateLocalStateBeforePublish.bind(this),
@@ -173,7 +171,7 @@ export default {
           error(err);
         });
     },
-    loadItem: function(compositionId) {
+    loadItem: function (compositionId) {
       log(`Loading published composition ${compositionId}`);
       this.$router.push({
         name: 'detail',
@@ -181,7 +179,7 @@ export default {
         query: this.$route.query
       });
     },
-    makeItemPublic: function(compositionId) {
+    makeItemPublic: function (compositionId) {
       log(`Making composition public ${compositionId}`);
       StorageLib.makeCompositionPublic(compositionId)
         .then(() => {
@@ -197,7 +195,7 @@ export default {
           error(err);
         });
     },
-    deleteItem: function(compositionId) {
+    deleteItem: function (compositionId) {
       log(`Deleting published composition ${compositionId}`);
       StorageLib.deletePublishedComposition(compositionId).then(
         () => {

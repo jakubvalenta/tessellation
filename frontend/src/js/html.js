@@ -1,5 +1,5 @@
 export function createHtmlImage(url) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const htmlImage = new window.Image();
     htmlImage.addEventListener(
       'load',
@@ -20,7 +20,12 @@ export function fillCanvas(canvas, ctx, color) {
 
 export function drawRotatedImage(canvas, ctx, image, x, y, rad) {
   ctx.save();
-  ctx.translate(x + image.width / 2, y + image.height / 2);
+  try {
+    ctx.translate(x + image.width / 2, y + image.height / 2);
+  } catch (e) {
+    debugger; // eslint-disable-line
+    console.error(e);
+  }
   ctx.rotate(rad);
   ctx.translate(-(x + image.width / 2), -(y + image.height / 2));
   ctx.drawImage(image, x, y, image.width, image.height);

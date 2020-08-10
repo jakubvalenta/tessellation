@@ -23,7 +23,7 @@ export default {
       required: true
     }
   },
-  data: function() {
+  data: function () {
     const reader = new window.FileReader();
     reader.addEventListener('load', () => {
       const url = reader.result;
@@ -34,18 +34,18 @@ export default {
     };
   },
   computed: {
-    name: function() {
+    name: function () {
       return `image-upload-${this.image.ref}`;
     }
   },
   methods: {
-    changeImage: function(evt) {
+    changeImage: function (evt) {
       const file = evt.currentTarget.files[0];
       if (file) {
         this.reader.readAsDataURL(file);
       }
     },
-    deleteImage: function() {
+    deleteImage: function () {
       this.$root.state.deleteImage(this.image);
     }
   }

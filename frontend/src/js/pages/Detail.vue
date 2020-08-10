@@ -160,7 +160,7 @@ export default {
       required: true
     }
   },
-  data: function() {
+  data: function () {
     const data = {
       state: this.$root.state,
       notFound: false
@@ -169,29 +169,29 @@ export default {
     return data;
   },
   computed: {
-    title: function() {
+    title: function () {
       return this.loading
         ? 'Tessellation'
         : `Composition / ${this.compositionId}`;
     }
   },
-  mounted: function() {
+  mounted: function () {
     loadComposition.call(this, this.compositionId);
   },
   watch: {
-    $route: function(to) {
+    $route: function (to) {
       updateDataFromQuery(this, to.query);
       loadComposition.call(this, to.params.compositionId);
     }
   },
   methods: {
-    toggleEditMode: function() {
+    toggleEditMode: function () {
       this.$router.push({
         ...this.$route,
         query: { featured: false, edit: true }
       });
     },
-    toggleBrowseMode: function() {
+    toggleBrowseMode: function () {
       this.$router.push({
         ...this.$route,
         query: { featured: true, edit: false }

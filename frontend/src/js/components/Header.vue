@@ -21,7 +21,7 @@ export default {
       required: true
     }
   },
-  mounted: function() {
+  mounted: function () {
     const elHeaderFromServer = document.getElementById('js-header');
     document.body.removeChild(elHeaderFromServer);
     elHeaderFromServer.style.display = 'inline';

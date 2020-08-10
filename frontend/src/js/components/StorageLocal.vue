@@ -34,16 +34,16 @@ import { log } from '../log.js';
 
 export default {
   name: 'StorageLocal',
-  data: function() {
+  data: function () {
     return {
       items: []
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.listItems();
   },
   methods: {
-    listItems: function() {
+    listItems: function () {
       const timestamps = StorageLib.readStorageTimestamps();
       this.items = timestamps.map(({ timestamp, dataIndex }, index) => {
         return {
@@ -53,18 +53,18 @@ export default {
         };
       });
     },
-    createItem: function() {
+    createItem: function () {
       log('Saving the state');
       StorageLib.storeState(this.$root.state);
       this.listItems();
     },
-    loadItem: function(dataIndex) {
+    loadItem: function (dataIndex) {
       log(`Loading stored state ${dataIndex}`);
       const data = StorageLib.getStorageItem(dataIndex);
       const newState = StorageLib.deserializeState(data);
       this.$root.state.updateState(newState);
     },
-    deleteItem: function(dataIndex) {
+    deleteItem: function (dataIndex) {
       log(`Deleting stored state ${dataIndex}`);
       StorageLib.deleteStorageItem(dataIndex);
       this.listItems();
