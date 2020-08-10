@@ -6,7 +6,7 @@ from tessellation import __title__
 
 setup(
     name='tessellation',
-    version='0.2.1',
+    version='0.3.0',
     description=__title__,
     long_description=(Path(__file__).parent / 'README.md').read_text(),
     url='https://www.github.com/jakubvalenta/tessellation',
@@ -15,7 +15,7 @@ setup(
     license='GNU General Public License v3 or later (GPLv3+)',
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Framework :: Django :: 2.2',
+        'Framework :: Django :: 3.1',
         'Intended Audience :: End Users/Desktop',
         'Topic :: Artistic Software',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',  # noqa: E501
