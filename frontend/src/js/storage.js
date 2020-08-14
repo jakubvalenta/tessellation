@@ -149,6 +149,7 @@ export function publishState(state) {
       image.data = data;
     });
   });
+  data.public = true;
   return Promise.all(promises).then(() => {
     return HTTP.http('POST', `${API_URL}/compositions/`, data);
   });
@@ -170,8 +171,8 @@ export function deletePublishedComposition(compositionId) {
   return HTTP.http('DELETE', `${API_URL}/compositions/${compositionId}`);
 }
 
-export function makeCompositionPublic(compositionId) {
+export function requestFeaturedComposition(compositionId) {
   return HTTP.http('PATCH', `${API_URL}/compositions/${compositionId}`, {
-    make_public: true
+    request_featured: true
   });
 }

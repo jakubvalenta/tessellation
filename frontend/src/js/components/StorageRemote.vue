@@ -30,26 +30,27 @@
                 params: { compositionId: item.compositionId }
               }"
               title="permanent link"
-              >link</router-link
+              ><span v-if="item.public">public link</span
+              ><span v-else>private link</span></router-link
             >
             /
-            <span v-if="item.isPublic">
+            <span v-if="item.featured">
               featured composition
             </span>
             <span
-              v-else-if="item.publicRequestedAt"
-              :title="`You have applied for inclusion of this composition in the featured compositions at
-${item.publicRequestedAt}.`"
+              v-else-if="item.featuredRequestedAt"
+              :title="`You have requested inclusion of this composition in featured compositions at
+${item.featuredRequestedAt}.`"
             >
-              applied for featured
+              featured requested
             </span>
             <a
               href="javascript:void(0)"
               v-else
-              @click="makeItemPublic(item.compositionId)"
-              title="Apply for inclusion of this composition in the featured compositions"
+              @click="requestFeatured(item.compositionId)"
+              title="Request inclusion of this composition in featured compositions"
             >
-              apply for featured
+              request featured
             </a>
           </td>
           <td>
@@ -141,10 +142,11 @@ export default {
             compositionUrl: composition.url,
             name:
               composition.name || formatDate(new Date(composition.created_at)),
-            isPublic: composition.public,
-            publicRequestedAt:
-              composition.public_requested_at &&
-              formatDate(new Date(composition.public_requested_at))
+            public: composition.public,
+            featured: composition.featured,
+            featuredRequestedAt:
+              composition.featured_requested_at &&
+              formatDate(new Date(composition.featured_requested_at))
           };
         });
       });
@@ -179,19 +181,21 @@ export default {
         query: this.$route.query
       });
     },
-    makeItemPublic: function (compositionId) {
-      log(`Making composition public ${compositionId}`);
-      StorageLib.makeCompositionPublic(compositionId)
+    requestFeatured: function (compositionId) {
+      log(
+        `Requesting inclusion of composition in featured compositions ${compositionId}`
+      );
+      StorageLib.requestFeaturedComposition(compositionId)
         .then(() => {
           this.successMsg =
-            'Successfully submitted an application for inclusion of the composition in featured compositions';
+            'Successfully submitted a request for inclusion of the composition in featured compositions';
           this.errorMsg = null;
           this.listItems();
         })
         .catch(err => {
           this.successMsg = null;
           this.errorMsg =
-            'Error while applying for inclusion of the composition in featured compositions';
+            'Error while submitting a request for inclusion of the composition in featured compositions';
           error(err);
         });
     },

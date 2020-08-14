@@ -34,9 +34,9 @@ class CompositionMixin:
 
 
 class SampleList(CompositionMixin, generics.ListAPIView):
-    queryset = Composition.objects.filter(
-        owner__is_superuser=True, public=True
-    ).prefetch_related('tiles__image')
+    queryset = Composition.objects.filter(featured=True).prefetch_related(
+        'tiles__image'
+    )
 
 
 class CompositionList(CompositionMixin, generics.ListCreateAPIView):

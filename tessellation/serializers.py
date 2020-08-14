@@ -42,13 +42,12 @@ class SizeSerializer(serializers.ModelSerializer):
 
 
 class CompositionSerializer(serializers.ModelSerializer):
-    slug = serializers.SlugField(read_only=True)
-    name = serializers.CharField(read_only=True)
     size = SizeSerializer()
     images = ImageSerializer(many=True)
     tiles = TileSerializer(many=True)
-    public = serializers.BooleanField(read_only=True)
-    make_public = serializers.BooleanField(write_only=True, required=False)
+    request_featured = serializers.BooleanField(
+        write_only=True, required=False
+    )
 
     class Meta:
         model = Composition
@@ -60,8 +59,15 @@ class CompositionSerializer(serializers.ModelSerializer):
             'images',
             'tiles',
             'public',
-            'public_requested_at',
-            'make_public',
+            'featured',
+            'featured_requested_at',
+            'request_featured',
+        ]
+        read_only_fields = [
+            'slug',
+            'name',
+            'featured',
+            'featured_requested_at',
         ]
 
     @transaction.atomic
@@ -83,6 +89,7 @@ class CompositionSerializer(serializers.ModelSerializer):
             owner=validated_data['owner'],
             width=validated_data['size']['width'],
             height=validated_data['size']['height'],
+            public=validated_data['public'],
         )
         composition.tiles.set(tiles)
         return composition
@@ -91,7 +98,7 @@ class CompositionSerializer(serializers.ModelSerializer):
     def update(
         self, instance: Composition, validated_data: dict
     ) -> Composition:
-        if validated_data['make_public'] is True:
-            instance.public_requested_at = datetime.datetime.now()
+        if validated_data['request_featured'] is True:
+            instance.featured_requested_at = datetime.datetime.now()
         instance.save()
         return instance

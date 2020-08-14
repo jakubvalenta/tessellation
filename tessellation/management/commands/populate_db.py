@@ -32,6 +32,7 @@ def load_fixture(fixture_path: Path, user: User):
         data = json.load(f)
     name = data.pop('name')
     public = data.pop('public')
+    featured = data.pop('featured')
     for image_data in data['images']:
         image_path = fixture_path.parent / image_data['url']
         image_data['data'] = create_base64_data_url(image_path)
@@ -42,6 +43,7 @@ def load_fixture(fixture_path: Path, user: User):
     composition = serializer.save(owner=user)
     composition.name = name
     composition.public = public
+    composition.featured = featured
     composition.save()
 
 

@@ -30,5 +30,6 @@
     { "imgRef": "3", "rotation": 0 }
   ],
   "name": "Minimal",
-  "public": true
+  "public": true,
+  "featured": true
 }

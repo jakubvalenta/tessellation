@@ -6,4 +6,4 @@ class CompositionManager(models.Manager):
         return not self.filter(slug=slug).exists()
 
     def get_sample_compositions(self):
-        return self.filter(owner__is_superuser=True, public=True)
+        return self.filter(featured=True)

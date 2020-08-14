@@ -124,6 +124,10 @@ import Intro from '../components/Intro.vue';
 import Storage from '../components/Storage.vue';
 
 function loadComposition(compositionId) {
+  if (!compositionId) {
+    this.notFound = true;
+    return;
+  }
   this.notFound = false;
   this.$root.state.setLoading(true);
   StorageLib.getPublishedComposition(compositionId).then(

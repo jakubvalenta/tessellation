@@ -20,7 +20,14 @@ class CompositionAdmin(admin.ModelAdmin):
         'slug',
         'owner',
         'public',
-        'public_requested_at',
+        'featured',
+        'featured_requested_at',
         'created_at',
     )
-    list_filter = ('owner__username', 'public', 'public_requested_at')
+    list_filter = (
+        'owner__username',
+        'public',
+        'featured',
+        'featured_requested_at',
+    )
+    exclude = ['featured_requested_at']
