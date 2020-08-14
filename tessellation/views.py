@@ -61,7 +61,7 @@ class CompositionDetail(
 
     def get_queryset(self):
         if self.request.method == 'GET':
-            qs = Q(owner__is_superuser=True, public=True)
+            qs = Q(public=True)
             if self.request.user.is_authenticated:
                 qs = qs | Q(owner=self.request.user)
             return Composition.objects.filter(qs)
