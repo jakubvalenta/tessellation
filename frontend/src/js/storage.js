@@ -4,7 +4,7 @@ import { isImageComplete, SIDES } from './composition.js';
 
 const API_URL = '/api';
 
-export const MAX_COMPOSITIONS_PER_USER = 10;
+export const MAX_COMPOSITIONS_PER_USER = 100;
 
 // Keep in sync with Django setting MAX_UPLOAD_SIZE_BYTES
 const MAX_UPLOAD_SIZE_BYTES = 1000000;

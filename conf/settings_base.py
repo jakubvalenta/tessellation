@@ -96,7 +96,8 @@ LOGGING = {
     'loggers': {'tessellation': {'level': 'INFO', 'handlers': ['console']}},
 }
 
-MAX_COMPOSITIONS_PER_USER = 10
+# Keep in sync with js/storage setting MAX_COMPOSITIONS_PER_USER
+MAX_COMPOSITIONS_PER_USER = 100
 
 # Keep in sync with js/storage setting MAX_UPLOAD_SIZE_BYTES
 MAX_UPLOAD_SIZE_BYTES = 1_000_000
