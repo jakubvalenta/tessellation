@@ -25,6 +25,7 @@ class Image(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     image = models.FileField(upload_to=image_upload_to, unique=True)
     connections = ArrayField(models.PositiveSmallIntegerField())
+    self_connect = ArrayField(models.BooleanField(), null=True)
 
     def __str__(self):
         return str(self.id)
