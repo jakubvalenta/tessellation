@@ -76,7 +76,7 @@ const state = {
   onImagesChanged: function () {
     log('Images changed');
     const newTiles = CompositionLib.generateTiles(this.images);
-    this.naturalTileSize = getNaturalFirstImageWidth(this.images);
+    this.naturalTileSize = getNaturalFirstImageWidth(this.images) || 0;
     this.setTiles(newTiles);
   },
 

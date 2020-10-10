@@ -95,8 +95,7 @@ export default {
       required: true
     },
     naturalTileSize: {
-      type: Number,
-      required: true
+      type: Number
     }
   },
   data: function () {
