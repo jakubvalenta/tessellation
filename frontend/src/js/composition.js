@@ -63,32 +63,51 @@ function calcNextCoords(row, col, width, height) {
   return [row, col + 1];
 }
 
-function getConnection(tile, i) {
-  return tile.image.connections[(i + tile.rotation) % SIDES.length];
-}
-
 function findRequirements(composition, col, row) {
+  const requirements = [];
   const leftTile = findLeftTile(composition, col, row);
+  if (leftTile) {
+    const adjacentSide = (RIGHT + leftTile.rotation) % SIDES.length;
+    requirements.push({
+      side: LEFT,
+      image: leftTile.image,
+      connection: leftTile.image.connections[adjacentSide],
+      selfConnect: leftTile.image.selfConnect[adjacentSide],
+      adjacentSide
+    });
+  }
   const topTile = findTopTile(composition, col, row);
-  const requirements = [
-    [LEFT, leftTile ? getConnection(leftTile, RIGHT) : null],
-    [TOP, topTile ? getConnection(topTile, BOTTOM) : null]
-  ];
+  if (topTile) {
+    const adjacentSide = (BOTTOM + topTile.rotation) % SIDES.length;
+    requirements.push({
+      side: TOP,
+      image: topTile.image,
+      connection: topTile.image.connections[adjacentSide],
+      selfConnect: topTile.image.selfConnect[adjacentSide],
+      adjacentSide
+    });
+  }
   return requirements;
 }
 
 function fits(tile, requirements) {
-  let i, side, requirement;
-  for (i = 0; i < requirements.length; i++) {
-    [side, requirement] = requirements[i];
-    if (requirement !== null && getConnection(tile, side) !== requirement) {
+  for (const requirement of requirements) {
+    const rotatedSide = (requirement.side + tile.rotation) % SIDES.length;
+    if (tile.image.connections[rotatedSide] !== requirement.connection) {
+      return false;
+    }
+    if (
+      !requirement.selfConnect &&
+      requirement.image === tile.image &&
+      rotatedSide === requirement.adjacentSide
+    ) {
       return false;
     }
   }
   return true;
 }
 
-function chooseTile(stack, requirements, excl = []) {
+function chooseTile(stack, requirements, excl) {
   let i, tile;
   for (i = 0; i < stack.length; i++) {
     tile = stack[i];
