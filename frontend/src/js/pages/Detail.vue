@@ -24,6 +24,13 @@
       </div>
       <div class="detail__composition">
         <h2 class="sr-only">Composition</h2>
+        <CompositionControls
+          :edit="edit"
+          :width="state.size.width"
+          :height="state.size.height"
+          :composition="state.composition"
+          :natural-tile-size="state.naturalTileSize"
+        />
         <Composition
           :composition="state.composition"
           :compositionToRender="state.compositionToRender"
@@ -31,13 +38,6 @@
           :loading="state.loading"
           :error="state.error"
           :warn="state.warn"
-        />
-        <CompositionControls
-          :edit="edit"
-          :width="state.size.width"
-          :height="state.size.height"
-          :composition="state.composition"
-          :natural-tile-size="state.naturalTileSize"
         />
       </div>
       <div v-if="edit" class="detail__storage">
@@ -48,54 +48,64 @@
 </template>
 
 <style lang="scss">
+.detail__input {
+  padding-top: 0.1em;
+}
+.detail__storage {
+  padding-top: 0.1em;
+}
 @media screen and (min-width: 800px) {
   .detail {
     display: flex;
+    min-height: 0;
+  }
+  .detail__input,
+  .detail__composition,
+  .detail__storage {
+    overflow-y: auto;
   }
   .detail__composition {
     flex-grow: 1;
   }
   .detail__input {
-    padding-right: 2em;
+    padding-right: 1.5em;
+    margin-right: 1em;
     box-sizing: border-box;
   }
 }
-@media screen and (min-width: 1440px) {
-  .detail__input {
-    width: 40%;
-  }
-}
-@media screen and (min-width: 1024px) and (max-width: 1439px) {
-  .detail__input {
-    width: 30%;
-  }
-}
 @media screen and (min-width: 1024px) {
-  .detail__storage {
-    margin-left: 2em;
-    width: 28em;
-  }
-}
-@media screen and (min-width: 800px) and (max-width: 1023px) {
-  .detail {
-    flex-wrap: wrap;
-  }
-  .detail__input {
-    width: 40%;
-  }
   .detail__composition {
-    width: 60%;
+    padding-right: 1em;
+    margin-right: 1em;
+  }
+  .detail__storage {
+    width: 28em;
+    padding-right: 1em;
   }
 }
 @media screen and (max-width: 1023px) {
+  .detail {
+    flex-wrap: wrap;
+  }
+  .detail__composition {
+    width: min-content;
+  }
   .detail__storage {
     width: 100%;
-    padding-top: 1em;
+    padding-top: 2em;
+  }
+}
+@media screen and (min-width: 800px) {
+  .detail__input {
+    width: 40%;
   }
 }
 @media screen and (max-width: 799px) {
   .detail__composition {
-    padding-top: 1em;
+    width: 100%;
+  }
+  .detail__composition {
+    padding-top: 2em;
   }
 }
 @media screen and (max-width: 1439px) {

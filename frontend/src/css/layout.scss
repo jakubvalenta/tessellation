@@ -27,8 +27,13 @@ body {
   background: $color-background;
 }
 
-.app {
-  flex-grow: 1;
+@media screen and (min-width: 800px) {
+  .app {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+  }
 }
 
 .header,

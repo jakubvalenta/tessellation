@@ -55,7 +55,7 @@
 
 .images {
   @extend %clearfix;
-  margin-top: 1em;
+  margin-top: 0.5em;
   margin-left: -1em;
   margin-right: -1em;
 }

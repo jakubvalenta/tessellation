@@ -56,7 +56,9 @@
 .composition-controls {
   display: flex;
   justify-content: space-between;
-  margin: 1em 0;
+  margin-bottom: 1em;
+  padding: 0.1em;
+  padding-bottom: 0;
 
   p {
     margin: 0;
