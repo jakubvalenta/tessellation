@@ -174,6 +174,13 @@ const state = {
     }
   },
 
+  toggleImageSelfConnect: function (image, side) {
+    image.selfConnect.splice(side, 1, !image.selfConnect[side]);
+    if (isImageComplete(image)) {
+      this.onImagesChanged();
+    }
+  },
+
   shuffleTiles: function () {
     shuffle(this.tiles);
     this.onTilesChanged();

@@ -59,6 +59,13 @@
         </button>
       </div>
     </button>
+    <button @click="toggleSelfConnect" class="edge__button">
+      <input
+        type="checkbox"
+        :checked="selfConnect"
+        title="allow self-connection"
+      />
+    </button>
   </div>
 </template>
 
@@ -242,6 +249,9 @@ export default {
       }
       return digits;
     },
+    selfConnect: function () {
+      return this.image.selfConnect[this.side];
+    },
     sideName: function () {
       return SIDE_NAMES[this.side];
     }
@@ -265,15 +275,18 @@ export default {
         +connectionStr
       );
     },
-    select: function (digitIndex, value) {
-      this._select(digitIndex, value);
-    },
     cycle: function (digitIndex) {
       const value =
         this.digits[digitIndex] === null
           ? CONNECTIONS[0]
           : (this.digits[digitIndex] % CONNECTIONS.length) + 1;
       this._select(digitIndex, value);
+    },
+    select: function (digitIndex, value) {
+      this._select(digitIndex, value);
+    },
+    toggleSelfConnect: function () {
+      this.$root.state.toggleImageSelfConnect(this.image, this.side);
     }
   }
 };
