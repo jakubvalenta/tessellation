@@ -1,7 +1,7 @@
 import * as CompositionLib from './composition.js';
 import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
-import { CONNECTIONS, isImageComplete } from './composition.js';
+import { isImageComplete } from './composition.js';
 import { log } from './log.js';
 import { shuffle } from './utils/array.js';
 
@@ -55,7 +55,7 @@ const state = {
   warn: null,
   isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED,
 
-  generateComposition: function() {
+  generateComposition: function () {
     this.loading = true;
     const res = CompositionLib.generateComposition(this.tiles, [
       this.size.width,
@@ -67,25 +67,25 @@ const state = {
     this.warn = res.warn;
   },
 
-  onImagesLoaded: function() {
+  onImagesLoaded: function () {
     log('Images loaded');
     this.generateComposition();
     this.naturalTileSize = getNaturalFirstImageWidth(this.images);
   },
 
-  onImagesChanged: function() {
+  onImagesChanged: function () {
     log('Images changed');
     const newTiles = CompositionLib.generateTiles(this.images);
     this.naturalTileSize = getNaturalFirstImageWidth(this.images);
     this.setTiles(newTiles);
   },
 
-  onTilesChanged: function() {
+  onTilesChanged: function () {
     log('Tiles changed');
     this.generateComposition();
   },
 
-  updateState: function(newState) {
+  updateState: function (newState) {
     ['size', 'images', 'tiles'].forEach(field => {
       if (newState[field]) {
         this[field] = newState[field];
@@ -97,7 +97,7 @@ const state = {
     });
   },
 
-  setSize: function({ width, height }) {
+  setSize: function ({ width, height }) {
     if (width) {
       this.size.width = Math.max(width, 1);
     }
@@ -107,12 +107,12 @@ const state = {
     this.onTilesChanged();
   },
 
-  setTiles: function(tiles) {
+  setTiles: function (tiles) {
     this.tiles = tiles;
     this.onTilesChanged();
   },
 
-  setCompositionToRender: function(composition, tileSize) {
+  setCompositionToRender: function (composition, tileSize) {
     this.compositionToRender = {
       composition,
       tileSize
@@ -120,11 +120,11 @@ const state = {
     this.loading = false;
   },
 
-  setLoading: function(loading) {
+  setLoading: function (loading) {
     this.loading = loading;
   },
 
-  newImage: function() {
+  newImage: function () {
     const ref = uuidv4();
     log(`Adding new image ${ref}`);
     this.images.push({
@@ -135,14 +135,14 @@ const state = {
     });
   },
 
-  clearImages: function() {
+  clearImages: function () {
     if (this.images.length) {
       this.images.splice(0);
       this.onImagesChanged();
     }
   },
 
-  updateImage: function(image, url) {
+  updateImage: function (image, url) {
     log(`Picked file ${url}`);
     const oldIsImageComplete = isImageComplete(image);
     image.url = url;
@@ -154,7 +154,7 @@ const state = {
     });
   },
 
-  deleteImage: function({ ref }) {
+  deleteImage: function ({ ref }) {
     log(`Deleting image ${ref}`);
     const image = findImage(this.images, ref);
     this.images.splice(image.index, 1);
@@ -166,18 +166,14 @@ const state = {
     }
   },
 
-  shiftImageConnection: function(image, side) {
-    const connection =
-      image.connections[side] === null
-        ? CONNECTIONS[0]
-        : (image.connections[side] % CONNECTIONS.length) + 1;
-    image.connections.splice(side, 1, connection); // Use splice to trigger Vue update.
+  setImageConnection: function (image, side, connection) {
+    image.connections.splice(side, 1, connection);
     if (isImageComplete(image)) {
       this.onImagesChanged();
     }
   },
 
-  shuffleTiles: function() {
+  shuffleTiles: function () {
     shuffle(this.tiles);
     this.onTilesChanged();
   }

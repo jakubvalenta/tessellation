@@ -14,6 +14,14 @@
               v-for="(connection, side) in image.connections"
               :image="image"
               :side="side"
+              v-on:activate-digit="
+                digitIndex => activateDigit(image, side, digitIndex)
+              "
+              :activeDigitIndex="
+                activeImage === image && activeSide === side
+                  ? activeDigitIndex
+                  : null
+              "
               :key="`${image.ref}-${side}`"
             />
           </Tile>
@@ -27,7 +35,7 @@
           <div class="image__inner__add">
             <button @click="newImage">add more</button>
           </div>
-          <div class="image__inner__controls" style="height: 2.5em;"></div>
+          <div class="image__inner__controls" style="height: 2.5em"></div>
         </div>
       </div>
     </div>
@@ -81,6 +89,20 @@
   justify-content: center;
   align-items: center;
 }
+
+@media screen and (max-width: 799px) {
+  .images {
+    margin-left: -0.5em;
+    margin-right: -0.5em;
+  }
+  .image {
+    padding: 0.5em;
+  }
+  .image__inner {
+    padding: 2.5em;
+    padding-bottom: 0.5em;
+  }
+}
 </style>
 
 <script>
@@ -101,12 +123,24 @@ export default {
       required: true
     }
   },
+  data: function () {
+    return {
+      activeImage: null,
+      activeSide: null,
+      activeDigitIndex: null
+    };
+  },
   methods: {
     newImage: function () {
       this.$root.state.newImage();
     },
     clearImages: function () {
       this.$root.state.clearImages();
+    },
+    activateDigit: function (image, side, digitIndex) {
+      this.activeImage = image;
+      this.activeSide = side;
+      this.activeDigitIndex = digitIndex;
     }
   }
 };
