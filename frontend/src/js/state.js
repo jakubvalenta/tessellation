@@ -1,7 +1,7 @@
 import * as CompositionLib from './composition.js';
 import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
-import { isImageComplete } from './composition.js';
+import { SIDES, isImageComplete } from './composition.js';
 import { log } from './log.js';
 import { shuffle } from './utils/array.js';
 
@@ -130,7 +130,8 @@ const state = {
     this.images.push({
       index: this.images.length,
       ref,
-      connections: [null, null, null, null],
+      connections: Array.from(SIDES, () => null),
+      selfConnect: Array.from(SIDES, () => true),
       url: null
     });
   },

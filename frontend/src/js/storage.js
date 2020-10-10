@@ -61,6 +61,7 @@ export function storeState(state) {
 
 function compatImage(image) {
   image.ref = image.ref || image.imgId; // compat
+  image.selfConnect = image.selfConnect || Array.from(SIDES, () => true);
   return image;
 }
 
@@ -75,10 +76,11 @@ function validateSizeData(sizeData) {
 
 function validateImageData(imageData) {
   return (
+    imageData.url &&
+    imageData.ref &&
     imageData.connections &&
     imageData.connections.length === SIDES.length &&
-    imageData.url &&
-    imageData.ref
+    (!imageData.selfConnect || imageData.selfConnect.length === SIDES.length)
   );
 }
 
