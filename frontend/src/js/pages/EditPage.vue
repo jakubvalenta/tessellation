@@ -3,19 +3,8 @@
     <div v-show="notFound" class="box-alert box-error">
       Composition not found
     </div>
-    <Header :title="title">
-      <span>
-        <button v-if="!edit" @click="toggleEditMode">
-          edit this composition
-        </button>
-        <button v-if="!featured" @click="toggleBrowseMode">
-          browse featured compositions
-        </button>
-      </span>
-    </Header>
-    <Featured v-if="featured" />
     <main class="main detail">
-      <div v-if="edit" class="detail__input">
+      <div class="detail__input">
         <div class="heading-row">
           <h2>Edit composition</h2>
           <Intro />
@@ -25,7 +14,7 @@
       <div class="detail__composition">
         <h2 class="sr-only">Composition</h2>
         <CompositionControls
-          :edit="edit"
+          :edit="true"
           :width="state.size.width"
           :height="state.size.height"
           :composition="state.composition"
@@ -33,13 +22,13 @@
         />
         <Composition
           :composition="state.composition"
-          :edit="edit"
+          :edit="true"
           :loading="state.loading"
           :error="state.error"
           :warn="state.warn"
         />
       </div>
-      <div v-if="edit" class="detail__storage">
+      <div class="detail__storage">
         <Storage :isAuthenticated="state.isAuthenticated" />
       </div>
     </main>
@@ -126,8 +115,6 @@
 import * as StorageLib from '../storage.js';
 import Composition from '../components/Composition.vue';
 import CompositionControls from '../components/CompositionControls.vue';
-import Featured from '../components/Featured.vue';
-import Header from '../components/Header.vue';
 import InputImages from '../components/InputImages.vue';
 import Intro from '../components/Intro.vue';
 import Storage from '../components/Storage.vue';
@@ -151,18 +138,11 @@ function loadComposition(compositionId) {
   );
 }
 
-function updateDataFromQuery(data, query) {
-  data.edit = query.edit === 'true' || query.edit === true;
-  data.featured = query.featured === 'true' || query.featured === true;
-}
-
 export default {
-  name: 'Detail',
+  name: 'EditPage',
   components: {
     Composition,
     CompositionControls,
-    Featured,
-    Header,
     InputImages,
     Intro,
     Storage
@@ -178,7 +158,6 @@ export default {
       state: this.$root.store.state,
       notFound: false
     };
-    updateDataFromQuery(data, this.$route.query);
     return data;
   },
   computed: {
@@ -193,22 +172,7 @@ export default {
   },
   watch: {
     $route: function (to) {
-      updateDataFromQuery(this, to.query);
       loadComposition.call(this, to.params.compositionId);
-    }
-  },
-  methods: {
-    toggleEditMode: function () {
-      this.$router.push({
-        ...this.$route,
-        query: { featured: false, edit: true }
-      });
-    },
-    toggleBrowseMode: function () {
-      this.$router.push({
-        ...this.$route,
-        query: { featured: true, edit: false }
-      });
     }
   }
 };

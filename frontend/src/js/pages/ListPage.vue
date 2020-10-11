@@ -1,37 +1,36 @@
 <template>
-  <div v-show="items.length" class="featured">
-    <h2 class="featured__heading">Featured compositions</h2>
-    <ul class="featured__list">
-      <li
-        v-for="item in items"
-        :key="item.compositionId"
-        @click="loadItem(item.compositionId)"
-        class="featured__list__item button-box"
-        title="click to view the composition"
-      >
-        <h3 class="sr-only has-permalink">
-          {{ item.name }}
-          <router-link
-            :to="{
-              name: 'detail',
-              params: { compositionId: item.compositionId }
-            }"
-            title="permalink"
-            >§</router-link
-          >
-        </h3>
-        <div class="featured__list__item__images">
-          <img v-for="image in item.images" :key="image.ref" :src="image.url" />
-        </div>
-      </li>
-    </ul>
-    <button
-      @click="hide"
-      class="button-close"
-      title="hide featured compositions"
-    >
-      x
-    </button>
+  <div class="app">
+    <main class="main featured">
+      <h2 class="featured__heading">Featured compositions</h2>
+      <ul v-show="compositions.length" class="featured__list">
+        <li
+          v-for="composition in compositions"
+          :key="composition.compositionId"
+          @click="loadComposition(composition.compositionId)"
+          class="featured__list__item button-box"
+          title="click to view the composition"
+        >
+          <h3 class="sr-only has-permalink">
+            {{ composition.name }}
+            <router-link
+              :to="{
+                name: 'detail',
+                params: { compositionId: composition.compositionId }
+              }"
+              title="permalink"
+              >§</router-link
+            >
+          </h3>
+          <div class="featured__list__item__images">
+            <img
+              v-for="image in composition.images"
+              :key="image.ref"
+              :src="image.url"
+            />
+          </div>
+        </li>
+      </ul>
+    </main>
   </div>
 </template>
 
@@ -92,7 +91,7 @@
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-compositions: flex-start;
   background: $color-white;
 
   img {
@@ -107,9 +106,9 @@ import * as StorageLib from '../storage.js';
 import { formatDate } from '../utils/date.js';
 import { log } from '../log.js';
 
-function loadItems() {
+function loadCompositions() {
   StorageLib.getSampleCompositions().then(data => {
-    this.items = data.map(composition => {
+    this.compositions = data.map(composition => {
       return {
         compositionId: composition.slug,
         compositionUrl: composition.url,
@@ -121,32 +120,26 @@ function loadItems() {
 }
 
 export default {
-  name: 'CompositionFeatured',
+  name: 'ListPage',
   data: function () {
     return {
-      items: []
+      compositions: []
     };
   },
   mounted: function () {
-    loadItems.call(this);
+    loadCompositions.call(this);
   },
   watch: {
     $route: function () {
-      loadItems.call(this);
+      loadCompositions.call(this);
     }
   },
   methods: {
-    loadItem: function (compositionId) {
+    loadComposition: function (compositionId) {
       log(`Loading sample composition ${compositionId}`);
       this.$router.push({
         ...this.$route,
         params: { compositionId }
-      });
-    },
-    hide: function () {
-      this.$router.push({
-        ...this.$route,
-        query: { ...this.$route.query, featured: false }
       });
     }
   }
