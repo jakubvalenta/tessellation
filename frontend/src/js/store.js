@@ -2,6 +2,7 @@ import * as CompositionLib from './composition.js';
 import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
 import { SIDES, isImageComplete } from './composition.js';
+import { Vue } from 'vue';
 import { log } from './log.js';
 import { shuffle } from './utils/array.js';
 
@@ -40,43 +41,46 @@ export function findImage(images, ref) {
   return null;
 }
 
-const state = {
-  size: { width: 5, height: 5 },
-  tiles: [],
-  images: [],
-  composition: [],
-  compositionToRender: {
+const store = {
+  state: Vue.reactive({
+    size: { width: 5, height: 5 },
+    tiles: [],
+    images: [],
     composition: [],
-    tileSize: 0
-  },
-  naturalTileSize: 0,
-  loading: true,
-  error: null,
-  warn: null,
-  isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED,
+    compositionToRender: {
+      composition: [],
+      tileSize: 0
+    },
+    naturalTileSize: 0,
+    loading: true,
+    error: null,
+    warn: null,
+    isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED
+  }),
 
   generateComposition: function () {
-    this.loading = true;
-    const res = CompositionLib.generateComposition(this.tiles, [
-      this.size.width,
-      this.size.height
+    this.state.loading = true;
+    const res = CompositionLib.generateComposition(this.state.tiles, [
+      this.state.size.width,
+      this.state.size.height
     ]);
-    this.composition = res.composition;
-    this.loading = false;
-    this.error = res.error;
-    this.warn = res.warn;
+    this.state.composition = res.composition;
+    this.state.loading = false;
+    this.state.error = res.error;
+    this.state.warn = res.warn;
   },
 
   onImagesLoaded: function () {
     log('Images loaded');
     this.generateComposition();
-    this.naturalTileSize = getNaturalFirstImageWidth(this.images);
+    this.state.naturalTileSize = getNaturalFirstImageWidth(this.state.images);
   },
 
   onImagesChanged: function () {
     log('Images changed');
-    const newTiles = CompositionLib.generateTiles(this.images);
-    this.naturalTileSize = getNaturalFirstImageWidth(this.images) || 0;
+    const newTiles = CompositionLib.generateTiles(this.state.images);
+    this.state.naturalTileSize =
+      getNaturalFirstImageWidth(this.state.images) || 0;
     this.setTiles(newTiles);
   },
 
@@ -91,7 +95,7 @@ const state = {
         this[field] = newState[field];
       }
     });
-    const promises = this.images.map(loadHtmlImage);
+    const promises = this.state.images.map(loadHtmlImage);
     Promise.all(promises).then(() => {
       this.onImagesLoaded();
     });
@@ -99,36 +103,36 @@ const state = {
 
   setSize: function ({ width, height }) {
     if (width) {
-      this.size.width = Math.max(width, 1);
+      this.state.size.width = Math.max(width, 1);
     }
     if (height) {
-      this.size.height = Math.max(height, 1);
+      this.state.size.height = Math.max(height, 1);
     }
     this.onTilesChanged();
   },
 
   setTiles: function (tiles) {
-    this.tiles = tiles;
+    this.state.tiles = tiles;
     this.onTilesChanged();
   },
 
   setCompositionToRender: function (composition, tileSize) {
-    this.compositionToRender = {
+    this.state.compositionToRender = {
       composition,
       tileSize
     };
-    this.loading = false;
+    this.state.loading = false;
   },
 
   setLoading: function (loading) {
-    this.loading = loading;
+    this.state.loading = loading;
   },
 
   newImage: function () {
     const ref = uuidv4();
     log(`Adding new image ${ref}`);
-    this.images.push({
-      index: this.images.length,
+    this.state.images.push({
+      index: this.state.images.length,
       ref,
       connections: Array.from(SIDES, () => null),
       selfConnect: Array.from(SIDES, () => true),
@@ -137,8 +141,8 @@ const state = {
   },
 
   clearImages: function () {
-    if (this.images.length) {
-      this.images.splice(0);
+    if (this.state.images.length) {
+      this.state.images.splice(0);
       this.onImagesChanged();
     }
   },
@@ -157,9 +161,9 @@ const state = {
 
   deleteImage: function ({ ref }) {
     log(`Deleting image ${ref}`);
-    const image = findImage(this.images, ref);
-    this.images.splice(image.index, 1);
-    this.images = this.images.map((image, i) => {
+    const image = findImage(this.state.images, ref);
+    this.state.images.splice(image.index, 1);
+    this.state.images = this.state.images.map((image, i) => {
       return { ...image, index: i };
     });
     if (isImageComplete(image)) {
@@ -182,11 +186,9 @@ const state = {
   },
 
   shuffleTiles: function () {
-    shuffle(this.tiles);
+    shuffle(this.state.tiles);
     this.onTilesChanged();
   }
 };
 
-export function initState() {
-  return state; // TODO: clone?
-}
+export default store;

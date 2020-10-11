@@ -139,11 +139,11 @@ function loadComposition(compositionId) {
     return;
   }
   this.notFound = false;
-  this.$root.state.setLoading(true);
+  this.$root.store.setLoading(true);
   StorageLib.getPublishedComposition(compositionId).then(
     data => {
       const newState = StorageLib.deserializeState(data);
-      this.$root.state.updateState(newState);
+      this.$root.store.updateState(newState);
       document.title = this.title;
     },
     () => {
@@ -176,7 +176,7 @@ export default {
   },
   data: function () {
     const data = {
-      state: this.$root.state,
+      state: this.$root.store,
       notFound: false
     };
     updateDataFromQuery(data, this.$route.query);
@@ -184,7 +184,7 @@ export default {
   },
   computed: {
     title: function () {
-      return this.loading
+      return this.state.loading
         ? 'Tessellation'
         : `Composition / ${this.compositionId}`;
     }

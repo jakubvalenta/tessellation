@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = true;
 
 export function error(...msg) {
   console.error(...msg); // eslint-disable-line no-console
