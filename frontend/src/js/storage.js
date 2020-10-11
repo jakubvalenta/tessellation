@@ -1,5 +1,5 @@
 import * as HTTP from './http.js';
-import * as State from './state.js';
+import store from './store.js';
 import { isImageComplete, SIDES } from './composition.js';
 
 const API_URL = '/api';
@@ -105,7 +105,7 @@ export function deserializeState(data) {
         .map(tileData => {
           return {
             ...tileData,
-            image: State.findImage(newState.images, tileData.imgRef)
+            image: store.findImage(newState.images, tileData.imgRef)
           };
         })
         .filter(tile => !!tile.image);

@@ -132,10 +132,10 @@ export default {
   },
   methods: {
     newImage: function () {
-      this.$root.state.newImage();
+      this.$root.store.newImage();
     },
     clearImages: function () {
-      this.$root.state.clearImages();
+      this.$root.store.clearImages();
     },
     activateDigit: function (image, side, digitIndex) {
       this.activeImage = image;

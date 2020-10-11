@@ -33,7 +33,6 @@
         />
         <Composition
           :composition="state.composition"
-          :compositionToRender="state.compositionToRender"
           :edit="edit"
           :loading="state.loading"
           :error="state.error"
@@ -176,7 +175,7 @@ export default {
   },
   data: function () {
     const data = {
-      state: this.$root.store,
+      state: this.$root.store.state,
       notFound: false
     };
     updateDataFromQuery(data, this.$route.query);

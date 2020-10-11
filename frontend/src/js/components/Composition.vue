@@ -1,10 +1,10 @@
 <template>
   <div class="composition" ref="inner">
-    <CompositionCanvas
-      :compositionToRender="compositionToRender"
+    <canvas
       v-show="!loading && !error"
+      class="composition__canvas"
       ref="canvas"
-    />
+    ></canvas>
     <div v-show="loading" class="composition__message">
       <div class="box-alert box-info">calculating...</div>
     </div>
@@ -36,6 +36,9 @@
 
 .composition {
   position: relative;
+}
+.composition__canvas {
+  width: 100%;
 }
 .composition__message {
   @include square;
@@ -69,7 +72,7 @@
 </style>
 
 <script>
-import CompositionCanvas from './CompositionCanvas.vue';
+import * as CompositionLib from '../composition.js';
 import Tile from './Tile.vue';
 import { log } from '../log.js';
 
@@ -95,23 +98,23 @@ function render() {
     this.$refs.canvas,
     elContainer
   );
-  log(`Calculated tile size ${tileSize}`);
-  this.$root.state.setCompositionToRender(this.composition, tileSize);
+  log(`Rendering composition on canvas, tileSize=${tileSize}`);
+  CompositionLib.renderCompositionOnCanvas(
+    this.composition,
+    this.$refs.canvas,
+    tileSize
+  );
+  this.$root.store.setLoading(false);
 }
 
 export default {
   name: 'Composition',
   components: {
-    CompositionCanvas,
     Tile
   },
   props: {
     composition: {
       type: Array,
-      required: true
-    },
-    compositionToRender: {
-      type: Object,
       required: true
     },
     edit: {

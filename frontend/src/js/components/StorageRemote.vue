@@ -12,9 +12,7 @@
         {{ successMsg }}
       </p>
       <p class="text-status text-error" v-show="errorMsg">{{ errorMsg }}</p>
-      <p class="storage-empty text-status" v-show="loading">
-        loading
-      </p>
+      <p class="storage-empty text-status" v-show="loading">loading</p>
       <p class="storage-empty text-status" v-show="!items.length && !loading">
         empty
       </p>
@@ -34,9 +32,7 @@
               ><span v-else>private link</span></router-link
             >
             /
-            <span v-if="item.featured">
-              featured composition
-            </span>
+            <span v-if="item.featured">featured composition</span>
             <span
               v-else-if="item.featuredRequestedAt"
               :title="`You have requested inclusion of this composition in featured compositions at
@@ -54,9 +50,7 @@ ${item.featuredRequestedAt}.`"
             </a>
           </td>
           <td>
-            <button @click="loadItem(item.compositionId)">
-              load
-            </button>
+            <button @click="loadItem(item.compositionId)">load</button>
           </td>
           <td v-if="hasPermissions">
             <button
@@ -155,13 +149,13 @@ export default {
       if (
         !validateAll([
           validateLocalStateBeforePublish.bind(this),
-          () => StorageLib.validateStateBeforePublish(this.$root.state)
+          () => StorageLib.validateStateBeforePublish(this.$root.store.state)
         ])
       ) {
         return;
       }
       log('Publishing new composition');
-      StorageLib.publishState(this.$root.state)
+      StorageLib.publishState(this.$root.store.state)
         .then(() => {
           this.successMsg = 'Composition was successfully published';
           this.errorMsg = null;

@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     shuffle: function () {
-      this.$root.state.shuffleTiles();
+      this.$root.store.shuffleTiles();
     },
     download: function (evt) {
       if (!this.composition.length || !this.naturalTileSize) {
@@ -130,10 +130,10 @@ export default {
       document.body.classList.toggle('mode-final', this.modeFinal);
     },
     changeWidth: function (evt) {
-      this.$root.state.setSize({ width: evt.currentTarget.value });
+      this.$root.store.setSize({ width: evt.currentTarget.value });
     },
     changeHeight: function (evt) {
-      this.$root.state.setSize({ height: evt.currentTarget.value });
+      this.$root.store.setSize({ height: evt.currentTarget.value });
     }
   }
 };

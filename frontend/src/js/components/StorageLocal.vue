@@ -55,14 +55,14 @@ export default {
     },
     createItem: function () {
       log('Saving the state');
-      StorageLib.storeState(this.$root.state);
+      StorageLib.storeState(this.$root.store.state);
       this.listItems();
     },
     loadItem: function (dataIndex) {
       log(`Loading stored state ${dataIndex}`);
       const data = StorageLib.getStorageItem(dataIndex);
       const newState = StorageLib.deserializeState(data);
-      this.$root.state.updateState(newState);
+      this.$root.store.updateState(newState);
     },
     deleteItem: function (dataIndex) {
       log(`Deleting stored state ${dataIndex}`);

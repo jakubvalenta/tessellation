@@ -27,7 +27,7 @@ export default {
     const reader = new window.FileReader();
     reader.addEventListener('load', () => {
       const url = reader.result;
-      this.$root.state.updateImage(this.image, url);
+      this.$root.store.updateImage(this.image, url);
     });
     return {
       reader
@@ -46,7 +46,7 @@ export default {
       }
     },
     deleteImage: function () {
-      this.$root.state.deleteImage(this.image);
+      this.$root.store.deleteImage(this.image);
     }
   }
 };

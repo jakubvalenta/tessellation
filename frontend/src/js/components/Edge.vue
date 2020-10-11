@@ -269,7 +269,7 @@ export default {
       if (this.digits[this.digits.length - 1] !== null) {
         this.digits.push(null);
       }
-      this.$root.state.setImageConnection(
+      this.$root.store.setImageConnection(
         this.image,
         this.side,
         +connectionStr
@@ -286,7 +286,7 @@ export default {
       this._select(digitIndex, value);
     },
     toggleSelfConnect: function () {
-      this.$root.state.toggleImageSelfConnect(this.image, this.side);
+      this.$root.store.toggleImageSelfConnect(this.image, this.side);
     }
   }
 };

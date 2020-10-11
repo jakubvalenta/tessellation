@@ -2,8 +2,8 @@ import * as CompositionLib from './composition.js';
 import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
 import { SIDES, isImageComplete } from './composition.js';
-import { Vue } from 'vue';
 import { log } from './log.js';
+import { reactive } from 'vue';
 import { shuffle } from './utils/array.js';
 
 const MAX_NATURAL_TILE_SIZE = 500;
@@ -30,27 +30,12 @@ function loadHtmlImage(image) {
   });
 }
 
-export function findImage(images, ref) {
-  let i, image;
-  for (i = 0; i < images.length; i++) {
-    image = images[i];
-    if (image.ref === ref) {
-      return image;
-    }
-  }
-  return null;
-}
-
 const store = {
-  state: Vue.reactive({
+  state: reactive({
     size: { width: 5, height: 5 },
     tiles: [],
     images: [],
     composition: [],
-    compositionToRender: {
-      composition: [],
-      tileSize: 0
-    },
     naturalTileSize: 0,
     loading: true,
     error: null,
@@ -92,7 +77,7 @@ const store = {
   updateState: function (newState) {
     ['size', 'images', 'tiles'].forEach(field => {
       if (newState[field]) {
-        this[field] = newState[field];
+        this.state[field] = newState[field];
       }
     });
     const promises = this.state.images.map(loadHtmlImage);
@@ -114,14 +99,6 @@ const store = {
   setTiles: function (tiles) {
     this.state.tiles = tiles;
     this.onTilesChanged();
-  },
-
-  setCompositionToRender: function (composition, tileSize) {
-    this.state.compositionToRender = {
-      composition,
-      tileSize
-    };
-    this.state.loading = false;
   },
 
   setLoading: function (loading) {
@@ -161,7 +138,7 @@ const store = {
 
   deleteImage: function ({ ref }) {
     log(`Deleting image ${ref}`);
-    const image = findImage(this.state.images, ref);
+    const image = this.findImage(this.state.images, ref);
     this.state.images.splice(image.index, 1);
     this.state.images = this.state.images.map((image, i) => {
       return { ...image, index: i };
@@ -188,6 +165,17 @@ const store = {
   shuffleTiles: function () {
     shuffle(this.state.tiles);
     this.onTilesChanged();
+  },
+
+  findImage: function (images, ref) {
+    let i, image;
+    for (i = 0; i < images.length; i++) {
+      image = images[i];
+      if (image.ref === ref) {
+        return image;
+      }
+    }
+    return null;
   }
 };
 
