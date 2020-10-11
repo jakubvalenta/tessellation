@@ -15,10 +15,10 @@
     "vue-router": "^3.4.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.2",
-    "@vue/cli-plugin-eslint": "^4.5.2",
-    "@vue/cli-plugin-router": "^4.5.2",
-    "@vue/cli-service": "^4.5.2",
+    "@vue/cli-plugin-babel": "~4.5.7",
+    "@vue/cli-plugin-eslint": "~4.5.7",
+    "@vue/cli-plugin-router": "~4.5.7",
+    "@vue/cli-service": "~4.5.7",
     "babel-eslint": "^10.1.0",
     "browserslist-useragent-regexp": "^2.1.0",
     "eslint": "^7.6.0",
@@ -45,15 +45,15 @@
       "parser": "babel-eslint"
     }
   },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "none",
     "arrowParens": "avoid"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "browserslist": [
     "> 1%",
