@@ -2,7 +2,6 @@
   <div class="composition-controls">
     <p class="composition-shuffle">
       <button
-        v-show="edit"
         @click="shuffle"
         data-intro="The composition is automatically generated when you change the input images. You can also click this button to generate another composition that matches the specified connections between the tiles."
       >
@@ -17,11 +16,7 @@
         >download</a
       >
     </p>
-    <form
-      v-show="edit"
-      action="javascript:void(0)"
-      class="composition-settings"
-    >
+    <form action="javascript:void(0)" class="composition-settings">
       <p>
         <span class="sr-only">Size:</span>
         <label for="js-width" class="sr-only">columns</label>
@@ -43,7 +38,7 @@
         />
       </p>
     </form>
-    <p v-show="edit">
+    <p>
       <button @click="showConnections" class="button-secondary">
         <span v-show="modeFinal">show edges</span>
         <span v-show="!modeFinal">hide edges</span>
@@ -80,10 +75,6 @@ import { error, log } from '../log.js';
 export default {
   name: 'CompositionControls',
   props: {
-    edit: {
-      type: Boolean,
-      required: true
-    },
     width: {
       type: Number,
       required: true

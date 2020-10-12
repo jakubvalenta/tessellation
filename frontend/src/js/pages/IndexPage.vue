@@ -1,18 +1,47 @@
 <template>
-  <div class="app">
-    <main class="main index">
-      <nav>
-        <ul>
-          <li>
-            <router-link :to="{ name: 'list' }">Explore</router-link>
-          </li>
-          <li>
-            <router-link :to="{ name: 'new' }">Create</router-link>
-          </li>
-        </ul>
-      </nav>
-    </main>
-  </div>
+  <Header>{{ '' }}</Header>
+  <main class="main index">
+    <p>
+      Tessellation is a tool to arrange tiles (several small images) into one
+      large composition.
+    </p>
+    <ul>
+      <li>
+        <router-link :to="{ name: 'list' }" class="button">Explore</router-link>
+      </li>
+      <li>
+        <router-link :to="{ name: 'new' }" class="button">Create</router-link>
+      </li>
+    </ul>
+  </main>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.index {
+  text-align: center;
+
+  ul {
+    padding-left: 0;
+    margin-top: 2em;
+  }
+  li {
+    display: block;
+    margin: 1em 0;
+
+    a {
+      min-width: 5em;
+    }
+  }
+}
+</style>
+
+<script>
+import Header from '../components/Header.vue';
+
+export default {
+  name: 'IndexPage',
+  components: {
+    Header
+  }
+};
+</script>

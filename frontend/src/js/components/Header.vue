@@ -5,12 +5,27 @@
     </div>
     <div class="header-section header-nav">
       <span>
-        <slot></slot>
+        <slot>
+          <router-link :to="{ name: 'list' }" class="button"
+            >Explore</router-link
+          >
+          <router-link :to="{ name: 'new' }" class="button"
+            >Create</router-link
+          ></slot
+        >
       </span>
     </div>
     <div class="header-section header-user" ref="headerUser"></div>
   </header>
 </template>
+
+<style lang="scss">
+@import '../../css/_variables.scss';
+
+.header {
+  background-color: $color-background-dark;
+}
+</style>
 
 <script>
 export default {
@@ -18,14 +33,16 @@ export default {
   props: {
     title: {
       type: String,
-      required: true
+      default: 'Tessellation'
     }
   },
   mounted: function () {
     const elHeaderFromServer = document.getElementById('js-header');
-    document.body.removeChild(elHeaderFromServer);
-    elHeaderFromServer.style.display = 'inline';
-    this.$refs.headerUser.appendChild(elHeaderFromServer);
+    if (elHeaderFromServer) {
+      elHeaderFromServer.parentNode.removeChild(elHeaderFromServer);
+      elHeaderFromServer.style.display = 'inline';
+      this.$refs.headerUser.appendChild(elHeaderFromServer);
+    }
   }
 };
 </script>

@@ -32,17 +32,15 @@
 </template>
 
 <style lang="scss">
-@import '../../css/_mixins.scss';
-
 .composition {
   position: relative;
+  text-align: center;
 }
 .composition__canvas {
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 .composition__message {
-  @include square;
-
   .box-alert {
     position: absolute;
     left: 0;
@@ -80,11 +78,19 @@ function calcTileSize(composition, canvas, elContainer) {
   if (!composition) {
     return 0;
   }
-  const width = composition[0].length;
   canvas.width = 0;
   canvas.height = 0;
-  const tileSize = Math.round(elContainer.clientWidth / width);
-  return tileSize;
+  const compositionWidth = composition[0].length;
+  const compositionHeight = composition[1].length;
+  const containerWidth = elContainer.clientWidth;
+  const containerHeight = elContainer.clientHeight;
+  if (
+    compositionWidth / compositionHeight >=
+    containerWidth / containerHeight
+  ) {
+    return Math.floor(containerWidth / compositionWidth);
+  }
+  return Math.floor(containerHeight / compositionHeight);
 }
 
 function render() {

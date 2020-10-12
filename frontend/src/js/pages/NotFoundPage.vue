@@ -1,6 +1,4 @@
-<template>
-  <span>Page not found</span>
-</template>
+<template>Page not found</template>
 
 <script>
 export default {
