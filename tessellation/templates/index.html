@@ -1,11 +1,13 @@
 {% extends 'base.html' %}o
 {% load static %}
 {% load render_bundle from webpack_loader %}
+
 {% block head %}
 <meta property="og:image" content="{% static 'img/tessellation.png' %}" />
 <meta property="og:url" content="{% url 'index' %}" />
 {% endblock %}
-{% block body %}
+
+{% block top %}
 <noscript>
   <p class="box-alert box-error">This app requires JavaScript</p>
 </noscript>
@@ -13,11 +15,13 @@
   This app only supports the latest versions of common web browsers. Please
   upgrade your browser.
 </p>
-<span id="js-header" style="display: none">
-  {% include 'partials/header_user.html' %}
-</span>
+{% endblock %}
+
+{% block content %}
 <div id="app"></div>
-{% include 'partials/footer.html' %}
+{% endblock %}
+
+{% block scripts %}
 <script src="{% static 'bundles/supportedBrowsers.js' %}"></script>
 <script>
   window.TESSELLATION_COMPOSITION_SLUG = '{{ composition.slug }}';

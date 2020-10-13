@@ -1,5 +1,5 @@
 <template>
-  <Header>{{ '' }}</Header>
+  <Header />
   <main class="main index">
     <p>
       Tessellation is a tool to arrange tiles (several small images) into one

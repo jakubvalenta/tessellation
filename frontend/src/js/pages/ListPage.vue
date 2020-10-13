@@ -1,7 +1,6 @@
 <template>
-  <Header />
+  <Header title="Explore" />
   <main class="main explore">
-    <h2 class="explore__heading">Explore compositions</h2>
     <ul v-show="compositions.length" class="explore__list">
       <li
         v-for="composition in compositions"

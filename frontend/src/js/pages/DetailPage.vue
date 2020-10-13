@@ -98,9 +98,7 @@ export default {
   },
   computed: {
     title: function () {
-      return this.state.loading
-        ? 'Tessellation'
-        : `Composition / ${this.compositionId}`;
+      return !this.state.loading && `Composition / ${this.compositionId}`;
     }
   },
   mounted: function () {
