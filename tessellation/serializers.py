@@ -21,10 +21,13 @@ class ImageSerializer(serializers.ModelSerializer):
     ref = serializers.CharField(source='pk')
     url = serializers.FileField(source='image', read_only=True, use_url=True)
     data = Base64FileField(write_only=True, validators=[validate_upload_size])
+    selfConnect = serializers.ListField(
+        child=serializers.BooleanField(), source='self_connect'
+    )
 
     class Meta:
         model = Image
-        fields = ['ref', 'url', 'data', 'connections']
+        fields = ['ref', 'url', 'data', 'connections', 'selfConnect']
 
 
 class TileSerializer(serializers.ModelSerializer):
@@ -74,7 +77,9 @@ class CompositionSerializer(serializers.ModelSerializer):
     def create(self, validated_data: dict) -> Composition:
         images = {
             image_data['pk']: Image.objects.create(
-                image=image_data['data'], connections=image_data['connections']
+                image=image_data['data'],
+                connections=image_data['connections'],
+                self_connect=image_data['self_connect'],
             )
             for image_data in validated_data['images']
         }
