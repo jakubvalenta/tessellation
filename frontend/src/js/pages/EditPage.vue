@@ -136,17 +136,13 @@ export default {
   },
   props: {
     compositionId: {
-      type: String,
-      required: true
-    },
-    create: {
-      type: Boolean,
-      default: false
+      type: String
     }
   },
   data: function () {
     const data = {
       state: this.$root.store.state,
+      create: false,
       notFound: false
     };
     return data;
@@ -173,9 +169,11 @@ export default {
   },
   methods: {
     loadComposition(compositionId) {
-      if (!compositionId) {
-        this.notFound = true;
-        return;
+      if (compositionId) {
+        this.create = false;
+      } else {
+        this.create = true;
+        compositionId = window.TESSELLATION_COMPOSITION_SLUG;
       }
       this.notFound = false;
       this.$root.store.setLoading(true);
@@ -183,7 +181,7 @@ export default {
         data => {
           const newState = StorageLib.deserializeState(data);
           this.$root.store.updateState(newState);
-          document.title = this.title;
+          document.title = `Composition ${this.compositionId}`;
         },
         () => {
           this.notFound = true;

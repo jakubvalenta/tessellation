@@ -42,13 +42,7 @@ const routes = [
       {
         path: '',
         name: 'create',
-        component: EditPage,
-        props: () => {
-          return {
-            compositionId: window.TESSELLATION_COMPOSITION_SLUG,
-            create: true
-          };
-        }
+        component: EditPage
       },
       {
         path: ':compositionId/',
