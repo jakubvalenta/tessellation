@@ -1,18 +1,12 @@
 <template>
   <teleport to="#header-title">{{ title ? ` / ${title}` : null }}</teleport>
   <teleport to="#header-nav">
-    <router-link :to="{ name: 'list' }" class="button">Explore</router-link>
-    <router-link :to="{ name: 'new' }" class="button">Create</router-link>
+    <slot>
+      <router-link :to="{ name: 'list' }" class="button">Explore</router-link>
+      <router-link :to="{ name: 'create' }" class="button">Create</router-link>
+    </slot>
   </teleport>
 </template>
-
-<style lang="scss">
-@import '../../css/_variables.scss';
-
-.header {
-  background-color: $color-background-dark;
-}
-</style>
 
 <script>
 export default {

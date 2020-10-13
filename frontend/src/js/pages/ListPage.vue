@@ -125,10 +125,8 @@ export default {
   mounted: function () {
     loadCompositions.call(this);
   },
-  watch: {
-    $route: function () {
-      loadCompositions.call(this);
-    }
+  beforeRouteUpdate: function () {
+    loadCompositions.call(this, this.compositionId);
   }
 };
 </script>

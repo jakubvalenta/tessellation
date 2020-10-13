@@ -157,6 +157,10 @@ export default {
     compositionId: {
       type: String,
       required: true
+    },
+    create: {
+      type: Boolean,
+      default: false
     }
   },
   data: function () {
@@ -168,16 +172,20 @@ export default {
   },
   computed: {
     title: function () {
-      return !this.state.loading && `Composition / ${this.compositionId}`;
+      if (this.state.loading) {
+        return 'Loading...';
+      }
+      if (this.create) {
+        return 'New';
+      }
+      return `Composition ${this.compositionId}`;
     }
   },
   mounted: function () {
     loadComposition.call(this, this.compositionId);
   },
-  watch: {
-    $route: function (to) {
-      loadComposition.call(this, to.params.compositionId);
-    }
+  beforeRouteUpdate: function () {
+    loadComposition.call(this, this.compositionId);
   }
 };
 </script>

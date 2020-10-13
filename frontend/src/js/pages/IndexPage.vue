@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <Header>{{ '' }}</Header>
   <main class="main index">
     <p>
       Tessellation is a tool to arrange tiles (several small images) into one
@@ -10,7 +10,9 @@
         <router-link :to="{ name: 'list' }" class="button">Explore</router-link>
       </li>
       <li>
-        <router-link :to="{ name: 'new' }" class="button">Create</router-link>
+        <router-link :to="{ name: 'create' }" class="button"
+          >Create</router-link
+        >
       </li>
     </ul>
   </main>
