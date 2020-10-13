@@ -52,7 +52,7 @@
 }
 @media screen and (max-width: 1023px) {
   .explore {
-    padding-top: 0;
+    padding-top: 1em;
   }
   .explore__heading {
     position: static;

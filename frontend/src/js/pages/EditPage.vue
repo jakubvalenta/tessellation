@@ -86,6 +86,9 @@
   }
 }
 @media screen and (max-width: 799px) {
+  .edit__input .heading-row h2 {
+    display: none;
+  }
   .edit__composition {
     width: 100%;
   }

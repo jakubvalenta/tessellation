@@ -32,6 +32,8 @@
 </template>
 
 <style lang="scss">
+@import '../../css/_mixins';
+
 .composition {
   position: relative;
   text-align: center;
@@ -66,6 +68,20 @@
 }
 .composition__overlay__row {
   display: flex;
+}
+@media screen and (max-width: 799px) {
+  .composition {
+    @include square();
+
+    width: 100%;
+  }
+
+  .composition__canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
 }
 </style>
 

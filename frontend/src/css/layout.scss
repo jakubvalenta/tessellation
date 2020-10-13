@@ -127,9 +127,21 @@ body {
     padding-left: 1em;
     padding-right: 1em;
   }
-  .header-nav {
+  .header-heading {
     grid-column: 1 / 4;
     grid-row: 2;
+    padding-top: 1em;
+    padding-bottom: 0;
+  }
+  .header-nav {
+    grid-column: 1 / 4;
+    grid-row: 3;
+  }
+  .header-user {
+    grid-column: 1 / 4;
+    grid-row: 1;
+    padding-top: 1em;
+    padding-bottom: 0;
   }
   .header-heading {
     grid-column: 1 / 3;
