@@ -124,25 +124,6 @@ import InputImages from '../components/InputImages.vue';
 import Intro from '../components/Intro.vue';
 import Storage from '../components/Storage.vue';
 
-function loadComposition(compositionId) {
-  if (!compositionId) {
-    this.notFound = true;
-    return;
-  }
-  this.notFound = false;
-  this.$root.store.setLoading(true);
-  StorageLib.getPublishedComposition(compositionId).then(
-    data => {
-      const newState = StorageLib.deserializeState(data);
-      this.$root.store.updateState(newState);
-      document.title = this.title;
-    },
-    () => {
-      this.notFound = true;
-    }
-  );
-}
-
 export default {
   name: 'EditPage',
   components: {
@@ -181,11 +162,34 @@ export default {
       return `Composition ${this.compositionId}`;
     }
   },
-  mounted: function () {
-    loadComposition.call(this, this.compositionId);
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.loadComposition(this.$route.params.compositionId);
+      },
+      { immediate: true }
+    );
   },
-  beforeRouteUpdate: function () {
-    loadComposition.call(this, this.compositionId);
+  methods: {
+    loadComposition(compositionId) {
+      if (!compositionId) {
+        this.notFound = true;
+        return;
+      }
+      this.notFound = false;
+      this.$root.store.setLoading(true);
+      StorageLib.getPublishedComposition(compositionId).then(
+        data => {
+          const newState = StorageLib.deserializeState(data);
+          this.$root.store.updateState(newState);
+          document.title = this.title;
+        },
+        () => {
+          this.notFound = true;
+        }
+      );
+    }
   }
 };
 </script>

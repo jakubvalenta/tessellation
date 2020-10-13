@@ -58,25 +58,6 @@ import * as StorageLib from '../storage.js';
 import Composition from '../components/Composition.vue';
 import Header from '../components/Header.vue';
 
-function loadComposition(compositionId) {
-  if (!compositionId) {
-    this.notFound = true;
-    return;
-  }
-  this.notFound = false;
-  this.$root.store.setLoading(true);
-  StorageLib.getPublishedComposition(compositionId).then(
-    data => {
-      const newState = StorageLib.deserializeState(data);
-      this.$root.store.updateState(newState);
-      document.title = this.title;
-    },
-    () => {
-      this.notFound = true;
-    }
-  );
-}
-
 export default {
   name: 'DetailPage',
   components: {
@@ -104,13 +85,34 @@ export default {
       return `Composition ${this.compositionId}`;
     }
   },
-  mounted: function () {
-    loadComposition.call(this, this.compositionId);
-  },
-  beforeRouteUpdate: function () {
-    loadComposition.call(this, this.compositionId);
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.loadComposition(this.$route.params.compositionId);
+      },
+      { immediate: true }
+    );
   },
   methods: {
+    loadComposition(compositionId) {
+      if (!compositionId) {
+        this.notFound = true;
+        return;
+      }
+      this.notFound = false;
+      this.$root.store.setLoading(true);
+      StorageLib.getPublishedComposition(compositionId).then(
+        data => {
+          const newState = StorageLib.deserializeState(data);
+          this.$root.store.updateState(newState);
+          document.title = this.title;
+        },
+        () => {
+          this.notFound = true;
+        }
+      );
+    },
     shuffle: function () {
       this.$root.store.shuffleTiles();
     }

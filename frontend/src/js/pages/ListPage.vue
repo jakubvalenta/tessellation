@@ -99,19 +99,6 @@ import * as StorageLib from '../storage.js';
 import { formatDate } from '../utils/date.js';
 import Header from '../components/Header.vue';
 
-function loadCompositions() {
-  StorageLib.getSampleCompositions().then(data => {
-    this.compositions = data.map(composition => {
-      return {
-        compositionId: composition.slug,
-        compositionUrl: composition.url,
-        name: composition.name || formatDate(new Date(composition.created_at)),
-        images: composition.images.slice(0, 4)
-      };
-    });
-  });
-}
-
 export default {
   name: 'ListPage',
   components: {
@@ -122,11 +109,29 @@ export default {
       compositions: []
     };
   },
-  mounted: function () {
-    loadCompositions.call(this);
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.loadCompositions();
+      },
+      { immediate: true }
+    );
   },
-  beforeRouteUpdate: function () {
-    loadCompositions.call(this, this.compositionId);
+  methods: {
+    loadCompositions() {
+      StorageLib.getSampleCompositions().then(data => {
+        this.compositions = data.map(composition => {
+          return {
+            compositionId: composition.slug,
+            compositionUrl: composition.url,
+            name:
+              composition.name || formatDate(new Date(composition.created_at)),
+            images: composition.images.slice(0, 4)
+          };
+        });
+      });
+    }
   }
 };
 </script>

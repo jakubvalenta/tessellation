@@ -50,7 +50,14 @@ ${item.featuredRequestedAt}.`"
             </a>
           </td>
           <td>
-            <button @click="loadItem(item.compositionId)">load</button>
+            <router-link
+              :to="{
+                name: 'edit',
+                params: { compositionId: item.compositionId }
+              }"
+              class="button"
+              >load</router-link
+            >
           </td>
           <td v-if="hasPermissions">
             <button
@@ -166,14 +173,6 @@ export default {
           this.errorMsg = 'Error while publishing the composition';
           error(err);
         });
-    },
-    loadItem: function (compositionId) {
-      log(`Loading published composition ${compositionId}`);
-      this.$router.push({
-        name: 'detail',
-        params: { compositionId },
-        query: this.$route.query
-      });
     },
     requestFeatured: function (compositionId) {
       log(
