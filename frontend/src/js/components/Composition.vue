@@ -125,8 +125,9 @@ function render() {
     this.composition,
     this.$refs.canvas,
     tileSize
-  );
-  this.$root.store.setLoading(false);
+  ).then(() => {
+    this.$root.store.setLoading(false);
+  });
 }
 
 export default {

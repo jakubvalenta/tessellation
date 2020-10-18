@@ -2,7 +2,7 @@ import * as CompositionLib from './composition.js';
 import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
 import { SIDES, isImageComplete } from './composition.js';
-import { log } from './log.js';
+import { error, log } from './log.js';
 import { reactive } from 'vue';
 import { shuffle } from './utils/array.js';
 
@@ -40,19 +40,53 @@ const store = {
     loading: true,
     error: null,
     warn: null,
+    abortController: null,
+    abortSignal: null,
     isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED
   }),
 
-  generateComposition: function () {
+  generateComposition: function (abortAfter = 2 * 30 * 1000) {
     this.state.loading = true;
-    const res = CompositionLib.generateComposition(this.state.tiles, [
-      this.state.size.width,
-      this.state.size.height
-    ]);
-    this.state.composition = res.composition;
-    this.state.loading = false;
-    this.state.error = res.error;
-    this.state.warn = res.warn;
+    if (
+      this.state.abortController &&
+      this.state.abortSignal &&
+      !this.state.abortSignal.aborted
+    ) {
+      this.state.abortController.abort();
+    }
+    this.state.abortController = new AbortController();
+    this.state.abortSignal = this.state.abortController.signal;
+    const timeout = window.setTimeout(() => {
+      this.state.abortController.abort();
+      const message =
+        'This composition is taking too long to calculate. Try shuffling it, decreasing its size or changing how the tiles connect.';
+      error(message);
+      this.state.error = null;
+      this.state.warn = message;
+      this.state.loading = false;
+    }, abortAfter);
+    CompositionLib.generateComposition(
+      this.state.tiles,
+      [this.state.size.width, this.state.size.height],
+      { abortSignal: this.state.abortSignal }
+    )
+      .then(composition => {
+        clearTimeout(timeout);
+        this.state.abortController = null;
+        this.state.composition = composition;
+        this.state.error = null;
+        this.state.warn = null;
+        this.state.loading = false;
+      })
+      .catch(err => {
+        clearTimeout(timeout);
+        this.state.abortController = null;
+        if (err.message) {
+          this.state.error = err.message;
+        }
+        this.state.warn = null;
+        this.state.loading = false;
+      });
   },
 
   onImagesLoaded: function () {

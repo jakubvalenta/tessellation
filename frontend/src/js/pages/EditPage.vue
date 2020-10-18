@@ -184,7 +184,7 @@ export default {
         data => {
           const newState = StorageLib.deserializeState(data);
           this.$root.store.updateState(newState);
-          document.title = `Composition ${this.compositionId}`;
+          document.title = `Composition ${compositionId}`;
         },
         () => {
           this.notFound = true;

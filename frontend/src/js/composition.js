@@ -1,11 +1,11 @@
 import * as HTML from './html.js';
-import { error, log } from './log.js';
+import { log } from './log.js';
+import 'abort-controller/polyfill';
 
 export const SIDES = [0, 1, 2, 3];
 export const SIDE_NAMES = ['left', 'top', 'right', 'bottom'];
 export const CONNECTIONS = [1, 2, 3, 4, 5];
 const [LEFT, TOP, RIGHT, BOTTOM] = SIDES;
-const MAX_TILES_TO_TRY = Math.pow(10, 4);
 
 export function isImageComplete(image) {
   return (
@@ -45,19 +45,13 @@ function findTopTile(composition, col, row) {
 
 function calcPrevCoords(row, col, width) {
   if (col === 0) {
-    if (row === 0) {
-      return [null, null];
-    }
     return [row - 1, width - 1];
   }
   return [row, col - 1];
 }
 
-function calcNextCoords(row, col, width, height) {
+function calcNextCoords(row, col, width) {
   if (col === width - 1) {
-    if (row === height - 1) {
-      return [null, null];
-    }
     return [row + 1, 0];
   }
   return [row, col + 1];
@@ -120,63 +114,48 @@ function chooseTile(stack, requirements, excl) {
   return null;
 }
 
-export function generateComposition(tiles, [width, height]) {
-  const composition = Array.from(Array(height), () => new Array(width));
-  if (!tiles.length) {
-    return {
-      composition: composition,
-      error: null,
-      warn: null
-    };
-  }
-  const tried = Array.from(Array(height), () =>
-    Array.from(Array(width), () => [])
-  );
-  const stack = Array.from(tiles);
-  let row = 0,
-    col = 0,
-    tile,
-    i = 0;
-  for (i = 0; i < MAX_TILES_TO_TRY; i++) {
-    tile = chooseTile(
-      stack,
-      findRequirements(composition, col, row),
-      tried[row][col]
+export function generateComposition(tiles, [width, height], { abortSignal }) {
+  return new Promise((resolve, reject) => {
+    if (abortSignal.aborted) {
+      return reject();
+    }
+    abortSignal.addEventListener('abort', () => {
+      reject();
+    });
+    const t0 = performance.now();
+    const composition = Array.from(Array(height), () => Array(width));
+    if (!tiles.length) {
+      return composition;
+    }
+    const tried = Array.from(Array(height), () =>
+      Array.from(Array(width), () => [])
     );
-    tried[row][col].push(tile);
-    if (tile !== null) {
-      log(`[${row}, ${col}] Chose tile ${tile.imgRef} ${tile.rotation}`);
-      composition[row][col] = tile;
-      [row, col] = calcNextCoords(row, col, width, height);
-      if (row === null) {
-        return {
-          composition: composition,
-          error: null,
-          warn: null
-        };
-      }
-    } else {
-      log(`[${row}, ${col}] No fitting tile found, going one step back`);
-      tried[row][col].splice(0);
-      [row, col] = calcPrevCoords(row, col, width, height);
-      if (row === null) {
-        error('Failed to create a composition from these tiles');
-        return {
-          composition: [],
-          error: "Input tiles don't connect.",
-          warn: null
-        };
+    const stack = Array.from(tiles);
+    let row = 0,
+      col = 0;
+    while (row < height && col < width) {
+      const tile = chooseTile(
+        stack,
+        findRequirements(composition, col, row),
+        tried[row][col]
+      );
+      tried[row][col].push(tile);
+      if (tile !== null) {
+        composition[row][col] = tile;
+        [row, col] = calcNextCoords(row, col, width, height);
+      } else {
+        log(`[${row}, ${col}] No fitting tile found, going one step back`);
+        tried[row][col].splice(0);
+        [row, col] = calcPrevCoords(row, col, width, height);
+        if (row < 0) {
+          throw new Error("Input tiles don't connect.");
+        }
       }
     }
-  }
-  error('Maximum tiles to try reached, returning an incomplete composition');
-  return {
-    composition,
-    error: null,
-    warn:
-      'This composition is taking too long to calculate. Try shuffling it, ' +
-      'decreasing its size or changing how the tiles connect.'
-  };
+    const t1 = performance.now();
+    log(`Generated composition in ${t1 - t0}ms`);
+    return resolve(composition);
+  });
 }
 
 export function renderCompositionOnCanvas(
@@ -185,37 +164,41 @@ export function renderCompositionOnCanvas(
   tileSize,
   maxSize = 8192 // https://stackoverflow.com/a/11585939
 ) {
-  const ctx = canvas.getContext('2d');
-  if (!composition || !composition.length) {
+  return new Promise(resolve => {
+    const ctx = canvas.getContext('2d');
+    if (!composition || !composition.length) {
+      HTML.fillCanvas(canvas, ctx, '#fff');
+      return;
+    }
+    const width = composition[0].length;
+    const height = composition.length;
+    if (width * tileSize > maxSize) {
+      tileSize = Math.floor(maxSize / width);
+    }
+    if (height * tileSize > maxSize) {
+      tileSize = Math.floor(maxSize / height);
+    }
+    canvas.width = width * tileSize;
+    canvas.height = height * tileSize;
     HTML.fillCanvas(canvas, ctx, '#fff');
-    return;
-  }
-  const width = composition[0].length;
-  const height = composition.length;
-  if (width * tileSize > maxSize) {
-    tileSize = Math.floor(maxSize / width);
-  }
-  if (height * tileSize > maxSize) {
-    tileSize = Math.floor(maxSize / height);
-  }
-  canvas.width = width * tileSize;
-  canvas.height = height * tileSize;
-  HTML.fillCanvas(canvas, ctx, '#fff');
-  composition.forEach((rowTiles, row) => {
-    rowTiles.forEach((tile, col) => {
-      if (!tile.image.htmlImage) {
-        return;
+    for (let col = 0; col < width; col++) {
+      for (let row = 0; row < height; row++) {
+        const tile = composition[row][col];
+        if (!tile.image.htmlImage) {
+          continue;
+        }
+        tile.image.htmlImage.width = tileSize;
+        tile.image.htmlImage.height = tileSize;
+        HTML.drawRotatedImage(
+          canvas,
+          ctx,
+          tile.image.htmlImage,
+          col * tileSize,
+          row * tileSize,
+          -(tile.rotation / 2) * Math.PI
+        );
       }
-      tile.image.htmlImage.width = tileSize;
-      tile.image.htmlImage.height = tileSize;
-      HTML.drawRotatedImage(
-        canvas,
-        ctx,
-        tile.image.htmlImage,
-        col * tileSize,
-        row * tileSize,
-        -(tile.rotation / 2) * Math.PI
-      );
-    });
+    }
+    resolve();
   });
 }
