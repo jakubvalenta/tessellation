@@ -1,5 +1,5 @@
 <template>
-  <Header title="Explore" />
+  <Header title="Explore" :user="$root.store.state.user" />
   <main class="main explore">
     <ul v-show="compositions.length" class="explore__list">
       <li
@@ -95,7 +95,7 @@
 </style>
 
 <script>
-import * as StorageLib from '../storage.js';
+import * as api from '../api.js';
 import { formatDate } from '../utils/date.js';
 import Header from '../components/Header.vue';
 
@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     loadCompositions() {
-      StorageLib.getSampleCompositions().then(data => {
+      api.getSampleCompositions().then(data => {
         this.compositions = data.map(composition => {
           return {
             compositionId: composition.slug,

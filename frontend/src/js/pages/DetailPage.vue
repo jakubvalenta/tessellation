@@ -2,7 +2,7 @@
   <div v-show="notFound" class="box-alert box-error">
     Composition was not found
   </div>
-  <Header v-show="!notFound" :title="title" />
+  <Header v-show="!notFound" :title="title" :user="$root.store.state.user" />
   <main v-show="!notFound" class="main detail">
     <nav class="detail__nav">
       <router-link :to="{ name: 'list' }" class="button-link">back</router-link>
@@ -55,7 +55,7 @@
 </style>
 
 <script>
-import * as StorageLib from '../storage.js';
+import * as api from '../api.js';
 import Composition from '../components/Composition.vue';
 import Header from '../components/Header.vue';
 
@@ -103,16 +103,11 @@ export default {
       }
       this.notFound = false;
       this.$root.store.setLoading(true);
-      StorageLib.getPublishedComposition(compositionId).then(
-        data => {
-          const newState = StorageLib.deserializeState(data);
-          this.$root.store.updateState(newState);
-          document.title = `Composition ${compositionId}`;
-        },
-        () => {
-          this.notFound = true;
-        }
-      );
+      api.getPublishedComposition(compositionId).then(data => {
+        const newState = this.$root.store.deserialize(data);
+        this.$root.store.updateState(newState);
+        document.title = `Composition ${compositionId}`;
+      });
     },
     shuffle: function () {
       this.$root.store.shuffleTiles();

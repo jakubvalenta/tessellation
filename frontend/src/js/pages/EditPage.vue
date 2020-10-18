@@ -1,6 +1,6 @@
 <template>
   <div v-show="notFound" class="box-alert box-error">Composition not found</div>
-  <Header v-show="!notFound" :title="title" />
+  <Header :title="title" :user="state.user" />
   <main v-show="!notFound" class="main edit">
     <div class="edit__input">
       <div class="heading-row">
@@ -30,7 +30,7 @@
       />
     </div>
     <div class="edit__storage">
-      <Storage :isAuthenticated="state.isAuthenticated" />
+      <Storage :user="state.user" />
     </div>
   </main>
 </template>
@@ -122,7 +122,7 @@
 </style>
 
 <script>
-import * as StorageLib from '../storage.js';
+import * as api from '../api.js';
 import Composition from '../components/Composition.vue';
 import CompositionControls from '../components/CompositionControls.vue';
 import Header from '../components/Header.vue';
@@ -160,7 +160,7 @@ export default {
         return 'Loading...';
       }
       if (this.create) {
-        return 'New';
+        return 'New composition';
       }
       return `Composition ${this.compositionId}`;
     }
@@ -189,16 +189,16 @@ export default {
       }
       this.notFound = false;
       this.$root.store.setLoading(true);
-      StorageLib.getPublishedComposition(compositionId).then(
-        data => {
-          const newState = StorageLib.deserializeState(data);
+      api
+        .getPublishedComposition(compositionId)
+        .then(data => {
+          const newState = this.$root.store.deserialize(data);
           this.$root.store.updateState(newState);
           document.title = `Composition ${compositionId}`;
-        },
-        () => {
+        })
+        .catch(() => {
           this.notFound = true;
-        }
-      );
+        });
     }
   }
 };

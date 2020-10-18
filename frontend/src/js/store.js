@@ -30,6 +30,44 @@ function loadHtmlImage(image) {
   });
 }
 
+function addIndex(image, i) {
+  return { index: i, ...image };
+}
+
+// eslint-disable-next-line no-unused-vars
+function removeIndex({ index, ...imageWithoutIndex }) {
+  return imageWithoutIndex;
+}
+
+function compatImage(image) {
+  image.ref = image.ref || image.imgId; // compat
+  image.selfConnect = image.selfConnect || Array.from(SIDES, () => true);
+  return image;
+}
+
+function compatTile(tile) {
+  tile.imgRef = tile.imgRef || tile.imgId; // compat
+  return tile;
+}
+
+function validateSizeData(sizeData) {
+  return sizeData && sizeData.width && sizeData.height;
+}
+
+function validateImageData(imageData) {
+  return (
+    imageData.url &&
+    imageData.ref &&
+    imageData.connections &&
+    imageData.connections.length === SIDES.length &&
+    (!imageData.selfConnect || imageData.selfConnect.length === SIDES.length)
+  );
+}
+
+function validateTileData(tileData) {
+  return tileData.imgRef && tileData.rotation !== undefined;
+}
+
 const store = {
   state: reactive({
     size: { width: 5, height: 5 },
@@ -42,7 +80,7 @@ const store = {
     warn: null,
     abortController: null,
     abortSignal: null,
-    isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED
+    user: {}
   }),
 
   generateComposition: function (abortAfter = 10 * 1000) {
@@ -193,6 +231,10 @@ const store = {
     this.onTilesChanged();
   },
 
+  setUser: function (user) {
+    this.state.user = user;
+  },
+
   setLoading: function (loading) {
     this.state.loading = loading;
   },
@@ -268,6 +310,42 @@ const store = {
       }
     }
     return null;
+  },
+
+  deserialize: function (data) {
+    const newState = {};
+    if (validateSizeData(data.size)) {
+      newState.size = data.size;
+    }
+    if (data.images) {
+      newState.images = data.images
+        .map(compatImage)
+        .filter(validateImageData)
+        .map(addIndex);
+      if (data.tiles) {
+        newState.tiles = data.tiles
+          .map(compatTile)
+          .filter(validateTileData)
+          .map(tileData => {
+            return {
+              ...tileData,
+              image: store.findImage(newState.images, tileData.imgRef)
+            };
+          })
+          .filter(tile => !!tile.image);
+      }
+    }
+    return newState;
+  },
+
+  serialize: function () {
+    return {
+      size: this.state.size,
+      images: this.state.images.filter(isImageComplete).map(removeIndex),
+      tiles: this.state.tiles.map(({ image, rotation }) => {
+        return { imgRef: image.ref, rotation };
+      })
+    };
   }
 };
 

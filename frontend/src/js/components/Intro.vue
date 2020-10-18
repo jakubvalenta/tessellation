@@ -1,8 +1,6 @@
 <template>
   <span>
-    <span class="text-status" style="padding-right: 1em;"
-      >first time here?</span
-    >
+    <span class="text-status" style="padding-right: 1em">first time here?</span>
     <button @click="start" class="button-secondary">show intro</button>
   </span>
 </template>

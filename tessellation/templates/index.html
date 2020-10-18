@@ -25,7 +25,6 @@
 <script src="{% static 'bundles/supportedBrowsers.js' %}"></script>
 <script>
   window.TESSELLATION_COMPOSITION_SLUG = '{{ composition.slug }}';
-  window.TESSELLATION_IS_AUTHENTICATED = {{ user.is_authenticated|lower }};
   if (!window.SUPPORTED_BROWSERS.test(navigator.userAgent)) {
     document.body.className += ' is-unsupported';
   }

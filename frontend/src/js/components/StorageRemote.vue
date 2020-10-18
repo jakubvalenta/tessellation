@@ -2,16 +2,26 @@
   <div>
     <div class="heading-row">
       <h2>Published</h2>
-      <button v-if="hasPermissions" @click="createItem">publish</button>
+      <button
+        v-if="user.isAuthenticated"
+        @click="createItem"
+        :disabled="limitReached"
+      >
+        publish
+      </button>
     </div>
     <p class="text-status">
       these compositions can be shared with other people
     </p>
-    <div v-if="hasPermissions">
+    <div v-if="user.isAuthenticated">
       <p class="text-status text-success" v-show="successMsg">
         {{ successMsg }}
       </p>
       <p class="text-status text-error" v-show="errorMsg">{{ errorMsg }}</p>
+      <p class="text-status text-error" v-if="limitReached">
+        You have reached the maximum number of published compositions. Delete
+        some compositions to be able to publish new ones.
+      </p>
       <p class="storage-empty text-status" v-show="loading">loading</p>
       <p class="storage-empty text-status" v-show="!items.length && !loading">
         empty
@@ -59,7 +69,7 @@ ${item.featuredRequestedAt}.`"
               >load</router-link
             >
           </td>
-          <td v-if="hasPermissions">
+          <td v-if="user.isAuthenticated">
             <button
               class="button-secondary"
               @click="deleteItem(item.compositionId)"
@@ -80,43 +90,15 @@ ${item.featuredRequestedAt}.`"
 </template>
 
 <script>
-import * as StorageLib from '../storage.js';
+import * as api from '../api.js';
 import { error, log } from '../log.js';
 import { formatDate } from '../utils/date.js';
-
-function validateLocalStateBeforePublish() {
-  if (this.items.length >= StorageLib.MAX_COMPOSITIONS_PER_USER) {
-    return 'You have reached the maximum number of published compositions. Delete some compositions to be able to publish new ones.';
-  }
-  return null;
-}
-
-function validate(func) {
-  const err = func();
-  if (!err) {
-    return true;
-  }
-  this.errorMsg = err;
-  this.successMsg = null;
-  return false;
-}
-
-function validateAll(funcs) {
-  let i, func;
-  for (i = 0; i < funcs.length; i++) {
-    func = funcs[i];
-    if (!validate(func)) {
-      return false;
-    }
-  }
-  return true;
-}
 
 export default {
   name: 'StorageRemote',
   props: {
-    hasPermissions: {
-      type: Boolean,
+    user: {
+      type: Object,
       required: true
     }
   },
@@ -131,10 +113,18 @@ export default {
   mounted: function () {
     this.listItems();
   },
+  computed: {
+    limitReached: function () {
+      return (
+        this.user.maxCompositions !== -1 &&
+        this.user.maxCompositions <= this.items.length
+      );
+    }
+  },
   methods: {
     listItems: function () {
       this.loading = true;
-      StorageLib.getPublishedCompositions().then(data => {
+      api.getPublishedCompositions().then(data => {
         this.loading = false;
         this.items = data.map((composition, index) => {
           return {
@@ -153,16 +143,13 @@ export default {
       });
     },
     createItem: function () {
-      if (
-        !validateAll([
-          validateLocalStateBeforePublish.bind(this),
-          () => StorageLib.validateStateBeforePublish(this.$root.store.state)
-        ])
-      ) {
+      if (this.limitReached) {
         return;
       }
       log('Publishing new composition');
-      StorageLib.publishState(this.$root.store.state)
+      const data = this.$root.store.serialize();
+      api
+        .publishComposition(data)
         .then(() => {
           this.successMsg = 'Composition was successfully published';
           this.errorMsg = null;
@@ -178,7 +165,8 @@ export default {
       log(
         `Requesting inclusion of composition in featured compositions ${compositionId}`
       );
-      StorageLib.requestFeaturedComposition(compositionId)
+      api
+        .requestFeaturedComposition(compositionId)
         .then(() => {
           this.successMsg =
             'Successfully submitted a request for inclusion of the composition in featured compositions';
@@ -194,17 +182,18 @@ export default {
     },
     deleteItem: function (compositionId) {
       log(`Deleting published composition ${compositionId}`);
-      StorageLib.deletePublishedComposition(compositionId).then(
-        () => {
+      api
+        .deletePublishedComposition(compositionId)
+        .then(() => {
           this.successMsg = 'Composition was successfully deleted';
           this.errorMsg = null;
           this.listItems();
-        },
-        () => {
+        })
+        .catch(err => {
           this.successMsg = null;
           this.errorMsg = 'Error while deleting the composition';
-        }
-      );
+          error(err);
+        });
     }
   }
 };

@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <StorageLocal />
-    <StorageRemote :has-permissions="isAuthenticated" />
-  </div>
+  <StorageLocal />
+  <StorageRemote :user="user" />
 </template>
 
 <style lang="scss">
@@ -44,8 +42,8 @@ export default {
     StorageRemote
   },
   props: {
-    isAuthenticated: {
-      type: Boolean,
+    user: {
+      type: Object,
       required: true
     }
   }
