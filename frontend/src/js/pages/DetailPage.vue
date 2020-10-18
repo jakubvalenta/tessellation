@@ -21,7 +21,8 @@
     <div class="detail__composition">
       <h2 class="sr-only">Composition</h2>
       <Composition
-        :composition="state.composition"
+        :width="state.size.width"
+        :height="state.size.height"
         :edit="false"
         :loading="state.loading"
         :error="state.error"

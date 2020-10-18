@@ -1,4 +1,3 @@
-import * as HTML from './html.js';
 import { log } from './log.js';
 import 'abort-controller/polyfill';
 
@@ -155,50 +154,5 @@ export function generateComposition(tiles, [width, height], { abortSignal }) {
     const t1 = performance.now();
     log(`Generated composition in ${t1 - t0}ms`);
     return resolve(composition);
-  });
-}
-
-export function renderCompositionOnCanvas(
-  composition,
-  canvas,
-  tileSize,
-  maxSize = 8192 // https://stackoverflow.com/a/11585939
-) {
-  return new Promise(resolve => {
-    const ctx = canvas.getContext('2d');
-    if (!composition || !composition.length) {
-      HTML.fillCanvas(canvas, ctx, '#fff');
-      return;
-    }
-    const width = composition[0].length;
-    const height = composition.length;
-    if (width * tileSize > maxSize) {
-      tileSize = Math.floor(maxSize / width);
-    }
-    if (height * tileSize > maxSize) {
-      tileSize = Math.floor(maxSize / height);
-    }
-    canvas.width = width * tileSize;
-    canvas.height = height * tileSize;
-    HTML.fillCanvas(canvas, ctx, '#fff');
-    for (let col = 0; col < width; col++) {
-      for (let row = 0; row < height; row++) {
-        const tile = composition[row][col];
-        if (!tile.image.htmlImage) {
-          continue;
-        }
-        tile.image.htmlImage.width = tileSize;
-        tile.image.htmlImage.height = tileSize;
-        HTML.drawRotatedImage(
-          canvas,
-          ctx,
-          tile.image.htmlImage,
-          col * tileSize,
-          row * tileSize,
-          -(tile.rotation / 2) * Math.PI
-        );
-      }
-    }
-    resolve();
   });
 }

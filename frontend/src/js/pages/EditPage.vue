@@ -12,18 +12,21 @@
     <div class="edit__composition">
       <h2 class="sr-only">Composition</h2>
       <CompositionControls
-        :edit="true"
         :width="state.size.width"
         :height="state.size.height"
-        :composition="state.composition"
+        :edit="true"
         :natural-tile-size="state.naturalTileSize"
+        :show-overlay="showOverlay"
+        @toggle-overlay="showOverlay = !showOverlay"
       />
       <Composition
-        :composition="state.composition"
+        :width="state.size.width"
+        :height="state.size.height"
         :edit="true"
         :loading="state.loading"
         :error="state.error"
         :warn="state.warn"
+        :show-overlay="showOverlay"
       />
     </div>
     <div class="edit__storage">
@@ -146,7 +149,8 @@ export default {
     const data = {
       state: this.$root.store.state,
       create: false,
-      notFound: false
+      notFound: false,
+      showOverlay: false
     };
     return data;
   },
@@ -169,6 +173,11 @@ export default {
       },
       { immediate: true }
     );
+  },
+  watch: {
+    showOverlay: function () {
+      document.body.classList.toggle('mode-final', !this.showOverlay);
+    }
   },
   methods: {
     loadComposition(compositionId) {

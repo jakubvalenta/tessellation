@@ -39,9 +39,9 @@
       </p>
     </form>
     <p>
-      <button @click="showConnections" class="button-secondary">
-        <span v-show="modeFinal">show edges</span>
-        <span v-show="!modeFinal">hide edges</span>
+      <button @click="$emit('toggle-overlay')" class="button-secondary">
+        <span v-show="!showOverlay">show edges</span>
+        <span v-show="showOverlay">hide edges</span>
       </button>
     </p>
   </div>
@@ -68,9 +68,7 @@
 </style>
 
 <script>
-import * as CompositionLib from '../composition.js';
 import * as HTML from '../html.js';
-import { error, log } from '../log.js';
 
 export default {
   name: 'CompositionControls',
@@ -83,42 +81,25 @@ export default {
       type: Number,
       required: true
     },
-    composition: {
-      type: Array,
+    showOverlay: {
+      type: Boolean,
       required: true
     },
     naturalTileSize: {
       type: Number
     }
   },
-  data: function () {
-    return {
-      modeFinal: true,
-      canvas: document.createElement('canvas')
-    };
-  },
   methods: {
     shuffle: function () {
       this.$root.store.shuffleTiles();
     },
     download: function (evt) {
-      if (!this.composition.length || !this.naturalTileSize) {
-        error("Can't download composition, it's not rendered.");
-        return;
+      const canvas = document.createElement('canvas');
+      if (
+        this.$root.store.renderCompositionOnCanvas(canvas, this.naturalTileSize)
+      ) {
+        evt.target.href = HTML.canvasToDataUrl(canvas);
       }
-      log(
-        `Rendering composition to download, tileSize=${this.naturalTileSize}`
-      );
-      CompositionLib.renderCompositionOnCanvas(
-        this.composition,
-        this.canvas,
-        this.naturalTileSize
-      );
-      evt.target.href = HTML.canvasToDataUrl(this.canvas);
-    },
-    showConnections: function () {
-      this.modeFinal = !this.modeFinal;
-      document.body.classList.toggle('mode-final', this.modeFinal);
     },
     changeWidth: function (evt) {
       this.$root.store.setSize({ width: evt.currentTarget.value });

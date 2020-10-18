@@ -14,9 +14,9 @@
       </div>
     </div>
     <div v-show="warn" class="box-alert box-error">{{ warn }}</div>
-    <div class="composition__overlay">
+    <div v-if="showOverlay" class="composition__overlay">
       <div
-        v-for="(rowTiles, i) in composition"
+        v-for="(rowTiles, i) in $root.store.state.composition"
         :key="i"
         class="composition__overlay__row"
       >
@@ -61,10 +61,6 @@
   top: 0;
   width: 100%;
   height: 100%;
-
-  .mode-final & {
-    visibility: hidden;
-  }
 }
 .composition__overlay__row {
   display: flex;
@@ -86,49 +82,7 @@
 </style>
 
 <script>
-import * as CompositionLib from '../composition.js';
 import Tile from './Tile.vue';
-import { log } from '../log.js';
-
-function calcTileSize(composition, canvas, elContainer) {
-  if (!composition) {
-    return 0;
-  }
-  canvas.width = 0;
-  canvas.height = 0;
-  const compositionWidth = composition[0].length;
-  const compositionHeight = composition[1].length;
-  const containerWidth = elContainer.clientWidth;
-  const containerHeight = elContainer.clientHeight;
-  if (
-    compositionWidth / compositionHeight >=
-    containerWidth / containerHeight
-  ) {
-    return Math.floor(containerWidth / compositionWidth);
-  }
-  return Math.floor(containerHeight / compositionHeight);
-}
-
-function render() {
-  log('Composition changed');
-  if (!this.composition.length) {
-    return;
-  }
-  const elContainer = this.$refs.inner.parentNode;
-  const tileSize = calcTileSize(
-    this.composition,
-    this.$refs.canvas,
-    elContainer
-  );
-  log(`Rendering composition on canvas, tileSize=${tileSize}`);
-  CompositionLib.renderCompositionOnCanvas(
-    this.composition,
-    this.$refs.canvas,
-    tileSize
-  ).then(() => {
-    this.$root.store.setLoading(false);
-  });
-}
 
 export default {
   name: 'Composition',
@@ -136,8 +90,12 @@ export default {
     Tile
   },
   props: {
-    composition: {
-      type: Array,
+    width: {
+      type: Number,
+      required: true
+    },
+    height: {
+      type: Number,
       required: true
     },
     edit: {
@@ -148,16 +106,35 @@ export default {
       type: Boolean,
       required: true
     },
+    showOverlay: {
+      type: Boolean,
+      required: true
+    },
     error: String,
     warn: String
   },
   watch: {
-    // TODO: We could also just store the container width in the global state
-    composition: function () {
-      render.call(this);
-    },
-    edit: function () {
-      render.call(this);
+    loading: function () {
+      if (this.loading || !this.width) {
+        return;
+      }
+      const tileSize = this.calcTileSize(
+        this.$refs.canvas,
+        this.$refs.inner.parentNode
+      );
+      this.$root.store.renderCompositionOnCanvas(this.$refs.canvas, tileSize);
+    }
+  },
+  methods: {
+    calcTileSize(canvas, containerEl) {
+      canvas.width = 0;
+      canvas.height = 0;
+      const containerWidth = containerEl.clientWidth;
+      const containerHeight = containerEl.clientHeight;
+      if (this.width / this.height >= containerWidth / containerHeight) {
+        return Math.floor(containerWidth / this.width);
+      }
+      return Math.floor(containerHeight / this.height);
     }
   }
 };
