@@ -45,7 +45,7 @@ const store = {
     isAuthenticated: window.TESSELLATION_IS_AUTHENTICATED
   }),
 
-  generateComposition: function (abortAfter = 2 * 30 * 1000) {
+  generateComposition: function (abortAfter = 10 * 1000) {
     this.state.loading = true;
     if (
       this.state.abortController &&
