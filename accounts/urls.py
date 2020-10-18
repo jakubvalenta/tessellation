@@ -1,7 +1,8 @@
-from accounts.views import ProfileView
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import path
+
+from accounts import views
 
 app_name = 'accounts'
 urlpatterns = [
@@ -14,7 +15,7 @@ urlpatterns = [
         name='login',
     ),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('profile/', ProfileView.as_view(), name='profile'),
+    path('profile/', views.ProfileView.as_view(), name='profile'),
     path(
         'change-password/',
         auth_views.PasswordChangeView.as_view(
@@ -29,6 +30,7 @@ urlpatterns = [
         ),
         name='password_change_done',
     ),
+    path('api/users/me', views.CurrentUser.as_view()),
     # path(
     #     'reset-password/',
     #     auth_views.PasswordResetView.as_view(
