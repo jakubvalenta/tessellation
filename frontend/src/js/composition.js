@@ -1,4 +1,5 @@
-import { log } from './log.js';
+import * as HTML from './html.js';
+import { error, log } from './log.js';
 import 'abort-controller/polyfill';
 
 export const SIDES = [0, 1, 2, 3];
@@ -155,4 +156,59 @@ export function generateComposition(tiles, [width, height], { abortSignal }) {
     log(`Generated composition in ${t1 - t0}ms`);
     return resolve(composition);
   });
+}
+
+export function renderCompositionOnCanvas(
+  composition,
+  images,
+  tiles,
+  canvas,
+  tileSize,
+  maxSize = 8192 // https://stackoverflow.com/a/11585939
+) {
+  const ctx = canvas.getContext('2d');
+  if (!composition.length || !tileSize) {
+    error("Can't render composition on canvas, because it's not generated.");
+    HTML.fillCanvas(canvas, ctx, '#fff');
+    return false;
+  }
+  const width = composition[0].length;
+  const height = composition.length;
+  if (tileSize * width > maxSize) {
+    tileSize = Math.floor(maxSize / width);
+  }
+  if (tileSize * height > maxSize) {
+    tileSize = Math.floor(maxSize / height);
+  }
+  if (tileSize % 2) {
+    tileSize -= 1;
+  }
+  tileSize = Math.max(2, tileSize);
+  images.forEach(image => {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = tileSize;
+    const ctx = canvas.getContext('2d');
+    image.htmlImage.width = image.htmlImage.height = tileSize;
+    ctx.drawImage(image.htmlImage, 0, 0, tileSize, tileSize);
+    image.canvas = canvas;
+  });
+  const offset = tileSize / 2;
+  tiles.forEach(tile => {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = tileSize;
+    const ctx = canvas.getContext('2d');
+    ctx.translate(offset, offset);
+    ctx.rotate(-(tile.rotation / 2) * Math.PI);
+    ctx.drawImage(tile.image.canvas, -offset, -offset);
+    tile.canvas = canvas;
+  });
+  canvas.width = width * tileSize;
+  canvas.height = height * tileSize;
+  HTML.fillCanvas(canvas, ctx, '#fff');
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      const tile = composition[row][col];
+      ctx.drawImage(tile.canvas, col * tileSize, row * tileSize);
+    }
+  }
 }

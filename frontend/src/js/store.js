@@ -127,62 +127,24 @@ const store = {
       });
   },
 
-  renderCompositionOnCanvas(
-    canvas,
-    tileSize,
-    maxSize = 8192 // https://stackoverflow.com/a/11585939
-  ) {
-    const { composition, images, tiles } = this.state;
-    if (!composition.length || !tileSize) {
-      error("Can't render composition on canvas, because it's not generated.");
-      HTML.fillCanvas(canvas, ctx, '#fff');
-      return false;
-    }
-    const t0 = performance.now();
-    const ctx = canvas.getContext('2d');
-    const width = this.state.composition[0].length;
-    const height = this.state.composition.length;
-    if (tileSize * width > maxSize) {
-      tileSize = Math.floor(maxSize / width);
-    }
-    if (tileSize * height > maxSize) {
-      tileSize = Math.floor(maxSize / height);
-    }
-    if (tileSize % 2) {
-      tileSize -= 1;
-    }
+  renderCompositionOnCanvas(containerEl, tileSize) {
     log(`Rendering composition on canvas, tileSize=${tileSize}`);
-    images.forEach(image => {
-      const canvas = document.createElement('canvas');
-      canvas.width = canvas.height = tileSize;
-      const ctx = canvas.getContext('2d');
-      image.htmlImage.width = image.htmlImage.height = tileSize;
-      ctx.drawImage(image.htmlImage, 0, 0, tileSize, tileSize);
-      image.canvas = canvas;
-    });
-    const offset = tileSize / 2;
-    tiles.forEach(tile => {
-      const canvas = document.createElement('canvas');
-      canvas.width = canvas.height = tileSize;
-      const ctx = canvas.getContext('2d');
-      ctx.translate(offset, offset);
-      ctx.rotate(-(tile.rotation / 2) * Math.PI);
-      ctx.drawImage(tile.image.canvas, -offset, -offset);
-      tile.canvas = canvas;
-    });
-    canvas.width = width * tileSize;
-    canvas.height = height * tileSize;
-    HTML.fillCanvas(canvas, ctx, '#fff');
-    for (let row = 0; row < height; row++) {
-      for (let col = 0; col < width; col++) {
-        const tile = composition[row][col];
-        ctx.drawImage(tile.canvas, col * tileSize, row * tileSize);
-      }
+    try {
+      const t0 = performance.now();
+      CompositionLib.renderCompositionOnCanvas(
+        this.state.composition,
+        this.state.images,
+        this.state.tiles,
+        containerEl,
+        tileSize
+      );
+      const t1 = performance.now();
+      log(`Rendered composition on canvas in ${t1 - t0}ms`);
+    } catch (e) {
+      error(e);
+      this.state.error = 'Crash while drawing the composition';
     }
-    const t1 = performance.now();
-    log(`Rendered composition on canvas in ${t1 - t0}ms`);
     this.state.loading = false;
-    return true;
   },
 
   onImagesLoaded: function () {

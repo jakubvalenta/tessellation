@@ -44,12 +44,10 @@
   display: flex;
   justify-content: space-between;
 }
-.detail__composition {
-  flex-grow: 1;
-  min-height: 0;
-
-  .composition {
-    height: 100%;
+@media screen and (min-width: 800px) {
+  .detail__composition {
+    flex-grow: 1;
+    min-height: 0;
   }
 }
 </style>

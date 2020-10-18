@@ -38,10 +38,6 @@
   position: relative;
   text-align: center;
 }
-.composition__canvas {
-  max-width: 100%;
-  max-height: 100%;
-}
 .composition__message {
   .box-alert {
     position: absolute;
@@ -49,10 +45,11 @@
     top: 0;
     width: 100%;
     height: 100%;
-    padding: 0;
+    padding: 1em;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
   }
 }
 .composition__overlay {
@@ -65,24 +62,29 @@
 .composition__overlay__row {
   display: flex;
 }
-@media screen and (max-width: 799px) {
+@media screen and (min-width: 800px) {
   .composition {
-    @include square();
-
-    width: 100%;
-  }
-
-  .composition__canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
+    min-height: 100%;
   }
 }
 </style>
 
 <script>
 import Tile from './Tile.vue';
+
+function calcTileSize(canvas, containerEl, [width, height]) {
+  canvas.width = 0;
+  canvas.height = 0;
+  const containerWidth = containerEl.clientWidth;
+  const containerHeight = containerEl.clientHeight;
+  if (
+    containerHeight < 30 || // FIXME: Magic constant
+    width / height >= containerWidth / containerHeight
+  ) {
+    return Math.floor(containerWidth / width);
+  }
+  return Math.floor(containerHeight / height);
+}
 
 export default {
   name: 'Composition',
@@ -118,23 +120,13 @@ export default {
       if (this.loading || !this.width) {
         return;
       }
-      const tileSize = this.calcTileSize(
-        this.$refs.canvas,
-        this.$refs.inner.parentNode
-      );
-      this.$root.store.renderCompositionOnCanvas(this.$refs.canvas, tileSize);
-    }
-  },
-  methods: {
-    calcTileSize(canvas, containerEl) {
-      canvas.width = 0;
-      canvas.height = 0;
-      const containerWidth = containerEl.clientWidth;
-      const containerHeight = containerEl.clientHeight;
-      if (this.width / this.height >= containerWidth / containerHeight) {
-        return Math.floor(containerWidth / this.width);
-      }
-      return Math.floor(containerHeight / this.height);
+      this.$nextTick(() => {
+        const tileSize = calcTileSize(this.$refs.canvas, this.$refs.inner, [
+          this.width,
+          this.height
+        ]);
+        this.$root.store.renderCompositionOnCanvas(this.$refs.canvas, tileSize);
+      });
     }
   }
 };

@@ -39,6 +39,11 @@
 .edit__input {
   padding-top: 0.1em;
 }
+.edit__composition__full_screen {
+  position: absolute;
+  top: 1em;
+  right: 3em;
+}
 .edit__storage {
   padding-top: 0.1em;
 }
@@ -53,7 +58,15 @@
     overflow-y: auto;
   }
   .edit__composition {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
+
+    .composition {
+      min-height: 0;
+      flex-grow: 1;
+    }
   }
   .edit__input {
     padding-right: 1.5em;
@@ -103,21 +116,6 @@
   .edit__input .heading-row {
     display: block;
   }
-}
-.edit__composition {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  .composition {
-    min-height: 0;
-    flex-grow: 1;
-  }
-}
-.edit__composition__full_screen {
-  position: absolute;
-  top: 1em;
-  right: 3em;
 }
 </style>
 
