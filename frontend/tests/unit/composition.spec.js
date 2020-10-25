@@ -2,8 +2,7 @@ import { generateComposition, generateTiles } from '@/js/composition.js';
 
 describe('composition', () => {
   describe('generateComposition', () => {
-    it('generates small composition', () => {
-      expect.assertions(1);
+    it('generates small composition', async () => {
       const images = [{ connections: [1, 2, 2, 1] }];
       const tiles = generateTiles(images);
       const expected = [
@@ -14,15 +13,11 @@ describe('composition', () => {
       const size = [expected[0].length, expected.length];
       const abortController = new AbortController();
       const abortSignal = abortController.signal;
-      expect(
-        generateComposition(tiles, size, {
-          abortSignal
-        })
-      ).resolves.toEqual(expected);
+      const result = await generateComposition(tiles, size, { abortSignal });
+      expect(result).toEqual(expected);
     });
 
-    it('generates large composition', () => {
-      expect.assertions(1);
+    it('generates large composition', async () => {
       const images = [
         { connections: [1, 1, 1, 1] },
         { connections: [2, 2, 1, 2] },
@@ -34,11 +29,8 @@ describe('composition', () => {
       const size = [500, 500];
       const abortController = new AbortController();
       const abortSignal = abortController.signal;
-      expect(
-        generateComposition(tiles, size, {
-          abortSignal
-        })
-      ).resolves.toBeDefined();
+      const result = await generateComposition(tiles, size, { abortSignal });
+      expect(result).toBeDefined();
     });
   });
 });

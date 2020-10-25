@@ -14,8 +14,8 @@ export function isImageComplete(image) {
   );
 }
 
-export function getSide(tile, side) {
-  return (side + tile.rotation) % SIDES.length;
+export function getConnections(tile, side) {
+  return tile.image.connections[(side + tile.rotation) % SIDES.length];
 }
 
 export function generateTiles(images) {
@@ -33,20 +33,16 @@ function findRequirements(composition, col, row) {
   const requirements = [];
   if (col !== 0) {
     const leftTile = composition[row][col - 1];
-    const adjacentSide = getSide(leftTile, RIGHT);
     requirements.push({
       side: LEFT,
-      image: leftTile.image,
-      connection: leftTile.image.connections[adjacentSide]
+      connections: getConnections(leftTile, RIGHT)
     });
   }
   if (row !== 0) {
     const topTile = composition[row - 1][col];
-    const adjacentSide = getSide(topTile, BOTTOM);
     requirements.push({
       side: TOP,
-      image: topTile.image,
-      connection: topTile.image.connections[adjacentSide]
+      connections: getConnections(topTile, BOTTOM)
     });
   }
   return requirements;
@@ -54,8 +50,7 @@ function findRequirements(composition, col, row) {
 
 function fits(tile, requirements) {
   for (const requirement of requirements) {
-    const rotatedSide = getSide(tile, requirement.side);
-    if (tile.image.connections[rotatedSide] !== requirement.connection) {
+    if (getConnections(tile, requirement.side) !== requirement.connections) {
       return false;
     }
   }
