@@ -41,7 +41,6 @@ function removeIndex({ index, ...imageWithoutIndex }) {
 
 function compatImage(image) {
   image.ref = image.ref || image.imgId; // compat
-  image.selfConnect = image.selfConnect || Array.from(SIDES, () => true);
   return image;
 }
 
@@ -59,8 +58,7 @@ function validateImageData(imageData) {
     imageData.url &&
     imageData.ref &&
     imageData.connections &&
-    imageData.connections.length === SIDES.length &&
-    (!imageData.selfConnect || imageData.selfConnect.length === SIDES.length)
+    imageData.connections.length === SIDES.length
   );
 }
 
@@ -208,7 +206,6 @@ const store = {
       index: this.state.images.length,
       ref,
       connections: Array.from(SIDES, () => null),
-      selfConnect: Array.from(SIDES, () => true),
       url: null
     });
   },
@@ -246,13 +243,6 @@ const store = {
 
   setImageConnection: function (image, side, connection) {
     image.connections.splice(side, 1, connection);
-    if (isImageComplete(image)) {
-      this.onImagesChanged();
-    }
-  },
-
-  toggleImageSelfConnect: function (image, side) {
-    image.selfConnect.splice(side, 1, !image.selfConnect[side]);
     if (isImageComplete(image)) {
       this.onImagesChanged();
     }
