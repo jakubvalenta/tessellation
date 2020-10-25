@@ -12,8 +12,6 @@
     <div class="edit__composition">
       <h2 class="sr-only">Composition</h2>
       <CompositionControls
-        :width="state.size.width"
-        :height="state.size.height"
         :edit="true"
         :natural-tile-size="state.naturalTileSize"
         :show-overlay="showOverlay"
@@ -27,6 +25,11 @@
       />
     </div>
     <div class="edit__storage">
+      <SettingsForm
+        :width="state.size.width"
+        :height="state.size.height"
+        :update-stack-func-name="state.updateStackFuncName"
+      />
       <Storage :user="state.user" />
     </div>
   </main>
@@ -123,6 +126,7 @@ import CompositionControls from '../components/CompositionControls.vue';
 import Header from '../components/Header.vue';
 import InputImages from '../components/InputImages.vue';
 import Intro from '../components/Intro.vue';
+import SettingsForm from '../components/SettingsForm.vue';
 import Storage from '../components/Storage.vue';
 
 export default {
@@ -133,6 +137,7 @@ export default {
     Header,
     InputImages,
     Intro,
+    SettingsForm,
     Storage
   },
   props: {

@@ -1,44 +1,23 @@
 <template>
   <div class="composition-controls">
-    <p class="composition-shuffle">
+    <p class="composition-controls__shuffle">
       <button
         @click="shuffle"
         data-intro="The composition is automatically generated when you change the input images. You can also click this button to generate another composition that matches the specified connections between the tiles."
       >
         shuffle
       </button>
+    </p>
+    <p class="composition-controls__advanced">
       <a
         href="javascript:void(0)"
         @click="download"
+        class="button button-secondary"
         download="composition.png"
-        class="button button-link"
         title="Render the composition as a PNG. The size of each tile will be equal to the width of the first input image but not larger than 500px."
-        >download</a
       >
-    </p>
-    <form action="javascript:void(0)" class="composition-settings">
-      <p>
-        <span class="sr-only">Size:</span>
-        <label for="js-width" class="sr-only">columns</label>
-        <input
-          type="number"
-          :value="width"
-          @change="changeWidth"
-          min="1"
-          class="input-number"
-        />
-        x
-        <label for="js-height" class="sr-only">rows</label>
-        <input
-          type="number"
-          :value="height"
-          @change="changeHeight"
-          min="1"
-          class="input-number"
-        />
-      </p>
-    </form>
-    <p>
+        download
+      </a>
       <button @click="$emit('toggle-overlay')" class="button-secondary">
         <span v-show="!showOverlay">show edges</span>
         <span v-show="showOverlay">hide edges</span>
@@ -49,8 +28,9 @@
 
 <style lang="scss">
 .composition-controls {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1em;
   margin-bottom: 1em;
   padding: 0.1em;
   padding-bottom: 0;
@@ -59,11 +39,19 @@
     margin: 0;
   }
 }
-.composition-shuffle {
-  width: 33.33%;
+.composition-controls__shuffle {
+  grid-column: 2;
+  grid-row: 1;
+  text-align: center;
 }
-.composition-settings {
-  width: 33.33%;
+.composition-controls__advanced {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: right;
+
+  a + button {
+    margin-left: 0.5em;
+  }
 }
 </style>
 
@@ -73,14 +61,6 @@ import * as HTML from '../html.js';
 export default {
   name: 'CompositionControls',
   props: {
-    width: {
-      type: Number,
-      required: true
-    },
-    height: {
-      type: Number,
-      required: true
-    },
     showOverlay: {
       type: Boolean,
       required: true
@@ -100,12 +80,6 @@ export default {
       ) {
         evt.target.href = HTML.canvasToDataUrl(canvas);
       }
-    },
-    changeWidth: function (evt) {
-      this.$root.store.setSize({ width: evt.currentTarget.value });
-    },
-    changeHeight: function (evt) {
-      this.$root.store.setSize({ height: evt.currentTarget.value });
     }
   }
 };

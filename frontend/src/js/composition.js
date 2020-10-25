@@ -1,5 +1,6 @@
 import * as HTML from './html.js';
 import { error, log } from './log.js';
+import { shuffle } from './utils/array.js';
 import 'abort-controller/polyfill';
 
 export const SIDES = [0, 1, 2, 3];
@@ -69,13 +70,45 @@ function fits(tile, requirements) {
   return true;
 }
 
-function chooseTile(stack, requirements, excl) {
+export const UPDATE_STACK_FUNC_DEFAULT_NAME = 'push_current';
+
+export const UPDATE_STACK_FUNCS = {
+  [UPDATE_STACK_FUNC_DEFAULT_NAME]: {
+    label: 'Degrade last used tile',
+    func: function (stack, i) {
+      stack.push(stack.splice(i, 1)[0]);
+    }
+  },
+  cycle_stack: {
+    label: 'Repeat sequence',
+    func: function (stack) {
+      stack.push(stack.splice(0, 1)[0]);
+    }
+  },
+  noop: {
+    label: 'Prefer one tile',
+    func: function () {}
+  },
+  shuffle_stack: {
+    label: 'Random',
+    func: function (stack) {
+      shuffle(stack);
+    }
+  },
+  unshift_current: {
+    label: 'Prefer last used tile',
+    func: function (stack, i) {
+      stack.unshift(stack.splice(i, 1)[0]);
+    }
+  }
+};
+
+function chooseTile(stack, requirements, excl, updateStackFunc) {
   let i, tile;
   for (i = 0; i < stack.length; i++) {
     tile = stack[i];
     if (excl.indexOf(tile) === -1 && fits(tile, requirements)) {
-      stack.splice(i, 1);
-      stack.push(tile);
+      updateStackFunc(stack, i);
       return tile;
     }
   }
@@ -85,8 +118,12 @@ function chooseTile(stack, requirements, excl) {
 export function generateComposition(
   tiles,
   [width, height],
-  { maxSteps = Math.pow(2, 18) } = {}
+  {
+    maxSteps = Math.pow(2, 18),
+    updateStackFuncName = UPDATE_STACK_FUNC_DEFAULT_NAME
+  } = {}
 ) {
+  log(`Generating composition updateStackFuncName=${updateStackFuncName}`);
   const t0 = performance.now();
   const composition = Array.from(Array(height), () => Array(width));
   if (!tiles.length) {
@@ -96,6 +133,7 @@ export function generateComposition(
     Array.from(Array(width), () => [])
   );
   const stack = Array.from(tiles);
+  const updateStackFunc = UPDATE_STACK_FUNCS[updateStackFuncName].func;
   let i = 0,
     row = 0,
     col = 0;
@@ -103,7 +141,8 @@ export function generateComposition(
     const tile = chooseTile(
       stack,
       findRequirements(composition, col, row),
-      tried[row][col]
+      tried[row][col],
+      updateStackFunc
     );
     tried[row][col].push(tile);
     if (tile !== null) {

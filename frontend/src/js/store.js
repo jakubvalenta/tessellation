@@ -1,7 +1,11 @@
 import * as CompositionLib from './composition.js';
 import * as HTML from './html.js';
 import uuidv4 from './uuid.js';
-import { SIDES, isImageComplete } from './composition.js';
+import {
+  SIDES,
+  UPDATE_STACK_FUNC_DEFAULT_NAME,
+  isImageComplete
+} from './composition.js';
 import { error, log } from './log.js';
 import { reactive } from 'vue';
 import { shuffle } from './utils/array.js';
@@ -86,6 +90,7 @@ const store = {
     tiles: [],
     images: [],
     composition: [],
+    updateStackFuncName: UPDATE_STACK_FUNC_DEFAULT_NAME,
     naturalTileSize: 0,
     loading: true,
     error: null,
@@ -104,7 +109,10 @@ const store = {
     try {
       this.state.composition = CompositionLib.generateComposition(
         this.state.tiles,
-        [this.state.size.width, this.state.size.height]
+        [this.state.size.width, this.state.size.height],
+        {
+          updateStackFuncName: this.state.updateStackFuncName
+        }
       );
       const tileSize = calcTileSize(this.state.elCanvas, this.state.elInner, [
         this.state.size.width,
@@ -181,6 +189,11 @@ const store = {
     if (height) {
       this.state.size.height = Math.max(height, 1);
     }
+    this.onTilesChanged();
+  },
+
+  setUpdateStackFuncName: function (updateStackFuncName) {
+    this.state.updateStackFuncName = updateStackFuncName;
     this.onTilesChanged();
   },
 
