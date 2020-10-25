@@ -14,6 +14,10 @@ export function isImageComplete(image) {
   );
 }
 
+export function getSide(tile, side) {
+  return (side + tile.rotation) % SIDES.length;
+}
+
 export function generateTiles(images) {
   return images.filter(isImageComplete).flatMap(image =>
     SIDES.map(rotation => {
@@ -57,7 +61,7 @@ function findRequirements(composition, col, row) {
   const requirements = [];
   const leftTile = findLeftTile(composition, col, row);
   if (leftTile) {
-    const adjacentSide = (RIGHT + leftTile.rotation) % SIDES.length;
+    const adjacentSide = getSide(leftTile, RIGHT);
     requirements.push({
       side: LEFT,
       image: leftTile.image,
@@ -68,7 +72,7 @@ function findRequirements(composition, col, row) {
   }
   const topTile = findTopTile(composition, col, row);
   if (topTile) {
-    const adjacentSide = (BOTTOM + topTile.rotation) % SIDES.length;
+    const adjacentSide = getSide(topTile, BOTTOM);
     requirements.push({
       side: TOP,
       image: topTile.image,
@@ -82,7 +86,7 @@ function findRequirements(composition, col, row) {
 
 function fits(tile, requirements) {
   for (const requirement of requirements) {
-    const rotatedSide = (requirement.side + tile.rotation) % SIDES.length;
+    const rotatedSide = getSide(tile, requirement.side);
     if (tile.image.connections[rotatedSide] !== requirement.connection) {
       return false;
     }
