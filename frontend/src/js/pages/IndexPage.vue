@@ -1,5 +1,5 @@
 <template>
-  <Header :user="$root.store.state.user" />
+  <Header :user="$root.store.state.user" :showNav="false" />
   <main class="main index">
     <p>
       Tessellation is a tool to arrange tiles (several small images) into one

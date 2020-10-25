@@ -55,15 +55,6 @@ body .introjs-button {
   background: transparent;
   box-shadow: none;
 }
-.button-box {
-  cursor: pointer;
-  box-shadow: 0 0 0.1em $color-background-darker;
-
-  &:hover,
-  &:focus {
-    box-shadow: 0 0 0.5em $color-background-darker;
-  }
-}
 
 .input-file {
   width: 0.1px;

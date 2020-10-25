@@ -4,7 +4,7 @@
       <h1>{{ title }}</h1>
     </div>
     <div class="header-section header-nav">
-      <span>
+      <span v-if="showNav">
         <router-link :to="{ name: 'list' }" class="button">Explore</router-link>
         <router-link :to="{ name: 'create' }" class="button"
           >Create</router-link
@@ -36,6 +36,10 @@ export default {
     title: {
       type: String,
       default: 'Tessellation'
+    },
+    showNav: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {

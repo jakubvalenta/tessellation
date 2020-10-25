@@ -15,7 +15,6 @@
           }"
           title="open composition"
         >
-          <h3 class="sr-only has-permalink">{{ composition.name }}</h3>
           <div class="explore__list__item__images">
             <img
               v-for="image in composition.images"
@@ -23,6 +22,7 @@
               :src="image.url"
             />
           </div>
+          <h3 class="has-permalink">id: {{ composition.compositionId }}</h3>
         </router-link>
       </li>
     </ul>
@@ -71,7 +71,8 @@
   flex-direction: column;
 
   h3 {
-    margin-top: 0;
+    margin-top: 0.25em;
+    text-align: center;
   }
   .button {
     display: block;
@@ -86,6 +87,7 @@
   flex-wrap: wrap;
   align-compositions: flex-start;
   background: $color-white;
+  box-shadow: 0 0 0.1em $color-background-darker;
 
   img {
     display: block;

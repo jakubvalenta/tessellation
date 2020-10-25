@@ -14,7 +14,7 @@
             compositionId
           }
         }"
-        class="button"
+        class="button button-secondary"
         >edit</router-link
       >
     </nav>
