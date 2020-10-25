@@ -133,11 +133,14 @@ const store = {
         containerEl,
         tileSize
       );
+      this.state.loading = false;
+      return true;
     } catch (e) {
       error(e);
       this.state.error = 'Crash while drawing the composition';
+      this.state.loading = false;
+      return false;
     }
-    this.state.loading = false;
   },
 
   onImagesLoaded: function () {
