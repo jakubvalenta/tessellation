@@ -29,20 +29,6 @@ export function generateTiles(images) {
   );
 }
 
-function findLeftTile(composition, col, row) {
-  if (col === 0) {
-    return null;
-  }
-  return composition[row][col - 1];
-}
-
-function findTopTile(composition, col, row) {
-  if (row === 0) {
-    return null;
-  }
-  return composition[row - 1][col];
-}
-
 function calcPrevCoords(row, col, width) {
   if (col === 0) {
     return [row - 1, width - 1];
@@ -59,8 +45,8 @@ function calcNextCoords(row, col, width) {
 
 function findRequirements(composition, col, row) {
   const requirements = [];
-  const leftTile = findLeftTile(composition, col, row);
-  if (leftTile) {
+  if (col !== 0) {
+    const leftTile = composition[row][col - 1];
     const adjacentSide = getSide(leftTile, RIGHT);
     requirements.push({
       side: LEFT,
@@ -70,8 +56,8 @@ function findRequirements(composition, col, row) {
       adjacentSide
     });
   }
-  const topTile = findTopTile(composition, col, row);
-  if (topTile) {
+  if (row !== 0) {
+    const topTile = composition[row - 1][col];
     const adjacentSide = getSide(topTile, BOTTOM);
     requirements.push({
       side: TOP,
