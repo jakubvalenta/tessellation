@@ -29,20 +29,6 @@ export function generateTiles(images) {
   );
 }
 
-function calcPrevCoords(row, col, width) {
-  if (col === 0) {
-    return [row - 1, width - 1];
-  }
-  return [row, col - 1];
-}
-
-function calcNextCoords(row, col, width) {
-  if (col === width - 1) {
-    return [row + 1, 0];
-  }
-  return [row, col + 1];
-}
-
 function findRequirements(composition, col, row) {
   const requirements = [];
   if (col !== 0) {
@@ -128,13 +114,23 @@ export function generateComposition(tiles, [width, height], { abortSignal }) {
       tried[row][col].push(tile);
       if (tile !== null) {
         composition[row][col] = tile;
-        [row, col] = calcNextCoords(row, col, width, height);
+        if (col === width - 1) {
+          row += 1;
+          col = 0;
+        } else {
+          col += 1;
+        }
       } else {
         log(`[${row}, ${col}] No fitting tile found, going one step back`);
         tried[row][col].splice(0);
-        [row, col] = calcPrevCoords(row, col, width, height);
-        if (row < 0) {
-          throw new Error("Input tiles don't connect.");
+        if (col === 0) {
+          if (row === 0) {
+            throw new Error("Input tiles don't connect.");
+          }
+          row -= 1;
+          col = width - 1;
+        } else {
+          col -= 1;
         }
       }
     }
