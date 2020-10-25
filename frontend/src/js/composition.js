@@ -37,9 +37,7 @@ function findRequirements(composition, col, row) {
     requirements.push({
       side: LEFT,
       image: leftTile.image,
-      connection: leftTile.image.connections[adjacentSide],
-      selfConnect: leftTile.image.selfConnect[adjacentSide],
-      adjacentSide
+      connection: leftTile.image.connections[adjacentSide]
     });
   }
   if (row !== 0) {
@@ -48,9 +46,7 @@ function findRequirements(composition, col, row) {
     requirements.push({
       side: TOP,
       image: topTile.image,
-      connection: topTile.image.connections[adjacentSide],
-      selfConnect: topTile.image.selfConnect[adjacentSide],
-      adjacentSide
+      connection: topTile.image.connections[adjacentSide]
     });
   }
   return requirements;
@@ -60,13 +56,6 @@ function fits(tile, requirements) {
   for (const requirement of requirements) {
     const rotatedSide = getSide(tile, requirement.side);
     if (tile.image.connections[rotatedSide] !== requirement.connection) {
-      return false;
-    }
-    if (
-      !requirement.selfConnect &&
-      requirement.image === tile.image &&
-      rotatedSide === requirement.adjacentSide
-    ) {
       return false;
     }
   }
