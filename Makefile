@@ -75,6 +75,9 @@ build-frontend: frontend/public/supportedBrowsers.js  ## Build frontend files wi
 test: | start-postgresql  ## Run unit tests
 	$(MAKE) manage args="test"
 
+test-frontend:  ## Run frontend unit tests
+	cd frontend && yarn test:unit
+
 lint-backend:  ## Run Python linting
 	pipenv run flake8 $(_python_pkg)
 	pipenv run mypy $(_python_pkg) --ignore-missing-imports
