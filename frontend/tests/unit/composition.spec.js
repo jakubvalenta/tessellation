@@ -1,6 +1,20 @@
-import { generateComposition, generateTiles } from '@/js/composition.js';
+import {
+  reverseDigits,
+  generateComposition,
+  generateTiles
+} from '@/js/composition.js';
 
 describe('composition', () => {
+  describe('reverseDigits', () => {
+    it('reverses digits of a single-digit number', () => {
+      expect(reverseDigits(0)).toBe(0);
+      expect(reverseDigits(1)).toBe(1);
+    });
+    it('reverses digits of a multi-digit number', () => {
+      expect(reverseDigits(12)).toBe(21);
+      expect(reverseDigits(9986)).toBe(6899);
+    });
+  });
   describe('generateComposition', () => {
     it('generates small composition', async () => {
       const images = [{ connections: [1, 2, 2, 1] }];

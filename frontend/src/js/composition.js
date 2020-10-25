@@ -14,8 +14,20 @@ export function isImageComplete(image) {
   );
 }
 
-export function getConnections(tile, side) {
+function getConnection(tile, side) {
   return tile.image.connections[(side + tile.rotation) % SIDES.length];
+}
+
+export function reverseDigits(n) {
+  if (n < 10) {
+    return n;
+  }
+  let rev = 0;
+  while (n > 0) {
+    rev = rev * 10 + (n % 10);
+    n = Math.floor(n / 10);
+  }
+  return rev;
 }
 
 export function generateTiles(images) {
@@ -35,14 +47,14 @@ function findRequirements(composition, col, row) {
     const leftTile = composition[row][col - 1];
     requirements.push({
       side: LEFT,
-      connections: getConnections(leftTile, RIGHT)
+      connection: reverseDigits(getConnection(leftTile, RIGHT))
     });
   }
   if (row !== 0) {
     const topTile = composition[row - 1][col];
     requirements.push({
       side: TOP,
-      connections: getConnections(topTile, BOTTOM)
+      connection: reverseDigits(getConnection(topTile, BOTTOM))
     });
   }
   return requirements;
@@ -50,7 +62,7 @@ function findRequirements(composition, col, row) {
 
 function fits(tile, requirements) {
   for (const requirement of requirements) {
-    if (getConnections(tile, requirement.side) !== requirement.connections) {
+    if (getConnection(tile, requirement.side) !== requirement.connection) {
       return false;
     }
   }
