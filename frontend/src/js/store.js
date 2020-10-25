@@ -78,53 +78,27 @@ const store = {
     loading: true,
     error: null,
     warn: null,
-    abortController: null,
-    abortSignal: null,
     user: {}
   }),
 
-  generateComposition: function (abortAfter = 10 * 1000) {
+  generateComposition: function () {
     this.state.loading = true;
-    if (
-      this.state.abortController &&
-      this.state.abortSignal &&
-      !this.state.abortSignal.aborted
-    ) {
-      this.state.abortController.abort();
-    }
-    this.state.abortController = new AbortController();
-    this.state.abortSignal = this.state.abortController.signal;
-    const timeout = window.setTimeout(() => {
-      this.state.abortController.abort();
-      const message =
-        'This composition is taking too long to calculate. Try shuffling it, decreasing its size or changing how the tiles connect.';
-      error(message);
+    try {
+      const composition = CompositionLib.generateComposition(this.state.tiles, [
+        this.state.size.width,
+        this.state.size.height
+      ]);
+      this.state.composition = composition;
       this.state.error = null;
-      this.state.warn = message;
+      this.state.warn = null;
       this.state.loading = false;
-    }, abortAfter);
-    CompositionLib.generateComposition(
-      this.state.tiles,
-      [this.state.size.width, this.state.size.height],
-      { abortSignal: this.state.abortSignal }
-    )
-      .then(composition => {
-        clearTimeout(timeout);
-        this.state.abortController = null;
-        this.state.composition = composition;
-        this.state.error = null;
-        this.state.warn = null;
-        this.state.loading = false;
-      })
-      .catch(err => {
-        clearTimeout(timeout);
-        this.state.abortController = null;
-        if (err.message) {
-          this.state.error = err.message;
-        }
-        this.state.warn = null;
-        this.state.loading = false;
-      });
+    } catch (e) {
+      if (e.message) {
+        this.state.error = e.message;
+      }
+      this.state.warn = null;
+      this.state.loading = false;
+    }
   },
 
   renderCompositionOnCanvas(containerEl, tileSize) {

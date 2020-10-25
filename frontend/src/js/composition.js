@@ -82,58 +82,59 @@ function chooseTile(stack, requirements, excl) {
   return null;
 }
 
-export function generateComposition(tiles, [width, height], { abortSignal }) {
-  return new Promise((resolve, reject) => {
-    if (abortSignal.aborted) {
-      return reject();
-    }
-    abortSignal.addEventListener('abort', () => {
-      reject();
-    });
-    const t0 = performance.now();
-    const composition = Array.from(Array(height), () => Array(width));
-    if (!tiles.length) {
-      return resolve(composition);
-    }
-    const tried = Array.from(Array(height), () =>
-      Array.from(Array(width), () => [])
+export function generateComposition(
+  tiles,
+  [width, height],
+  { maxSteps = Math.pow(2, 18) } = {}
+) {
+  const t0 = performance.now();
+  const composition = Array.from(Array(height), () => Array(width));
+  if (!tiles.length) {
+    return composition;
+  }
+  const tried = Array.from(Array(height), () =>
+    Array.from(Array(width), () => [])
+  );
+  const stack = Array.from(tiles);
+  let i = 0,
+    row = 0,
+    col = 0;
+  while (row < height && col < width) {
+    const tile = chooseTile(
+      stack,
+      findRequirements(composition, col, row),
+      tried[row][col]
     );
-    const stack = Array.from(tiles);
-    let row = 0,
-      col = 0;
-    while (row < height && col < width) {
-      const tile = chooseTile(
-        stack,
-        findRequirements(composition, col, row),
-        tried[row][col]
-      );
-      tried[row][col].push(tile);
-      if (tile !== null) {
-        composition[row][col] = tile;
-        if (col === width - 1) {
-          row += 1;
-          col = 0;
-        } else {
-          col += 1;
-        }
+    tried[row][col].push(tile);
+    if (tile !== null) {
+      composition[row][col] = tile;
+      if (col === width - 1) {
+        row += 1;
+        col = 0;
       } else {
-        log(`[${row}, ${col}] No fitting tile found, going one step back`);
-        tried[row][col].splice(0);
-        if (col === 0) {
-          if (row === 0) {
-            throw new Error("Input tiles don't connect.");
-          }
-          row -= 1;
-          col = width - 1;
-        } else {
-          col -= 1;
+        col += 1;
+      }
+    } else {
+      log(`[${row}, ${col}] No fitting tile found, going one step back`);
+      tried[row][col].splice(0);
+      if (col === 0) {
+        if (row === 0) {
+          throw new Error("Input tiles don't connect.");
         }
+        row -= 1;
+        col = width - 1;
+      } else {
+        col -= 1;
       }
     }
-    const t1 = performance.now();
-    log(`Generated composition in ${t1 - t0}ms`);
-    return resolve(composition);
-  });
+    if (i >= maxSteps) {
+      throw new Error(`Failed to calculate composition in ${maxSteps} steps.`);
+    }
+    i++;
+  }
+  const t1 = performance.now();
+  log(`Generated composition in ${t1 - t0}ms`);
+  return composition;
 }
 
 export function renderCompositionOnCanvas(
