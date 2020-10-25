@@ -15,18 +15,14 @@ export function isImageComplete(image) {
 }
 
 export function generateTiles(images) {
-  const out = [];
-  images.forEach(image => {
-    if (isImageComplete(image)) {
-      for (let rotation = 0; rotation < SIDES.length; rotation++) {
-        out.push({
-          image,
-          rotation
-        });
-      }
-    }
-  });
-  return out;
+  return images.filter(isImageComplete).flatMap(image =>
+    SIDES.map(rotation => {
+      return {
+        image,
+        rotation
+      };
+    })
+  );
 }
 
 function findLeftTile(composition, col, row) {
