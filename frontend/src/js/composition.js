@@ -31,8 +31,17 @@ export function reverseDigits(n) {
   return rev;
 }
 
-export function generateTiles(images) {
-  return images.filter(isImageComplete).flatMap(image =>
+export function generateTiles(images, { allowRotation = true } = {}) {
+  const completeImages = images.filter(isImageComplete);
+  if (!allowRotation) {
+    return completeImages.map(image => {
+      return {
+        image,
+        rotation: 0
+      };
+    });
+  }
+  return completeImages.flatMap(image =>
     SIDES.map(rotation => {
       return {
         image,

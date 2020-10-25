@@ -29,6 +29,7 @@
         :width="state.size.width"
         :height="state.size.height"
         :update-stack-func-name="state.updateStackFuncName"
+        :allow-rotation="state.allowRotation"
       />
       <Storage :user="state.user" />
     </div>

@@ -91,6 +91,7 @@ const store = {
     images: [],
     composition: [],
     updateStackFuncName: UPDATE_STACK_FUNC_DEFAULT_NAME,
+    allowRotation: true,
     naturalTileSize: 0,
     loading: true,
     error: null,
@@ -111,7 +112,8 @@ const store = {
         this.state.tiles,
         [this.state.size.width, this.state.size.height],
         {
-          updateStackFuncName: this.state.updateStackFuncName
+          updateStackFuncName: this.state.updateStackFuncName,
+          allowRotation: this.state.allowRotation
         }
       );
       const tileSize = calcTileSize(this.state.elCanvas, this.state.elInner, [
@@ -159,7 +161,9 @@ const store = {
 
   onImagesChanged: function () {
     log('Images changed');
-    const newTiles = CompositionLib.generateTiles(this.state.images);
+    const newTiles = CompositionLib.generateTiles(this.state.images, {
+      allowRotation: this.state.allowRotation
+    });
     this.state.naturalTileSize =
       getNaturalFirstImageWidth(this.state.images) || 0;
     this.setTiles(newTiles);
@@ -195,6 +199,14 @@ const store = {
   setUpdateStackFuncName: function (updateStackFuncName) {
     this.state.updateStackFuncName = updateStackFuncName;
     this.onTilesChanged();
+  },
+
+  setAllowRotation: function (allowRotation) {
+    this.setTiles(
+      CompositionLib.generateTiles(this.state.images, {
+        allowRotation
+      })
+    );
   },
 
   setTiles: function (tiles) {

@@ -48,6 +48,18 @@
           </select>
         </td>
       </tr>
+      <tr>
+        <td colspan="2">
+          <label>
+            <input
+              type="checkbox"
+              :checked="allowRotation"
+              @change="changeAllowRotation"
+            />
+            allow tile rotation
+          </label>
+        </td>
+      </tr>
     </table>
   </form>
 </template>
@@ -86,6 +98,10 @@ export default {
     updateStackFuncName: {
       type: String,
       required: true
+    },
+    allowRotation: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
@@ -106,6 +122,9 @@ export default {
     },
     changeUpdateStackFuncName: function (evt) {
       this.$root.store.setUpdateStackFuncName(evt.currentTarget.value);
+    },
+    changeAllowRotation: function (evt) {
+      this.$root.store.setAllowRotation(evt.currentTarget.checked);
     }
   }
 };
