@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = process.env.NODE_ENV !== 'production';
 
 export function error(...msg) {
   console.error(...msg); // eslint-disable-line no-console
