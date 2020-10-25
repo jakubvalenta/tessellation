@@ -21,10 +21,8 @@
     <div class="detail__composition">
       <h2 class="sr-only">Composition</h2>
       <Composition
-        :width="state.size.width"
-        :height="state.size.height"
-        :edit="false"
         :loading="state.loading"
+        :show-overlay="false"
         :error="state.error"
         :warn="state.warn"
       />

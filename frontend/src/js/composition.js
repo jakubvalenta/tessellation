@@ -145,8 +145,9 @@ export function renderCompositionOnCanvas(
   tileSize,
   maxSize = 8192 // https://stackoverflow.com/a/11585939
 ) {
+  const t0 = performance.now();
   const ctx = canvas.getContext('2d');
-  if (!composition.length || !tileSize) {
+  if (!composition.length) {
     error("Can't render composition on canvas, because it's not generated.");
     HTML.fillCanvas(canvas, ctx, '#fff');
     return false;
@@ -190,4 +191,6 @@ export function renderCompositionOnCanvas(
       ctx.drawImage(tile.canvas, col * tileSize, row * tileSize);
     }
   }
+  const t1 = performance.now();
+  log(`Rendered composition on canvas in ${t1 - t0}ms`);
 }

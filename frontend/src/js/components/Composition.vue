@@ -72,38 +72,12 @@
 <script>
 import Tile from './Tile.vue';
 
-function calcTileSize(canvas, containerEl, [width, height]) {
-  canvas.width = 0;
-  canvas.height = 0;
-  const containerWidth = containerEl.clientWidth;
-  const containerHeight = containerEl.clientHeight;
-  if (
-    containerHeight < 30 || // FIXME: Magic constant
-    width / height >= containerWidth / containerHeight
-  ) {
-    return Math.floor(containerWidth / width);
-  }
-  return Math.floor(containerHeight / height);
-}
-
 export default {
   name: 'Composition',
   components: {
     Tile
   },
   props: {
-    width: {
-      type: Number,
-      required: true
-    },
-    height: {
-      type: Number,
-      required: true
-    },
-    edit: {
-      type: Boolean,
-      required: true
-    },
     loading: {
       type: Boolean,
       required: true
@@ -115,19 +89,9 @@ export default {
     error: String,
     warn: String
   },
-  watch: {
-    loading: function () {
-      if (this.loading || !this.width) {
-        return;
-      }
-      this.$nextTick(() => {
-        const tileSize = calcTileSize(this.$refs.canvas, this.$refs.inner, [
-          this.width,
-          this.height
-        ]);
-        this.$root.store.renderCompositionOnCanvas(this.$refs.canvas, tileSize);
-      });
-    }
+  mounted() {
+    this.$root.store.setElements(this.$refs.canvas, this.$refs.inner);
   }
 };
 </script>
+p

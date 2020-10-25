@@ -68,6 +68,20 @@ function validateTileData(tileData) {
   return tileData.imgRef && tileData.rotation !== undefined;
 }
 
+function calcTileSize(canvas, containerEl, [width, height]) {
+  canvas.width = 0;
+  canvas.height = 0;
+  const containerWidth = containerEl.clientWidth;
+  const containerHeight = containerEl.clientHeight;
+  if (
+    containerHeight < 30 || // FIXME: Magic constant
+    width / height >= containerWidth / containerHeight
+  ) {
+    return Math.floor(containerWidth / width);
+  }
+  return Math.floor(containerHeight / height);
+}
+
 const store = {
   state: reactive({
     size: { width: 5, height: 5 },
@@ -78,17 +92,27 @@ const store = {
     loading: true,
     error: null,
     warn: null,
-    user: {}
+    user: {},
+    elCanvas: null,
+    elInner: null
   }),
 
   generateComposition: function () {
+    if (!this.state.elCanvas || !this.state.elInner) {
+      console.error('Canvas is not available yet');
+      return;
+    }
     this.state.loading = true;
     try {
-      const composition = CompositionLib.generateComposition(this.state.tiles, [
+      this.state.composition = CompositionLib.generateComposition(
+        this.state.tiles,
+        [this.state.size.width, this.state.size.height]
+      );
+      const tileSize = calcTileSize(this.state.elCanvas, this.state.elInner, [
         this.state.size.width,
         this.state.size.height
       ]);
-      this.state.composition = composition;
+      this.renderCompositionOnCanvas(this.state.elCanvas, tileSize);
       this.state.error = null;
       this.state.warn = null;
       this.state.loading = false;
@@ -104,7 +128,6 @@ const store = {
   renderCompositionOnCanvas(containerEl, tileSize) {
     log(`Rendering composition on canvas, tileSize=${tileSize}`);
     try {
-      const t0 = performance.now();
       CompositionLib.renderCompositionOnCanvas(
         this.state.composition,
         this.state.images,
@@ -112,8 +135,6 @@ const store = {
         containerEl,
         tileSize
       );
-      const t1 = performance.now();
-      log(`Rendered composition on canvas in ${t1 - t0}ms`);
     } catch (e) {
       error(e);
       this.state.error = 'Crash while drawing the composition';
@@ -173,6 +194,11 @@ const store = {
 
   setLoading: function (loading) {
     this.state.loading = loading;
+  },
+
+  setElements: function (elCanvas, elInner) {
+    this.state.elCanvas = elCanvas;
+    this.state.elInner = elInner;
   },
 
   newImage: function () {

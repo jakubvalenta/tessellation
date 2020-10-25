@@ -20,13 +20,10 @@
         @toggle-overlay="showOverlay = !showOverlay"
       />
       <Composition
-        :width="state.size.width"
-        :height="state.size.height"
-        :edit="true"
         :loading="state.loading"
+        :show-overlay="showOverlay"
         :error="state.error"
         :warn="state.warn"
-        :show-overlay="showOverlay"
       />
     </div>
     <div class="edit__storage">
