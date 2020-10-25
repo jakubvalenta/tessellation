@@ -125,7 +125,7 @@ export function generateComposition(tiles, [width, height], { abortSignal }) {
     const t0 = performance.now();
     const composition = Array.from(Array(height), () => Array(width));
     if (!tiles.length) {
-      return composition;
+      return resolve(composition);
     }
     const tried = Array.from(Array(height), () =>
       Array.from(Array(width), () => [])
