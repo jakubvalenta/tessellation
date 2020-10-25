@@ -59,13 +59,6 @@
         </button>
       </div>
     </button>
-    <button @click="toggleSelfConnect" class="edge__button">
-      <input
-        type="checkbox"
-        :checked="selfConnect"
-        title="allow self-connection"
-      />
-    </button>
   </div>
 </template>
 
@@ -77,6 +70,7 @@
   display: flex;
   justify-content: center;
   z-index: 1;
+  box-sizing: border-box;
 }
 .edge__button {
   position: relative;
@@ -97,7 +91,7 @@
   }
 
   & + .edge__button {
-    margin-left: 0.5em;
+    margin-left: 0;
   }
 }
 .edge--left,
@@ -106,18 +100,24 @@
   height: 100%;
   top: 0;
   margin-top: -1em;
-  flex-direction: column;
-
-  .edge__button + .edge__button {
-    margin-left: 0;
-    margin-top: 0.5em;
-  }
 }
 .edge--left {
   left: -2em;
+  flex-direction: column-reverse;
+  padding-bottom: 2.5em;
+
+  .edge__button + .edge__button {
+    margin-bottom: 0.5em;
+  }
 }
 .edge--right {
   right: -2em;
+  flex-direction: column;
+  padding-top: 2.5em;
+
+  .edge__button + .edge__button {
+    margin-top: 0.5em;
+  }
 }
 .edge--top,
 .edge--bottom {
@@ -127,9 +127,20 @@
 }
 .edge--top {
   top: -2em;
+  padding-left: 2.5em;
+
+  .edge__button + .edge__button {
+    margin-left: 0.5em;
+  }
 }
 .edge--bottom {
   bottom: -2em;
+  flex-direction: row-reverse;
+  padding-right: 2.5em;
+
+  .edge__button + .edge__button {
+    margin-right: 0.5em;
+  }
 }
 $connections: (
   1: $color-red,
@@ -249,9 +260,6 @@ export default {
       }
       return digits;
     },
-    selfConnect: function () {
-      return this.image.selfConnect[this.side];
-    },
     sideName: function () {
       return SIDE_NAMES[this.side];
     }
@@ -284,9 +292,6 @@ export default {
     },
     select: function (digitIndex, value) {
       this._select(digitIndex, value);
-    },
-    toggleSelfConnect: function () {
-      this.$root.store.toggleImageSelfConnect(this.image, this.side);
     }
   }
 };
