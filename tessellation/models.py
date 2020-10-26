@@ -12,6 +12,11 @@ from tessellation.managers import CompositionManager
 
 logger = logging.getLogger(__name__)
 
+SIDES = [0, 1, 2, 3]
+SIDE_NAMES = ['left', 'top', 'right', 'bottom']
+CONNECTIONS = [1, 2, 3, 4, 5]
+(LEFT, TOP, RIGHT, BOTTOM) = SIDES
+
 
 def image_upload_to(instance: 'Image', filename: str) -> str:
     suffix = Path(filename).suffix
@@ -47,6 +52,12 @@ class Tile(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    def __repr__(self):
+        return f'<Tile: image__id={self.image.id} rotation={self.rotation}>'
+
+    def get_connection(self, side: int) -> int:
+        return self.image.connections[(side + self.rotation) % len(SIDES)]
 
 
 def find_shortest_str(
