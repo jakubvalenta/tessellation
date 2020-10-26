@@ -70,20 +70,6 @@ function validateTileData(tileData) {
   return tileData.imgRef && tileData.rotation !== undefined;
 }
 
-function calcTileSize(canvas, containerEl, [width, height]) {
-  canvas.width = 0;
-  canvas.height = 0;
-  const containerWidth = containerEl.clientWidth;
-  const containerHeight = containerEl.clientHeight;
-  if (
-    containerHeight < 30 || // FIXME: Magic constant
-    width / height >= containerWidth / containerHeight
-  ) {
-    return Math.floor(containerWidth / width);
-  }
-  return Math.floor(containerHeight / height);
-}
-
 const store = {
   state: reactive({
     size: { width: 5, height: 5 },
@@ -95,18 +81,25 @@ const store = {
     naturalTileSize: 0,
     loading: true,
     error: null,
-    warn: null,
     user: {},
-    elCanvas: null,
-    elInner: null
+    containerEl: null,
+    innerEl: null,
+    canvasEl: null
   }),
 
-  generateComposition: function () {
-    if (!this.state.elCanvas || !this.state.elInner) {
-      console.error('Canvas is not available yet');
+  generateComposition: async function ({ redrawTimeout = 100 } = {}) {
+    if (!this.state.canvasEl) {
+      error('Canvas is not available yet');
       return;
     }
+
     this.state.loading = true;
+    // Wait for the DOM to be redrawn with the loading message. Vue.nextTick()
+    // doesn't seem to work.
+    await new Promise(resolve => {
+      window.setTimeout(resolve, redrawTimeout);
+    });
+
     try {
       this.state.composition = CompositionLib.generateComposition(
         this.state.tiles,
@@ -116,47 +109,37 @@ const store = {
           allowRotation: this.state.allowRotation
         }
       );
-      const tileSize = calcTileSize(this.state.elCanvas, this.state.elInner, [
-        this.state.size.width,
-        this.state.size.height
-      ]);
-      this.renderCompositionOnCanvas(this.state.elCanvas, tileSize);
-      this.state.error = null;
-      this.state.warn = null;
-      this.state.loading = false;
-    } catch (e) {
-      if (e.message) {
-        this.state.error = e.message;
-      }
-      this.state.warn = null;
-      this.state.loading = false;
-    }
-  },
-
-  renderCompositionOnCanvas(containerEl, tileSize) {
-    log(`Rendering composition on canvas, tileSize=${tileSize}`);
-    try {
       CompositionLib.renderCompositionOnCanvas(
         this.state.composition,
         this.state.images,
         this.state.tiles,
-        containerEl,
-        tileSize
+        this.state.canvasEl,
+        this.state.naturalTileSize
       );
-      this.state.loading = false;
-      return true;
+      const containerWidth = this.state.containerEl.clientWidth;
+      const containerHeight = this.state.containerEl.clientHeight;
+      const ratio = this.state.size.width / this.state.size.height;
+      if (containerWidth / containerHeight > ratio) {
+        this.state.innerEl.style.height = containerHeight + 'px';
+        this.state.innerEl.style.width =
+          Math.round(containerHeight * ratio) + 'px';
+      } else {
+        this.state.innerEl.style.width = containerWidth + 'px';
+        this.state.innerEl.style.height =
+          Math.round(containerHeight / ratio) + 'px';
+      }
+      this.state.error = null;
     } catch (e) {
       error(e);
-      this.state.error = 'Crash while drawing the composition';
-      this.state.loading = false;
-      return false;
+      this.state.error = e.message;
     }
+    this.state.loading = false;
   },
 
   onImagesLoaded: function () {
     log('Images loaded');
-    this.generateComposition();
     this.state.naturalTileSize = getNaturalFirstImageWidth(this.state.images);
+    return this.generateComposition();
   },
 
   onImagesChanged: function () {
@@ -166,12 +149,12 @@ const store = {
     });
     this.state.naturalTileSize =
       getNaturalFirstImageWidth(this.state.images) || 0;
-    this.setTiles(newTiles);
+    return this.setTiles(newTiles);
   },
 
   onTilesChanged: function () {
     log('Tiles changed');
-    this.generateComposition();
+    return this.generateComposition();
   },
 
   updateState: function (newState) {
@@ -181,9 +164,7 @@ const store = {
       }
     });
     const promises = this.state.images.map(loadHtmlImage);
-    Promise.all(promises).then(() => {
-      this.onImagesLoaded();
-    });
+    return Promise.all(promises).then(() => this.onImagesLoaded());
   },
 
   setSize: function ({ width, height }) {
@@ -193,16 +174,16 @@ const store = {
     if (height) {
       this.state.size.height = Math.max(height, 1);
     }
-    this.onTilesChanged();
+    return this.onTilesChanged();
   },
 
   setUpdateStackFuncName: function (updateStackFuncName) {
     this.state.updateStackFuncName = updateStackFuncName;
-    this.onTilesChanged();
+    return this.onTilesChanged();
   },
 
   setAllowRotation: function (allowRotation) {
-    this.setTiles(
+    return this.setTiles(
       CompositionLib.generateTiles(this.state.images, {
         allowRotation
       })
@@ -211,7 +192,7 @@ const store = {
 
   setTiles: function (tiles) {
     this.state.tiles = tiles;
-    this.onTilesChanged();
+    return this.onTilesChanged();
   },
 
   setUser: function (user) {
@@ -222,9 +203,10 @@ const store = {
     this.state.loading = loading;
   },
 
-  setElements: function (elCanvas, elInner) {
-    this.state.elCanvas = elCanvas;
-    this.state.elInner = elInner;
+  setElements: function (containerEl, innerEl, canvasEl) {
+    this.state.containerEl = containerEl;
+    this.state.innerEl = innerEl;
+    this.state.canvasEl = canvasEl;
   },
 
   newImage: function () {
@@ -241,20 +223,23 @@ const store = {
   clearImages: function () {
     if (this.state.images.length) {
       this.state.images.splice(0);
-      this.onImagesChanged();
+      return this.onImagesChanged();
     }
+    return Promise.resolve();
   },
 
   updateImage: function (image, url) {
     log(`Picked file ${url}`);
     const oldIsImageComplete = isImageComplete(image);
     image.url = url;
-    loadHtmlImage(image).then(() => {
-      this.onImagesLoaded();
-      if (oldIsImageComplete !== isImageComplete(image)) {
-        this.onImagesChanged();
-      }
-    });
+    return loadHtmlImage(image)
+      .then(() => this.onImagesLoaded())
+      .then(() => {
+        if (oldIsImageComplete !== isImageComplete(image)) {
+          return this.onImagesChanged();
+        }
+        return Promise.resolve();
+      });
   },
 
   deleteImage: function ({ ref }) {
@@ -265,20 +250,26 @@ const store = {
       return { ...image, index: i };
     });
     if (isImageComplete(image)) {
-      this.onImagesChanged();
+      return this.onImagesChanged();
     }
+    return Promise.resolve();
   },
 
   setImageConnection: function (image, side, connection) {
     image.connections.splice(side, 1, connection);
     if (isImageComplete(image)) {
-      this.onImagesChanged();
+      return this.onImagesChanged();
     }
+    return Promise.resolve();
   },
 
   shuffleTiles: function () {
     shuffle(this.state.tiles);
-    this.onTilesChanged();
+    return this.onTilesChanged();
+  },
+
+  getCanvasDataUrl: function () {
+    return HTML.canvasToDataUrl(this.state.canvasEl);
   },
 
   findImage: function (images, ref) {

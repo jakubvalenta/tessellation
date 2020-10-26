@@ -56,17 +56,12 @@
 </style>
 
 <script>
-import * as HTML from '../html.js';
-
 export default {
   name: 'CompositionControls',
   props: {
     showOverlay: {
       type: Boolean,
       required: true
-    },
-    naturalTileSize: {
-      type: Number
     }
   },
   methods: {
@@ -74,12 +69,7 @@ export default {
       this.$root.store.shuffleTiles();
     },
     download: function (evt) {
-      const canvas = document.createElement('canvas');
-      if (
-        this.$root.store.renderCompositionOnCanvas(canvas, this.naturalTileSize)
-      ) {
-        evt.target.href = HTML.canvasToDataUrl(canvas);
-      }
+      evt.target.href = this.$root.store.getCanvasDataUrl();
     }
   }
 };

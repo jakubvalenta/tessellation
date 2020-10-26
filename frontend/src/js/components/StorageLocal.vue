@@ -109,7 +109,7 @@ export default {
       log(`Loading stored state ${dataIndex}`);
       const data = getStorageItem(dataIndex);
       const newState = this.$root.store.deserialize(data);
-      this.$root.store.updateState(newState);
+      return this.$root.store.updateState(newState);
     },
     deleteItem: function (dataIndex) {
       log(`Deleting stored state ${dataIndex}`);

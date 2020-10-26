@@ -1,31 +1,26 @@
 <template>
-  <div class="composition" ref="inner">
-    <canvas
-      v-show="!loading && !error"
-      class="composition__canvas"
-      ref="canvas"
-    ></canvas>
-    <div v-show="loading" class="composition__message">
-      <div class="box-alert box-info">calculating...</div>
-    </div>
-    <div v-show="error" class="composition__message">
-      <div class="box-alert box-error">
-        {{ error }}
-      </div>
-    </div>
-    <div v-show="warn" class="box-alert box-error">{{ warn }}</div>
-    <div v-if="showOverlay" class="composition__overlay">
-      <div
-        v-for="(rowTiles, i) in $root.store.state.composition"
-        :key="i"
-        class="composition__overlay__row"
-      >
-        <Tile
-          v-for="(tile, j) in rowTiles"
-          :image="tile && tile.image"
-          :rotation="tile && tile.rotation"
-          :key="j"
-        />
+  <div class="composition" ref="container">
+    <div class="composition__inner" :class="{ loading: loading }" ref="inner">
+      <canvas
+        v-show="!loading && !error"
+        class="composition__canvas"
+        ref="canvas"
+      ></canvas>
+      <div v-show="loading" class="box-alert box-info">calculating...</div>
+      <div v-show="error" class="box-alert box-error">{{ error }}</div>
+      <div v-if="showOverlay" class="composition__overlay">
+        <div
+          v-for="(rowTiles, i) in $root.store.state.composition"
+          :key="i"
+          class="composition__overlay__row"
+        >
+          <Tile
+            v-for="(tile, j) in rowTiles"
+            :image="tile && tile.image"
+            :rotation="tile && tile.rotation"
+            :key="j"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -35,14 +30,18 @@
 @import '../../css/_mixins';
 
 .composition {
-  position: relative;
   text-align: center;
 }
-.composition__message {
+.composition__inner {
+  position: relative;
+  display: inline-block;
+
+  &.loading {
+    width: 100%;
+    height: 100%;
+  }
+
   .box-alert {
-    position: absolute;
-    left: 0;
-    top: 0;
     width: 100%;
     height: 100%;
     padding: 1em;
@@ -51,6 +50,10 @@
     justify-content: center;
     box-sizing: border-box;
   }
+}
+.composition__canvas {
+  width: 100%;
+  height: 100%;
 }
 .composition__overlay {
   position: absolute;
@@ -62,9 +65,10 @@
 .composition__overlay__row {
   display: flex;
 }
-@media screen and (min-width: 800px) {
-  .composition {
-    min-height: 100%;
+@media screen and (max-width: 799px) {
+  .composition__inner {
+    width: auto !important;
+    height: auto !important;
   }
 }
 </style>
@@ -86,12 +90,14 @@ export default {
       type: Boolean,
       required: true
     },
-    error: String,
-    warn: String
+    error: String
   },
   mounted() {
-    this.$root.store.setElements(this.$refs.canvas, this.$refs.inner);
+    this.$root.store.setElements(
+      this.$refs.container,
+      this.$refs.inner,
+      this.$refs.canvas
+    );
   }
 };
 </script>
-p

@@ -135,7 +135,7 @@ export default {
       this.$root.store.newImage();
     },
     clearImages: function () {
-      this.$root.store.clearImages();
+      return this.$root.store.clearImages();
     },
     activateDigit: function (image, side, digitIndex) {
       this.activeImage = image;

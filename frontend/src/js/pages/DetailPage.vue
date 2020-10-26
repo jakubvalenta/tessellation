@@ -1,13 +1,14 @@
 <template>
-  <div v-show="notFound" class="box-alert box-error">
+  <div v-if="notFound" class="box-alert box-error">
     Composition was not found
   </div>
-  <Header v-show="!notFound" :title="title" :user="$root.store.state.user" />
-  <main v-show="!notFound" class="main detail">
+  <Header :title="title" :user="$root.store.state.user" />
+  <main class="main detail">
     <nav class="detail__nav">
       <router-link :to="{ name: 'list' }" class="button-link">back</router-link>
-      <button @click="shuffle">shuffle</button>
+      <button v-if="!notFound" @click="shuffle">shuffle</button>
       <router-link
+        v-if="!noFound"
         :to="{
           name: 'edit',
           params: {
@@ -18,13 +19,12 @@
         >edit</router-link
       >
     </nav>
-    <div class="detail__composition">
+    <div v-if="!notFound" class="detail__composition">
       <h2 class="sr-only">Composition</h2>
       <Composition
         :loading="state.loading"
         :show-overlay="false"
         :error="state.error"
-        :warn="state.warn"
       />
     </div>
   </main>
@@ -46,6 +46,10 @@
   .detail__composition {
     flex-grow: 1;
     min-height: 0;
+
+    .composition {
+      height: 100%;
+    }
   }
 }
 </style>
@@ -76,6 +80,9 @@ export default {
   },
   computed: {
     title: function () {
+      if (this.notFound) {
+        return '';
+      }
       if (this.state.loading) {
         return 'Loading...';
       }
@@ -99,14 +106,20 @@ export default {
       }
       this.notFound = false;
       this.$root.store.setLoading(true);
-      api.getPublishedComposition(compositionId).then(data => {
-        const newState = this.$root.store.deserialize(data);
-        this.$root.store.updateState(newState);
-        document.title = `Composition ${compositionId}`;
-      });
+      api
+        .getPublishedComposition(compositionId)
+        .then(data => {
+          const newState = this.$root.store.deserialize(data);
+          document.title = `Composition ${compositionId}`;
+          return this.$root.store.updateState(newState);
+        })
+        .catch(() => {
+          document.title = 'Not found';
+          this.notFound = true;
+        });
     },
     shuffle: function () {
-      this.$root.store.shuffleTiles();
+      return this.$root.store.shuffleTiles();
     }
   }
 };

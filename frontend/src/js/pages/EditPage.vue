@@ -1,7 +1,9 @@
 <template>
-  <div v-show="notFound" class="box-alert box-error">Composition not found</div>
+  <div v-if="notFound" class="box-alert box-error">
+    Composition was not found
+  </div>
   <Header :title="title" :user="state.user" />
-  <main v-show="!notFound" class="main edit">
+  <main class="main edit">
     <div class="edit__input">
       <div class="heading-row">
         <h2>Create composition</h2>
@@ -13,7 +15,6 @@
       <h2 class="sr-only">Composition</h2>
       <CompositionControls
         :edit="true"
-        :natural-tile-size="state.naturalTileSize"
         :show-overlay="showOverlay"
         @toggle-overlay="showOverlay = !showOverlay"
       />
@@ -21,7 +22,6 @@
         :loading="state.loading"
         :show-overlay="showOverlay"
         :error="state.error"
-        :warn="state.warn"
       />
     </div>
     <div class="edit__storage">
@@ -157,6 +157,9 @@ export default {
   },
   computed: {
     title: function () {
+      if (this.notFound) {
+        return '';
+      }
       if (this.state.loading) {
         return 'Loading...';
       }
@@ -194,10 +197,11 @@ export default {
         .getPublishedComposition(compositionId)
         .then(data => {
           const newState = this.$root.store.deserialize(data);
-          this.$root.store.updateState(newState);
           document.title = `Composition ${compositionId}`;
+          return this.$root.store.updateState(newState);
         })
         .catch(() => {
+          document.title = 'Not found';
           this.notFound = true;
         });
     }

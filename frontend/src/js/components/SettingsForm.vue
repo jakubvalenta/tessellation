@@ -115,16 +115,16 @@ export default {
   },
   methods: {
     changeHeight: function (evt) {
-      this.$root.store.setSize({ height: evt.currentTarget.value });
+      return this.$root.store.setSize({ height: evt.currentTarget.value });
     },
     changeWidth: function (evt) {
-      this.$root.store.setSize({ width: evt.currentTarget.value });
+      return this.$root.store.setSize({ width: evt.currentTarget.value });
     },
     changeUpdateStackFuncName: function (evt) {
-      this.$root.store.setUpdateStackFuncName(evt.currentTarget.value);
+      return this.$root.store.setUpdateStackFuncName(evt.currentTarget.value);
     },
     changeAllowRotation: function (evt) {
-      this.$root.store.setAllowRotation(evt.currentTarget.checked);
+      return this.$root.store.setAllowRotation(evt.currentTarget.checked);
     }
   }
 };

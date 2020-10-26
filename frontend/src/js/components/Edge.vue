@@ -277,7 +277,7 @@ export default {
       if (this.digits[this.digits.length - 1] !== null) {
         this.digits.push(null);
       }
-      this.$root.store.setImageConnection(
+      return this.$root.store.setImageConnection(
         this.image,
         this.side,
         +connectionStr

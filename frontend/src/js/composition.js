@@ -1,5 +1,5 @@
 import * as HTML from './html.js';
-import { error, log } from './log.js';
+import { log } from './log.js';
 import { shuffle } from './utils/array.js';
 import 'abort-controller/polyfill';
 
@@ -193,12 +193,11 @@ export function renderCompositionOnCanvas(
   tileSize,
   maxSize = 8192 // https://stackoverflow.com/a/11585939
 ) {
+  log(`Rendering composition on canvas, tileSize=${tileSize}`);
   const t0 = performance.now();
   const ctx = canvas.getContext('2d');
   if (!composition.length) {
-    error("Can't render composition on canvas, because it's not generated.");
-    HTML.fillCanvas(canvas, ctx, '#fff');
-    return false;
+    throw new Error("Can't render composition, because it's not generated.");
   }
   const width = composition[0].length;
   const height = composition.length;
