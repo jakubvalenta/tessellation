@@ -48,6 +48,7 @@ class CompositionSerializer(serializers.ModelSerializer):
     request_featured = serializers.BooleanField(
         write_only=True, required=False
     )
+    image = serializers.FileField(read_only=True, use_url=True)
 
     class Meta:
         model = Composition
@@ -62,6 +63,7 @@ class CompositionSerializer(serializers.ModelSerializer):
             'featured',
             'featured_requested_at',
             'request_featured',
+            'image',
         ]
         read_only_fields = [
             'slug',
@@ -79,13 +81,13 @@ class CompositionSerializer(serializers.ModelSerializer):
             )
             for image_data in validated_data['images']
         }
-        tiles = {
+        tiles = [
             Tile.objects.create(
                 image=images[tile_data['image']['pk']],
                 rotation=tile_data['rotation'],
             )
             for tile_data in validated_data['tiles']
-        }
+        ]
         composition = Composition.objects.create(
             owner=validated_data['owner'],
             width=validated_data['size']['width'],
@@ -93,6 +95,7 @@ class CompositionSerializer(serializers.ModelSerializer):
             public=validated_data['public'],
         )
         composition.tiles.set(tiles)
+        composition.render(list(images.values()), tiles)
         return composition
 
     @transaction.atomic

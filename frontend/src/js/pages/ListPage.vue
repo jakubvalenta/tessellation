@@ -15,13 +15,12 @@
           }"
           title="open composition"
         >
-          <div class="explore__list__item__images">
-            <img
-              v-for="image in composition.images"
-              :key="image.ref"
-              :src="image.url"
-            />
-          </div>
+          <div
+            class="explore__list__item__images"
+            :style="{
+              backgroundImage: `url('${composition.image}')`
+            }"
+          ></div>
           <h3 class="has-permalink">id: {{ composition.compositionId }}</h3>
         </router-link>
       </li>
@@ -65,7 +64,6 @@
 }
 .explore__list__item {
   display: flex;
-  width: 15em;
   margin: 0 1.25em;
   margin-bottom: 2em;
   flex-direction: column;
@@ -82,17 +80,11 @@
   }
 }
 .explore__list__item__images {
-  display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  align-compositions: flex-start;
+  width: 15em;
+  height: 15em;
   background: $color-white;
+  background-size: cover;
   box-shadow: 0 0 0.1em $color-background-darker;
-
-  img {
-    display: block;
-    width: 50%;
-  }
 }
 </style>
 
@@ -129,7 +121,8 @@ export default {
             compositionUrl: composition.url,
             name:
               composition.name || formatDate(new Date(composition.created_at)),
-            images: composition.images.slice(0, 4)
+            images: composition.images.slice(0, 4),
+            image: composition.image
           };
         });
       });

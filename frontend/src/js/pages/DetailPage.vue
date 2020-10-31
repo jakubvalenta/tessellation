@@ -8,7 +8,7 @@
       <router-link :to="{ name: 'list' }" class="button-link">back</router-link>
       <button v-if="!notFound" @click="shuffle">shuffle</button>
       <router-link
-        v-if="!noFound"
+        v-if="!notFound"
         :to="{
           name: 'edit',
           params: {
@@ -111,6 +111,17 @@ export default {
         .then(data => {
           const newState = this.$root.store.deserialize(data);
           document.title = `Composition ${compositionId}`;
+          let meta = document.querySelector('meta[property="og:image"]');
+          if (!meta) {
+            meta = document.createElement('meta');
+            meta.setAttribute('property', 'og:image');
+            meta.setAttribute('content', newState.image);
+            const head = document.querySelector('head');
+            head.appendChild(meta);
+            // TODO: og:url
+          } else {
+            meta.setAttribute('content', newState.image);
+          }
           return this.$root.store.updateState(newState);
         })
         .catch(() => {

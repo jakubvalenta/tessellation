@@ -78,7 +78,7 @@ test-backend: | start-postgresql  ## Run Python unit tests
 test-frontend:  ## Run frontend unit tests
 	cd frontend && yarn test:unit
 
-test: | text-backend test-frontend  ## Run all unit tests
+test: | test-backend test-frontend  ## Run all unit tests
 
 lint-backend:  ## Run Python linting
 	pipenv run flake8 $(_python_pkg)

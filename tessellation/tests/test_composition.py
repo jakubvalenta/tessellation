@@ -1,9 +1,17 @@
+import math
+from pathlib import Path
 from unittest import skip
 
+from django.core.files import File
 from django.test import TestCase
 
-from tessellation.composition import generate_composition, generate_tiles, reverse_digits
-from tessellation.models import Image
+from tessellation.models import (
+    Image, calc_render_tile_size, generate_composition, generate_tiles, read_im, render_composition,
+    reverse_digits,
+)
+
+test_data_dir = Path(__file__).parent / 'test_data'
+results_dir = Path(__file__).parents[2] / 'results'
 
 
 class TestComposition(TestCase):
@@ -28,6 +36,7 @@ class TestComposition(TestCase):
         width, height = len(expected[0]), len(expected)
         self.assertEqual(generate_composition(tiles, width, height), expected)
 
+    @skip('Skipped')
     def test_generate_composition_large(self):
         images = [
             Image(connections=[1, 1, 1, 1]),
@@ -63,3 +72,42 @@ class TestComposition(TestCase):
         width, height = 500, 500
         with self.assertRaises(Exception):
             generate_composition(tiles, width, height, max_steps=pow(2, 10))
+
+    def test_calc_render_tile_size(self):
+        composition = [[None] * 2] * 4
+        self.assertEqual(calc_render_tile_size(composition), 1920 / 2)
+        composition = [[None] * 8] * 7
+        self.assertEqual(
+            calc_render_tile_size(composition), math.ceil(1920 / 7) + 1
+        )
+
+    def test_read_im_png(self):
+        with open(test_data_dir / 'image.png', 'rb') as f:
+            new_f = read_im(f)
+            self.assertTrue(new_f)
+
+    def test_read_im_svg(self):
+        with open(test_data_dir / 'image.svg', 'rb') as f:
+            new_f = read_im(f)
+            self.assertTrue(new_f)
+
+    def test_read_im_invalid(self):
+        with open(test_data_dir / 'invalid.jpg', 'rb') as f:
+            with self.assertRaises(Exception):
+                read_im(f)
+
+    def test_render_composition(self):
+        with (test_data_dir / 'cargo.svg').open('rb') as f:
+            tile_file = File(f)
+            images = [Image(connections=[1, 2, 2, 1], image=tile_file)]
+            tiles = generate_tiles(images)
+            composition = [
+                [tiles[0], tiles[1], tiles[3]],
+                [tiles[2], tiles[3], tiles[1]],
+                [tiles[0], tiles[1], tiles[3]],
+            ]
+            tile_size = 20
+            with open(results_dir / 'composition.png', 'wb+') as f:
+                render_composition(composition, images, tiles, tile_size, f)
+                f.seek(0)
+                self.assertTrue(f.read())

@@ -84,7 +84,8 @@ const store = {
     user: {},
     containerEl: null,
     innerEl: null,
-    canvasEl: null
+    canvasEl: null,
+    image: null
   }),
 
   generateComposition: async function ({ redrawTimeout = 100 } = {}) {
@@ -158,7 +159,7 @@ const store = {
   },
 
   updateState: function (newState) {
-    ['size', 'images', 'tiles'].forEach(field => {
+    ['size', 'images', 'tiles', 'image'].forEach(field => {
       if (newState[field]) {
         this.state[field] = newState[field];
       }
@@ -287,6 +288,9 @@ const store = {
     const newState = {};
     if (validateSizeData(data.size)) {
       newState.size = data.size;
+    }
+    if (data.image) {
+      newState.image = data.image;
     }
     if (data.images) {
       newState.images = data.images

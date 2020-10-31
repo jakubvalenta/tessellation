@@ -30,4 +30,4 @@ class CompositionAdmin(admin.ModelAdmin):
         'featured',
         'featured_requested_at',
     )
-    exclude = ['featured_requested_at']
+    exclude = ['featured_requested_at', 'image']
