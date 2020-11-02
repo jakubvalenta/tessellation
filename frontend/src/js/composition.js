@@ -1,4 +1,4 @@
-import * as HTML from './html.js';
+import * as HTML from './utils/html.js';
 import { log } from './log.js';
 import { shuffle } from './utils/array.js';
 import 'abort-controller/polyfill';

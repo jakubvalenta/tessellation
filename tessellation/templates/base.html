@@ -11,9 +11,10 @@
     <meta property="og:title" content="{% if heading %}{{ heading }}{% else %}{{ title }}{% endif %}" />
     <meta property="og:description" content="{{ description }}" />
     <meta name="twitter:card" content="summary_large_image" />
+    {% block meta %}{% endblock %}
+    {% render_bundle 'chunk-common' 'css' %}
     {% render_bundle 'chunk-vendors' 'css' %}
-    {% render_bundle 'main' 'css' %}
-    {% block head %}{% endblock %}
+    {% block styles %}{% endblock %}
   </head>
   <body class="mode-final">
     {% block top %}{% endblock %}

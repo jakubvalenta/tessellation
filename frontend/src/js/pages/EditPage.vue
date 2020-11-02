@@ -1,7 +1,4 @@
 <template>
-  <div v-if="notFound" class="box-alert box-error">
-    Composition was not found
-  </div>
   <Header :title="title" :user="state.user" />
   <main class="main edit">
     <div class="edit__input">
@@ -121,7 +118,6 @@
 </style>
 
 <script>
-import * as api from '../api.js';
 import Composition from '../components/Composition.vue';
 import CompositionControls from '../components/CompositionControls.vue';
 import Header from '../components/Header.vue';
@@ -141,69 +137,31 @@ export default {
     SettingsForm,
     Storage
   },
-  props: {
-    compositionId: {
-      type: String
-    }
-  },
   data: function () {
     const data = {
       state: this.$root.store.state,
-      create: false,
-      notFound: false,
       showOverlay: false
     };
     return data;
   },
   computed: {
     title: function () {
-      if (this.notFound) {
-        return '';
-      }
       if (this.state.loading) {
         return 'Loading...';
       }
-      if (this.create) {
-        return 'New composition';
-      }
-      return `Composition ${this.compositionId}`;
+      return 'Create';
     }
   },
   created() {
-    this.$watch(
-      () => this.$route.params,
-      () => {
-        this.loadComposition(this.$route.params.compositionId);
-      },
-      { immediate: true }
+    const data = JSON.parse(
+      document.getElementById('composition-data').textContent
     );
+    const newState = this.$root.store.deserialize(data);
+    return this.$root.store.updateState(newState);
   },
   watch: {
     showOverlay: function () {
       document.body.classList.toggle('mode-final', !this.showOverlay);
-    }
-  },
-  methods: {
-    loadComposition(compositionId) {
-      if (compositionId) {
-        this.create = false;
-      } else {
-        this.create = true;
-        compositionId = window.TESSELLATION_COMPOSITION_SLUG;
-      }
-      this.notFound = false;
-      this.$root.store.setLoading(true);
-      api
-        .getPublishedComposition(compositionId)
-        .then(data => {
-          const newState = this.$root.store.deserialize(data);
-          document.title = `Composition ${compositionId}`;
-          return this.$root.store.updateState(newState);
-        })
-        .catch(() => {
-          document.title = 'Not found';
-          this.notFound = true;
-        });
     }
   }
 };

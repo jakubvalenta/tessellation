@@ -1,4 +1,4 @@
-import { http, httpImageData } from './http.js';
+import { http, httpImageData } from './utils/http.js';
 
 export function getCurrentUser() {
   return http('GET', '/accounts/api/users/me')

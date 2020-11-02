@@ -10,8 +10,17 @@ module.exports = {
 
   // https://cli.vuejs.org/config/#pages
   pages: {
-    main: {
-      entry: 'src/js/main.js'
+    index: {
+      entry: 'src/js/pages/index.js'
+    },
+    list: {
+      entry: 'src/js/pages/list.js'
+    },
+    detail: {
+      entry: 'src/js/pages/detail.js'
+    },
+    edit: {
+      entry: 'src/js/pages/edit.js'
     }
   },
 

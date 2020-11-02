@@ -7,12 +7,10 @@
     </p>
     <ul>
       <li>
-        <router-link :to="{ name: 'list' }" class="button">Explore</router-link>
+        <a href="/explore/" class="button">Explore</a>
       </li>
       <li>
-        <router-link :to="{ name: 'create' }" class="button"
-          >Create</router-link
-        >
+        <a href="/create/" class="button">Create</a>
       </li>
     </ul>
   </main>

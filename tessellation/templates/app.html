@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block meta %}
+<meta property="og:image" content="{% static 'img/tessellation.png' %}" />
+<meta property="og:url" content="{% url 'index' %}" />
+{% endblock %}
+
+{% block top %}
+<noscript>
+  <p class="box-alert box-error">This app requires JavaScript</p>
+</noscript>
+<p class="box-alert box-error error-unsupported">
+  This app only supports the latest versions of common web browsers. Please
+  upgrade your browser.
+</p>
+{% endblock %}
+
+{% block app %}
+<div id="app"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'bundles/supportedBrowsers.js' %}"></script>
+<script>
+  if (!window.SUPPORTED_BROWSERS.test(navigator.userAgent)) {
+    document.body.className += ' is-unsupported';
+  }
+</script>
+{% render_bundle 'chunk-common' 'js' %}
+{% render_bundle 'chunk-vendors' 'js' %}
+
+{% block app_scripts %}{% endblock %}
+
+{% endblock %}

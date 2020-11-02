@@ -8,21 +8,20 @@
         class="explore__list__item button-box"
         title="click to view the composition"
       >
-        <router-link
-          :to="{
-            name: 'detail',
-            params: { compositionId: composition.compositionId }
-          }"
+        <a
+          :href="`/explore/${composition.compositionId}`"
           title="open composition"
         >
           <div
             class="explore__list__item__images"
             :style="{
-              backgroundImage: `url('${composition.image}')`
+              backgroundImage: composition.image
+                ? `url('${composition.image}')`
+                : null
             }"
           ></div>
           <h3 class="has-permalink">id: {{ composition.compositionId }}</h3>
-        </router-link>
+        </a>
       </li>
     </ul>
   </main>
@@ -89,7 +88,6 @@
 </style>
 
 <script>
-import * as api from '../api.js';
 import { formatDate } from '../utils/date.js';
 import Header from '../components/Header.vue';
 
@@ -104,29 +102,18 @@ export default {
     };
   },
   created() {
-    this.$watch(
-      () => this.$route.params,
-      () => {
-        this.loadCompositions();
-      },
-      { immediate: true }
+    const data = JSON.parse(
+      document.getElementById('compositions-data').textContent
     );
-  },
-  methods: {
-    loadCompositions() {
-      api.getSampleCompositions().then(data => {
-        this.compositions = data.map(composition => {
-          return {
-            compositionId: composition.slug,
-            compositionUrl: composition.url,
-            name:
-              composition.name || formatDate(new Date(composition.created_at)),
-            images: composition.images.slice(0, 4),
-            image: composition.image
-          };
-        });
-      });
-    }
+    this.compositions = data.map(composition => {
+      return {
+        compositionId: composition.slug,
+        compositionUrl: composition.url,
+        name: composition.name || formatDate(new Date(composition.created_at)),
+        images: composition.images.slice(0, 4),
+        image: composition.image
+      };
+    });
   }
 };
 </script>

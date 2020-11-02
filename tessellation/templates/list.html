@@ -2,11 +2,10 @@
 {% load render_bundle from webpack_loader %}
 
 {% block styles %}
-{% render_bundle 'index' 'css' %}
+{% render_bundle 'list' 'css' %}
 {% endblock %}
 
 {% block app_scripts %}
-
-{% render_bundle 'index' 'js' %}
-
+{{ serialized_compositions|json_script:'compositions-data' }}
+{% render_bundle 'list' 'js' %}
 {% endblock %}

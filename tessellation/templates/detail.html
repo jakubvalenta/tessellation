@@ -1,0 +1,18 @@
+{% extends 'app.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block meta %}
+{% if composition.image %}
+<meta property="og:image" content="{{ composition.image.url }}" />
+{% endif %}
+<meta property="og:url" content="{% url 'detail' composition.slug %}" />
+{% endblock %}
+
+{% block styles %}
+{% render_bundle 'detail' 'css' %}
+{% endblock %}
+
+{% block app_scripts %}
+{{ serialized_composition|json_script:'composition-data' }}
+{% render_bundle 'detail' 'js' %}
+{% endblock %}

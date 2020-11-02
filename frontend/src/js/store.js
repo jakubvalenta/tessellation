@@ -1,6 +1,6 @@
 import * as CompositionLib from './composition.js';
-import * as HTML from './html.js';
-import uuidv4 from './uuid.js';
+import * as HTML from './utils/html.js';
+import uuidv4 from './vendor/uuid.js';
 import {
   SIDES,
   UPDATE_STACK_FUNC_DEFAULT_NAME,

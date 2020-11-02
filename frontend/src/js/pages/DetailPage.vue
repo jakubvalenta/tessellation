@@ -1,25 +1,14 @@
 <template>
-  <div v-if="notFound" class="box-alert box-error">
-    Composition was not found
-  </div>
   <Header :title="title" :user="$root.store.state.user" />
   <main class="main detail">
     <nav class="detail__nav">
-      <router-link :to="{ name: 'list' }" class="button-link">back</router-link>
-      <button v-if="!notFound" @click="shuffle">shuffle</button>
-      <router-link
-        v-if="!notFound"
-        :to="{
-          name: 'edit',
-          params: {
-            compositionId
-          }
-        }"
-        class="button button-secondary"
-        >edit</router-link
+      <a href="/explore/" class="button-link">back</a>
+      <button @click="shuffle">shuffle</button>
+      <a :href="`/create/${compositionId}/`" class="button button-secondary"
+        >edit</a
       >
     </nav>
-    <div v-if="!notFound" class="detail__composition">
+    <div class="detail__composition">
       <h2 class="sr-only">Composition</h2>
       <Composition
         :loading="state.loading"
@@ -55,7 +44,6 @@
 </style>
 
 <script>
-import * as api from '../api.js';
 import Composition from '../components/Composition.vue';
 import Header from '../components/Header.vue';
 
@@ -65,70 +53,31 @@ export default {
     Composition,
     Header
   },
-  props: {
-    compositionId: {
-      type: String,
-      required: true
-    }
-  },
   data: function () {
     const data = {
       state: this.$root.store.state,
-      notFound: false
+      compositionId: null
     };
     return data;
   },
   computed: {
     title: function () {
-      if (this.notFound) {
-        return '';
-      }
-      if (this.state.loading) {
+      if (!this.compositionId) {
         return 'Loading...';
       }
       return `Composition ${this.compositionId}`;
     }
   },
   created() {
-    this.$watch(
-      () => this.$route.params,
-      () => {
-        this.loadComposition(this.$route.params.compositionId);
-      },
-      { immediate: true }
+    const data = JSON.parse(
+      document.getElementById('composition-data').textContent
     );
+    console.log(data);
+    this.compositionId = data.slug;
+    const newState = this.$root.store.deserialize(data);
+    return this.$root.store.updateState(newState);
   },
   methods: {
-    loadComposition(compositionId) {
-      if (!compositionId) {
-        this.notFound = true;
-        return;
-      }
-      this.notFound = false;
-      this.$root.store.setLoading(true);
-      api
-        .getPublishedComposition(compositionId)
-        .then(data => {
-          const newState = this.$root.store.deserialize(data);
-          document.title = `Composition ${compositionId}`;
-          let meta = document.querySelector('meta[property="og:image"]');
-          if (!meta) {
-            meta = document.createElement('meta');
-            meta.setAttribute('property', 'og:image');
-            meta.setAttribute('content', newState.image);
-            const head = document.querySelector('head');
-            head.appendChild(meta);
-            // TODO: og:url
-          } else {
-            meta.setAttribute('content', newState.image);
-          }
-          return this.$root.store.updateState(newState);
-        })
-        .catch(() => {
-          document.title = 'Not found';
-          this.notFound = true;
-        });
-    },
     shuffle: function () {
       return this.$root.store.shuffleTiles();
     }

@@ -32,14 +32,9 @@
             {{ item.id }} {{ item.name }}
             <br />
 
-            <router-link
-              :to="{
-                name: 'detail',
-                params: { compositionId: item.compositionId }
-              }"
-              title="permanent link"
+            <a :href="`/explore/${item.compositionId}`" title="permanent link"
               ><span v-if="item.public">public link</span
-              ><span v-else>private link</span></router-link
+              ><span v-else>private link</span></a
             >
             /
             <span v-if="item.featured">featured composition</span>
@@ -60,14 +55,7 @@ ${item.featuredRequestedAt}.`"
             </a>
           </td>
           <td>
-            <router-link
-              :to="{
-                name: 'edit',
-                params: { compositionId: item.compositionId }
-              }"
-              class="button"
-              >load</router-link
-            >
+            <a :href="`/create/${item.compositionId}/`" class="button">load</a>
           </td>
           <td v-if="user.isAuthenticated">
             <button

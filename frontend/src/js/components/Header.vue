@@ -5,9 +5,17 @@
     </div>
     <div class="header-section header-nav">
       <span v-if="showNav">
-        <router-link :to="{ name: 'list' }" class="button">Explore</router-link>
-        <router-link :to="{ name: 'create' }" class="button"
-          >Create</router-link
+        <a
+          href="/explore/"
+          class="button"
+          :class="{ active: location.pathname.startsWith('/explore/') }"
+          >Explore</a
+        >
+        <a
+          href="/create/"
+          class="button"
+          :class="{ active: location.pathname.startsWith('/create/') }"
+          >Create</a
         >
       </span>
     </div>

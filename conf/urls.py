@@ -8,6 +8,8 @@ urlpatterns = [
     path('', include('tessellation.urls')),
 ]
 
+handler404 = 'tessellation.views.not_found_view'
+
 if settings.DEBUG:
     import debug_toolbar
 
