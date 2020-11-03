@@ -22,6 +22,14 @@ from tessellation.managers import CompositionManager
 logger = logging.getLogger(__name__)
 
 
+class CompositionError(Exception):
+    pass
+
+
+class TessellationError(Exception):
+    pass
+
+
 SIDES = [0, 1, 2, 3]
 SIDE_NAMES = ['left', 'top', 'right', 'bottom']
 CONNECTIONS = [1, 2, 3, 4, 5]
@@ -176,13 +184,13 @@ def generate_composition(
             tried[row][col].clear()
             if col == 0:
                 if row == 0:
-                    raise Exception("Input tiles don't connect.")
+                    raise CompositionError("Input tiles don't connect.")
                 row -= 1
                 col = width - 1
             else:
                 col -= 1
         if i >= max_steps:
-            raise Exception(
+            raise CompositionError(
                 f'Failed to calculate composition in {max_steps} steps.'
             )
         i += 1
@@ -224,7 +232,7 @@ def render_composition(
     logger.info('Rendering composition')
     t0 = time.time()
     if not composition:
-        raise Exception(
+        raise CompositionError(
             'Can\'t render composition, because it\'s not generated.'
         )
     width = len(composition[0])
@@ -357,7 +365,7 @@ class Composition(models.Model):
             length=self.MIN_SLUG_LENGTH,
         )
         if self.slug is None:
-            raise Exception('Slug collision')
+            raise TessellationException('Slug collision')
         iterations = len(self.slug) - self.MIN_SLUG_LENGTH + 1
         logger.info(f'Generated new slug in {iterations} interations')
 
