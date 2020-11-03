@@ -15,7 +15,7 @@ from django.core.files import File
 from django.db import models, transaction
 from django.utils.functional import cached_property
 from django.utils.http import int_to_base36
-from PIL import Image as PILImage, UnidentifiedImageError
+from PIL import Image as PILImage
 
 from tessellation.managers import CompositionManager
 
@@ -206,7 +206,7 @@ def calc_render_tile_size(
 def read_im(f: IO) -> PILImage:
     try:
         return PILImage.open(f)
-    except UnidentifiedImageError:
+    except OSError:  # Use OSError instead of UnidentifiedImageError for compatibility w/ Pillow 6.x
         f.seek(0)
         bitmap_f = io.BytesIO()
         cairosvg.svg2png(file_obj=f, write_to=bitmap_f)
