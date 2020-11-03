@@ -139,7 +139,9 @@ def generate_composition(
     max_steps: int = pow(2, 18),
     update_stack_func_name: str = UPDATE_STACK_FUNC_DEFAULT_NAME,
 ) -> TComposition:
-    logger.info(f'Generating composition {update_stack_func_name=}')
+    logger.info(
+        f'Generating composition update_stack_func_name={update_stack_func_name}'
+    )
     t0 = time.time()
     composition: TComposition = [
         [None for _ in range(width)] for _ in range(height)
