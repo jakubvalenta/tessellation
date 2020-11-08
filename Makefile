@@ -83,7 +83,7 @@ test: | test-backend test-frontend  ## Run all unit tests
 lint-backend:  ## Run Python linting
 	pipenv run flake8 $(_python_pkg)
 	pipenv run mypy $(_python_pkg) --ignore-missing-imports
-	pipenv run isort -c -rc $(_python_pkg)
+	pipenv run isort -c $(_python_pkg)
 
 lint-frontend: ## Run JavaScript
 	cd frontend && yarn lint
