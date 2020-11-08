@@ -22,7 +22,6 @@ urlpatterns = [
         views.CompositionCreateView.as_view(),
         name='create',
     ),
-    path('api/samples/', views.SampleListAPIView.as_view()),
     path('api/compositions/', views.CompositionListAPIView.as_view()),
     path(
         'api/compositions/<slug:slug>',

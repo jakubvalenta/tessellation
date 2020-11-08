@@ -1,7 +1,5 @@
-import io
 import logging
 
-from django.core.files import File
 from django.db import migrations
 
 from tessellation.models import Composition, CompositionError

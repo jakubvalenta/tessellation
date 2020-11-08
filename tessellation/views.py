@@ -3,11 +3,12 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
+from rest_framework.permissions import IsAuthenticated
 
 from tessellation import __description__, __title__
 from tessellation.models import Composition
-from tessellation.permissions import IsOwnerOrReadOnly
+from tessellation.permissions import IsOwner
 from tessellation.serializers import CompositionSerializer
 
 
@@ -94,18 +95,10 @@ class CompositionAPIMixin:
         )
 
 
-class SampleListAPIView(CompositionAPIMixin, generics.ListAPIView):
-    queryset = Composition.objects.filter(
-        public=True, featured=True
-    ).prefetch_related('tiles__image')
-
-
 class CompositionListAPIView(CompositionAPIMixin, generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Composition.objects.none()
         return Composition.objects.filter(
             owner=self.request.user
         ).prefetch_related('tiles__image')
@@ -115,15 +108,11 @@ class CompositionListAPIView(CompositionAPIMixin, generics.ListCreateAPIView):
 
 
 class CompositionDetailAPIView(
-    CompositionAPIMixin, generics.RetrieveUpdateDestroyAPIView
+    CompositionAPIMixin,
+    generics.RetrieveUpdateDestroyAPIView,
 ):
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwner]
     lookup_field = 'slug'
 
     def get_queryset(self):
-        if self.request.method == 'GET':
-            qs = Q(public=True)
-            if self.request.user.is_authenticated:
-                qs = qs | Q(owner=self.request.user)
-            return Composition.objects.filter(qs)
-        return Composition.objects.all()
+        return Composition.objects.filter(owner=self.request.user)

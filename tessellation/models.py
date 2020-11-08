@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import IO, Callable, Dict, Iterator, List, Optional, Sequence
 
 import cairosvg
+from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.core.files import File
 from django.db import models, transaction
@@ -331,9 +332,7 @@ class Composition(models.Model):
     public = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
     featured_requested_at = models.DateTimeField(null=True)
-    image = models.FileField(
-        upload_to=composition_upload_to, null=True, unique=True
-    )
+    image = models.FileField(upload_to=composition_upload_to, null=True)
 
     MIN_SLUG_LENGTH = 8
     MAX_SLUG_LENGTH = 50
@@ -370,6 +369,14 @@ class Composition(models.Model):
         logger.info(f'Generated new slug in {iterations} interations')
 
     def save(self, *args, **kwargs):
+        if (
+            not self.owner.is_superuser
+            and Composition.objects.filter(owner=self.owner).count()
+            >= settings.MAX_COMPOSITIONS_PER_USER
+        ):
+            raise TessellationError(
+                'Reached the maximum number of published compositions'
+            )
         if not self.slug:
             self.generate_slug()
         super().save(*args, **kwargs)

@@ -94,7 +94,7 @@ export default {
   methods: {
     loadItems: function () {
       this.loading = true;
-      api.getPublishedCompositions().then(data => {
+      api.getCompositions().then(data => {
         this.items = data.map((composition, index) => {
           return {
             revIndex: data.length - index,
@@ -116,7 +116,7 @@ export default {
       log('Publishing new composition');
       const data = this.$root.store.serialize();
       api
-        .publishComposition(data)
+        .createComposition(data)
         .then(() => {
           this.successMsg = 'Composition was successfully published';
           this.errorMsg = null;

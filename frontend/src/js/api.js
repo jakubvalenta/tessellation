@@ -18,35 +18,11 @@ export function getCurrentUser() {
     });
 }
 
-export function getPublishedComposition(compositionId) {
-  return http('GET', `/api/compositions/${compositionId}`);
-}
-
-export function getPublishedCompositions() {
+export function getCompositions() {
   return http('GET', '/api/compositions/');
 }
 
-export function getSampleCompositions() {
-  return http('GET', '/api/samples/');
-}
-
-export function deletePublishedComposition(compositionId) {
-  return http('DELETE', `/api/compositions/${compositionId}`);
-}
-
-export function setFeatured(compositionId, featured) {
-  return http('PATCH', `/api/compositions/${compositionId}`, {
-    featured
-  });
-}
-
-export function setName(compositionId, name) {
-  return http('PATCH', `/api/compositions/${compositionId}`, {
-    name
-  });
-}
-
-export function publishComposition(data) {
+export function createComposition(data) {
   const promises = data.images.map(image => {
     return httpImageData(image.url).then(data => {
       image.data = data;
@@ -56,4 +32,20 @@ export function publishComposition(data) {
   return Promise.all(promises).then(() =>
     http('POST', '/api/compositions/', data)
   );
+}
+
+export function patchCompositionFeatured(compositionId, featured) {
+  return http('PATCH', `/api/compositions/${compositionId}`, {
+    featured
+  });
+}
+
+export function patchCompositionName(compositionId, name) {
+  return http('PATCH', `/api/compositions/${compositionId}`, {
+    name
+  });
+}
+
+export function deleteComposition(compositionId) {
+  return http('DELETE', `/api/compositions/${compositionId}`);
 }

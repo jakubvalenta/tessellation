@@ -103,7 +103,7 @@ export default {
     deleteComposition: function () {
       log(`Deleting published composition ${this.item.compositionId}`);
       api
-        .deletePublishedComposition(this.item.compositionId)
+        .deleteComposition(this.item.compositionId)
         .then(() => {
           this.$emit('success', 'Composition deleted');
           this.$emit('update');
@@ -118,7 +118,7 @@ export default {
         `Renaming composition ${this.item.compositionId} to ${this.item.name}`
       );
       api
-        .setName(this.item.compositionId, this.name)
+        .patchCompositionName(this.item.compositionId, this.name)
         .then(() => {
           this.rename = false;
           this.$emit('success', 'Composition renamed');
@@ -135,7 +135,7 @@ export default {
         `Setting the featured flag on the composition ${this.item.compositionId}`
       );
       api
-        .setFeatured(this.item.compositionId, !this.item.featured)
+        .patchCompositionFeatured(this.item.compositionId, !this.item.featured)
         .then(() => {
           this.$emit('success', 'Composition updated');
           this.$emit('update');
