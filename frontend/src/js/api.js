@@ -34,9 +34,9 @@ export function deletePublishedComposition(compositionId) {
   return http('DELETE', `/api/compositions/${compositionId}`);
 }
 
-export function requestFeaturedComposition(compositionId) {
+export function setFeatured(compositionId, featured) {
   return http('PATCH', `/api/compositions/${compositionId}`, {
-    request_featured: true
+    featured
   });
 }
 

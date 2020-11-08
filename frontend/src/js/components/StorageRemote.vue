@@ -37,21 +37,21 @@
               ><span v-else>private link</span></a
             >
             /
-            <span v-if="item.featured">featured composition</span>
-            <span
-              v-else-if="item.featuredRequestedAt"
-              :title="`You have requested inclusion of this composition in featured compositions at
-${item.featuredRequestedAt}.`"
+            <a
+              href="javascript:void(0)"
+              v-if="item.featured"
+              @click="setFeatured(item.compositionId, false)"
+              title="Don't show this composition on the Explore page anymore"
             >
-              featured requested
-            </span>
+              hide from Explore
+            </a>
             <a
               href="javascript:void(0)"
               v-else
-              @click="requestFeatured(item.compositionId)"
-              title="Request inclusion of this composition in featured compositions"
+              @click="setFeatured(item.compositionId, true)"
+              title="Put this composition on the Explore page"
             >
-              request featured
+              show in Explore
             </a>
           </td>
           <td>
@@ -122,10 +122,7 @@ export default {
             name:
               composition.name || formatDate(new Date(composition.created_at)),
             public: composition.public,
-            featured: composition.featured,
-            featuredRequestedAt:
-              composition.featured_requested_at &&
-              formatDate(new Date(composition.featured_requested_at))
+            featured: composition.featured
           };
         });
       });
@@ -149,22 +146,18 @@ export default {
           error(err);
         });
     },
-    requestFeatured: function (compositionId) {
-      log(
-        `Requesting inclusion of composition in featured compositions ${compositionId}`
-      );
+    setFeatured: function (compositionId, featured) {
+      log(`Setting the featured flag on the composition ${compositionId}`);
       api
-        .requestFeaturedComposition(compositionId)
+        .setFeatured(compositionId, featured)
         .then(() => {
-          this.successMsg =
-            'Successfully submitted a request for inclusion of the composition in featured compositions';
+          this.successMsg = 'Successfully updated the composition';
           this.errorMsg = null;
           this.listItems();
         })
         .catch(err => {
           this.successMsg = null;
-          this.errorMsg =
-            'Error while submitting a request for inclusion of the composition in featured compositions';
+          this.errorMsg = 'Error while updating the composition';
           error(err);
         });
     },
