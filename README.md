@@ -1,11 +1,10 @@
 # Tessellation
 
-Tessellation is a tool to arrange tiles (several small images) into one large
-composition.
+A web app to arrange tiles according to specified rules.
 
-Tessellation takes the input images and then repeats, rotates and arranges them
-in such a way that their matching edges appear side by side. The resulting
-composition is diverse yet smooth. This is similar to the [Wang tiles
+Tessellation allows you to upload square images and define how they connect. The
+app will then try to arrange the tiles into a larger composition adhering to the
+connection rules. This is similar to the [Wang tiles
 problem](https://en.wikipedia.org/wiki/Wang_tile).
 
 ![Tessellation](./tessellation/static/img/tessellation.png)
@@ -31,7 +30,7 @@ $ make setup
 
 Install these dependencies manually:
 
-- Python 3.7
+- Python >= 3.7
 - yarn
 - pipenv
 

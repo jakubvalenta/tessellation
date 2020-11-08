@@ -21,12 +21,9 @@
     </div>
     <div class="header-section header-user">
       <span v-if="user.isAuthenticated">
-        Logged in as
         <a :href="user.urlProfile">{{ user.username }}</a> /
-        <a :href="`${user.urlLogout}?next=${location.pathname}`">logout</a>
-        <span v-if="user.isStaff">
-          / <a :href="user.urlAdmin">go to Django Admin</a>
-        </span>
+        <a :href="`${user.urlLogout}?next=${location.pathname}`">x</a>
+        <span v-if="user.isStaff"> / <a :href="user.urlAdmin">dj</a> </span>
       </span>
       <a :href="`/accounts/login?next=${location.pathname}`" v-else>log in</a>
     </div>

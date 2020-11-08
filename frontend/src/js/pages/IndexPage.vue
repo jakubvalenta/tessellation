@@ -1,9 +1,14 @@
 <template>
   <Header :user="$root.store.state.user" :showNav="false" />
   <main class="main index">
+    <p>A web app to arrange tiles according to specified rules.</p>
     <p>
-      Tessellation is a tool to arrange tiles (several small images) into one
-      large composition.
+      Tessellation allows you to upload square images and define how they
+      connect. The app will then try to arrange the tiles into a larger
+      composition adhering to the connection rules. This is similar to the
+      <a href="https://en.wikipedia.org/wiki/Wang_tile" target="_blank"
+        >Wang tiles problem</a
+      >.
     </p>
     <ul>
       <li>
@@ -18,9 +23,11 @@
 
 <style lang="scss">
 .index {
-  text-align: center;
+  max-width: 34em;
+  margin: 0 auto;
 
   ul {
+    text-align: center;
     padding-left: 0;
     margin-top: 2em;
   }

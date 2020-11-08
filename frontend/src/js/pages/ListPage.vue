@@ -34,8 +34,7 @@
 .explore-list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  column-gap: 2em;
-  row-gap: 2em;
+  grid-gap: 2em;
   margin: 1em 0;
   padding: 0;
 }
