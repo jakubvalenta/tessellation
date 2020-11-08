@@ -94,6 +94,7 @@ const store = {
       return;
     }
 
+    this.state.error = null;
     this.state.loading = true;
     // Wait for the DOM to be redrawn with the loading message. Vue.nextTick()
     // doesn't seem to work.
@@ -198,10 +199,6 @@ const store = {
 
   setUser: function (user) {
     this.state.user = user;
-  },
-
-  setLoading: function (loading) {
-    this.state.loading = loading;
   },
 
   setElements: function (containerEl, innerEl, canvasEl) {

@@ -6,7 +6,7 @@
         class="composition__canvas"
         ref="canvas"
       ></canvas>
-      <div v-show="loading" class="box-alert box-info">calculating...</div>
+      <div v-show="loading" class="box-alert box-info">loading...</div>
       <div v-show="error" class="box-alert box-error">{{ error }}</div>
       <div v-if="showOverlay" class="composition__overlay">
         <div
