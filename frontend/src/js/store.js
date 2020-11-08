@@ -128,7 +128,7 @@ const store = {
       } else {
         this.state.innerEl.style.width = containerWidth + 'px';
         this.state.innerEl.style.height =
-          Math.round(containerHeight / ratio) + 'px';
+          Math.round(containerWidth / ratio) + 'px';
       }
       this.state.error = null;
     } catch (e) {
