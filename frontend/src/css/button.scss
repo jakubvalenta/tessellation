@@ -34,6 +34,11 @@ body .introjs-button {
     }
   }
 }
+.button-primary {
+  color: $color-highlight;
+  background: $color-background-light;
+  box-shadow: 0 0 0.3em $color-background-dark;
+}
 .button-secondary {
   background: transparent;
   box-shadow: 0;

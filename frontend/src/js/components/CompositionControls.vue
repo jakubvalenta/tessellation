@@ -3,6 +3,7 @@
     <p class="composition-controls__shuffle">
       <button
         @click="shuffle"
+        class="button-primary"
         data-intro="The composition is automatically generated when you change the input images. You can also click this button to generate another composition that matches the specified connections between the tiles."
       >
         shuffle
@@ -12,13 +13,13 @@
       <a
         href="javascript:void(0)"
         @click="download"
-        class="button button-secondary"
+        class="button"
         download="composition.png"
         title="Render the composition as a PNG. The size of each tile will be equal to the width of the first input image but not larger than 500px."
       >
         download
       </a>
-      <button @click="$emit('toggle-overlay')" class="button-secondary">
+      <button @click="$emit('toggle-overlay')">
         <span v-show="!showOverlay">show edges</span>
         <span v-show="showOverlay">hide edges</span>
       </button>

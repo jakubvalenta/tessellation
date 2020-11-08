@@ -3,10 +3,8 @@
   <main class="main detail">
     <nav class="detail__nav">
       <a href="/explore/" class="button-link">back</a>
-      <button @click="shuffle">shuffle</button>
-      <a :href="`/create/${compositionId}/`" class="button button-secondary"
-        >edit</a
-      >
+      <button @click="shuffle" class="button-primary">shuffle</button>
+      <a :href="`/create/${compositionId}/`" class="button">edit</a>
     </nav>
     <div class="detail__composition">
       <h2 class="sr-only">Composition</h2>
