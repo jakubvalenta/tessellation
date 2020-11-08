@@ -31,6 +31,9 @@
 @import '../../css/_mixins.scss';
 @import '../../css/_variables.scss';
 
+#app {
+  flex-shrink: 0;
+}
 .explore-list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
