@@ -45,9 +45,6 @@ class CompositionSerializer(serializers.ModelSerializer):
     size = SizeSerializer()
     images = ImageSerializer(many=True)
     tiles = TileSerializer(many=True)
-    request_featured = serializers.BooleanField(
-        write_only=True, required=False
-    )
     image = serializers.FileField(read_only=True, use_url=True)
 
     class Meta:
@@ -61,15 +58,12 @@ class CompositionSerializer(serializers.ModelSerializer):
             'tiles',
             'public',
             'featured',
-            'featured_requested_at',
-            'request_featured',
             'image',
         ]
         read_only_fields = [
             'slug',
+            'created_at',
             'name',
-            'featured',
-            'featured_requested_at',
         ]
 
     @transaction.atomic
@@ -102,7 +96,5 @@ class CompositionSerializer(serializers.ModelSerializer):
     def update(
         self, instance: Composition, validated_data: dict
     ) -> Composition:
-        if validated_data['request_featured'] is True:
-            instance.featured_requested_at = datetime.datetime.now()
-        instance.save()
+        super().update(instance, validated_data)
         return instance
