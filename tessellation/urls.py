@@ -24,4 +24,8 @@ urlpatterns = [
     ),
     path('api/samples/', views.SampleListAPIView.as_view()),
     path('api/compositions/', views.CompositionListAPIView.as_view()),
+    path(
+        'api/compositions/<slug:slug>',
+        views.CompositionDetailAPIView.as_view(),
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
