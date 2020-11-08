@@ -149,7 +149,7 @@ export default {
       if (this.state.loading) {
         return 'Loading...';
       }
-      return 'Create';
+      return 'Tessellation';
     }
   },
   created() {

@@ -76,7 +76,6 @@
 </style>
 
 <script>
-import { formatDate } from '../utils/date.js';
 import Header from '../components/Header.vue';
 
 export default {
@@ -97,7 +96,6 @@ export default {
       return {
         compositionId: composition.slug,
         compositionUrl: composition.url,
-        name: composition.name || formatDate(new Date(composition.created_at)),
         images: composition.images.slice(0, 4),
         image: composition.image
       };

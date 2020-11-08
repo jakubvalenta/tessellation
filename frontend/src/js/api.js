@@ -40,6 +40,12 @@ export function setFeatured(compositionId, featured) {
   });
 }
 
+export function setName(compositionId, name) {
+  return http('PATCH', `/api/compositions/${compositionId}`, {
+    name
+  });
+}
+
 export function publishComposition(data) {
   const promises = data.images.map(image => {
     return httpImageData(image.url).then(data => {

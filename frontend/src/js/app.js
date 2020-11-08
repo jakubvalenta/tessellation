@@ -2,11 +2,11 @@ import store from './store.js';
 import App from './App.vue';
 import { createApp, h } from 'vue';
 
-export function createPage(component) {
+export function createPage(mainComponent) {
   const app = createApp({
     components: {
       App,
-      component
+      mainComponent
     },
     data() {
       return {
@@ -14,7 +14,7 @@ export function createPage(component) {
       };
     },
     render() {
-      return h(App, {}, h(component));
+      return h(App, {}, h(mainComponent));
     }
   });
 

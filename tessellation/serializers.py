@@ -63,7 +63,6 @@ class CompositionSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'slug',
             'created_at',
-            'name',
         ]
 
     @transaction.atomic
