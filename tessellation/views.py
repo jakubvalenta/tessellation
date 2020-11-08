@@ -2,7 +2,8 @@ from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from tessellation import __description__, __title__
 from tessellation.models import Composition
@@ -94,13 +95,13 @@ class CompositionAPIMixin:
 
 
 class SampleListAPIView(CompositionAPIMixin, generics.ListAPIView):
-    queryset = Composition.objects.filter(featured=True).prefetch_related(
-        'tiles__image'
-    )
+    queryset = Composition.objects.filter(
+        public=True, featured=True
+    ).prefetch_related('tiles__image')
 
 
 class CompositionListAPIView(CompositionAPIMixin, generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
