@@ -16,9 +16,9 @@
       }"
       title="change connection"
       :data-intro="
-        image.index === 0 &&
-        side === 2 &&
-        'Click these buttons to specify how the tiles connect. In the resulting composition, a pink edge of one tile must always be placed next to a pink edge of a another tile, same for the green edges etc.'
+        image.index === 0 && side === 2 && digitIndex === 0
+          ? 'Click these buttons to specify how the tiles connect. In the resulting composition, an edge number 1 must always be placed next to an edge number 1 of another tile etc.'
+          : null
       "
     >
       {{ digit || '+' }}

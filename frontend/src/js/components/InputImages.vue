@@ -5,8 +5,9 @@
         <div
           class="image__inner"
           :data-intro="
-            image.index === 0 &&
-            'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
+            image.index === 0
+              ? 'This image is a tile, a small building block of the large composition. You can upload your own image or keep this default one.'
+              : null
           "
         >
           <Tile :image="image" :background="true">
