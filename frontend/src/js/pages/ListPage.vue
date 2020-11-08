@@ -1,26 +1,26 @@
 <template>
-  <Header title="Explore" :user="$root.store.state.user" />
-  <main class="main explore">
-    <ul v-show="compositions.length" class="explore__list">
+  <Header :user="$root.store.state.user" />
+  <main class="main">
+    <ul v-show="compositions.length" class="explore-list">
       <li
         v-for="composition in compositions"
         :key="composition.compositionId"
-        class="explore__list__item button-box"
+        class="explore-list__item button-box"
         title="click to view the composition"
       >
         <a
           :href="`/explore/${composition.compositionId}`"
-          title="open composition"
+          :title="`View composition ${composition.compositionId}`"
         >
           <div
-            class="explore__list__item__images"
+            class="explore-list__item__image"
             :style="{
               backgroundImage: composition.image
                 ? `url('${composition.image}')`
                 : null
             }"
           ></div>
-          <h3 class="has-permalink">id: {{ composition.compositionId }}</h3>
+          <h3 class="sr-only">Composition {{ composition.compositionId }}</h3>
         </a>
       </li>
     </ul>
@@ -28,62 +28,50 @@
 </template>
 
 <style lang="scss">
+@import '../../css/_mixins.scss';
 @import '../../css/_variables.scss';
 
-.explore {
-  position: relative;
-  padding: 2em 0.75em;
-  padding-bottom: 0;
-  margin-bottom: 1em;
-}
-.explore__heading {
-  position: absolute;
-  left: 2em;
-  top: 1em;
-}
-.explore__list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 0;
+.explore-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 2em;
+  row-gap: 2em;
+  margin: 1em 0;
   padding: 0;
 }
-@media screen and (max-width: 1023px) {
-  .explore {
-    padding-top: 1em;
-  }
-  .explore__heading {
-    position: static;
-    margin: 0;
-    padding: 1em 1.25em;
-  }
-  .explore__list {
-    justify-content: flex-start;
-  }
+.explore-list__item {
+  display: block;
 }
-.explore__list__item {
-  display: flex;
-  margin: 0 1.25em;
-  margin-bottom: 2em;
-  flex-direction: column;
-
-  h3 {
-    margin-top: 0.25em;
-    text-align: center;
-  }
-  .button {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: $color-background-light;
-  }
-}
-.explore__list__item__images {
-  width: 15em;
-  height: 15em;
+.explore-list__item__image {
   background: $color-white;
   background-size: cover;
   box-shadow: 0 0 0.1em $color-background-darker;
+
+  @include square;
+}
+@media screen and (max-width: 1439px) {
+  .explore-list {
+    margin: 0;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media screen and (max-width: 799px) {
+  .explore-list {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1em;
+    row-gap: 1em;
+    margin: 0;
+  }
+}
+@media screen and (max-width: 479px) {
+  .explore-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 359px) {
+  .explore-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 </style>
 
