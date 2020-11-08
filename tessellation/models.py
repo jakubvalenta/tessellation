@@ -319,7 +319,7 @@ def composition_upload_to(instance: 'Composition', filename: str) -> str:
 
 class Composition(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(
         'auth.User', related_name='compositions', on_delete=models.CASCADE
     )
@@ -365,7 +365,7 @@ class Composition(models.Model):
             length=self.MIN_SLUG_LENGTH,
         )
         if self.slug is None:
-            raise TessellationException('Slug collision')
+            raise TessellationError('Slug collision')
         iterations = len(self.slug) - self.MIN_SLUG_LENGTH + 1
         logger.info(f'Generated new slug in {iterations} interations')
 
