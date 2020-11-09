@@ -3,7 +3,6 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic
 from rest_framework import generics
-from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
 
 from tessellation import __description__, __title__
