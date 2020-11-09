@@ -84,6 +84,7 @@ class CompositionSerializer(serializers.ModelSerializer):
             owner=validated_data['owner'],
             width=validated_data['size']['width'],
             height=validated_data['size']['height'],
+            name=validated_data['name'],
             public=validated_data['public'],
         )
         composition.tiles.set(tiles)
