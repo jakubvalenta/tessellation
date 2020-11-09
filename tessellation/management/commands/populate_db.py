@@ -14,6 +14,10 @@ logger = logging.getLogger(__name__)
 fixtures_path = Path(__file__).parents[2] / 'fixtures'
 
 
+class FixtureError(Exception):
+    pass
+
+
 def create_base64_data_url(path: Path):
     data = b64encode(path.read_bytes()).decode()
     suffix = path.suffix[1:]
@@ -28,9 +32,7 @@ def load_fixture(fixture_path: Path, user: User):
         image_path = fixture_path.parent / image_data['url']
         image_data['data'] = create_base64_data_url(image_path)
     serializer = CompositionSerializer(data=data)
-    if not serializer.is_valid():
-        logger.error(serializer.errors)
-        return
+    serializer.is_valid(raise_exception=True)
     composition = serializer.save(owner=user)
     composition.save()
 
@@ -42,6 +44,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         superuser = User.objects.filter(is_superuser=True).first()
         if not superuser:
-            raise Exception('You must create the superuser first')
+            raise FixtureError('You must create the superuser first')
         for fixture_path in fixtures_path.glob('**/data.json'):
             load_fixture(fixture_path, superuser)

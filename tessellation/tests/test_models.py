@@ -1,3 +1,6 @@
+import uuid
+from unittest.mock import patch
+
 from ddt import data, ddt, unpack
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
@@ -45,3 +48,11 @@ class TestModels(TestCase):
         self.assertEqual(
             Composition.objects.filter(owner=superuser).count(), 4
         )
+
+    @override_settings(MIN_SLUG_LENGTH=25)
+    def test_slug_collision(self, *args):
+        user = User.objects.create_user('sluguser')
+        with patch('uuid.uuid4', return_value=uuid.uuid4()):
+            Composition.objects.create(owner=user, width=1, height=1)
+            with self.assertRaises(TessellationError):
+                Composition.objects.create(owner=user, width=2, height=2)

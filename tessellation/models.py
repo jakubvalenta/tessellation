@@ -1,5 +1,4 @@
 import io
-import itertools
 import logging
 import math
 import random
@@ -88,19 +87,6 @@ def reverse_digits(n: int) -> int:
     return rev
 
 
-def generate_tiles(
-    images: Sequence['Image'], allow_rotation: bool = True
-) -> List['Tile']:
-    if not allow_rotation:
-        return [Tile(image=image, rotation=0) for image in images]
-    return list(
-        itertools.chain.from_iterable(
-            (Tile(image=image, rotation=rotation) for rotation in SIDES)
-            for image in images
-        )
-    )
-
-
 def find_requirements(
     composition: TComposition, col: int, row: int
 ) -> Iterator[Requirement]:
@@ -181,7 +167,9 @@ def generate_composition(
             else:
                 col += 1
         else:
-            # logger.info(f'[{row}, {col}] No fitting tile found, going one step back')
+            logger.debug(
+                f'[{row}, {col}] No fitting tile found, going one step back'
+            )
             tried[row][col].clear()
             if col == 0:
                 if row == 0:
@@ -232,10 +220,6 @@ def render_composition(
 ):
     logger.info('Rendering composition')
     t0 = time.time()
-    if not composition:
-        raise CompositionError(
-            'Can\'t render composition, because it\'s not generated.'
-        )
     width = len(composition[0])
     height = len(composition)
     images_im = {}
@@ -334,9 +318,6 @@ class Composition(models.Model):
     featured_requested_at = models.DateTimeField(null=True)
     image = models.FileField(upload_to=composition_upload_to, null=True)
 
-    MIN_SLUG_LENGTH = 8
-    MAX_SLUG_LENGTH = 50
-
     objects = CompositionManager()
 
     class Meta:
@@ -361,11 +342,11 @@ class Composition(models.Model):
         self.slug = find_shortest_str(
             int_to_base36(self.id.int),
             test_fn=Composition.objects.slug_doesnt_exist,
-            length=self.MIN_SLUG_LENGTH,
+            length=settings.MIN_SLUG_LENGTH,
         )
         if self.slug is None:
             raise TessellationError('Slug collision')
-        iterations = len(self.slug) - self.MIN_SLUG_LENGTH + 1
+        iterations = len(self.slug) - settings.MIN_SLUG_LENGTH + 1
         logger.info(f'Generated new slug in {iterations} interations')
 
     def save(self, *args, **kwargs):

@@ -22,3 +22,8 @@ class TestPopulateDB(TestCase):
         self.assertEqual(composition.tiles.count(), 5 * 4)
         self.assertTrue(composition.public)
         self.assertTrue(composition.featured)
+
+    def test_populate_db_requires_superuser(self):
+        command = populate_db.Command()
+        with self.assertRaises(populate_db.FixtureError):
+            command.handle()

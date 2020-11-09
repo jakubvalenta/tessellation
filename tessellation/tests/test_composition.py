@@ -1,17 +1,32 @@
+import itertools
 import math
 from pathlib import Path
+from typing import List, Sequence
 from unittest import skip
 
 from django.core.files import File
 from django.test import TestCase
 
 from tessellation.models import (
-    Image, calc_render_tile_size, generate_composition, generate_tiles, read_im, render_composition,
-    reverse_digits,
+    SIDES, CompositionError, Image, Tile, calc_render_tile_size, generate_composition, read_im,
+    render_composition, reverse_digits,
 )
 
 test_data_dir = Path(__file__).parent / 'test_data'
 results_dir = Path(__file__).parents[2] / 'results'
+
+
+def generate_tiles(
+    images: Sequence['Image'], allow_rotation: bool = True
+) -> List['Tile']:
+    if not allow_rotation:
+        return [Tile(image=image, rotation=0) for image in images]
+    return list(
+        itertools.chain.from_iterable(
+            (Tile(image=image, rotation=rotation) for rotation in SIDES)
+            for image in images
+        )
+    )
 
 
 class TestComposition(TestCase):
@@ -68,8 +83,26 @@ class TestComposition(TestCase):
         ]
         tiles = generate_tiles(images)
         width, height = 500, 500
-        with self.assertRaises(Exception):
+        with self.assertRaises(CompositionError):
             generate_composition(tiles, width, height, max_steps=pow(2, 10))
+
+    def test_generate_composition_go_back(self):
+        images = [Image(connections=[1, 3, 2, 1])]
+        tiles = generate_tiles(images)
+        expected = [
+            [tiles[0], tiles[2], tiles[0]],
+            [tiles[2], tiles[0], tiles[2]],
+            [tiles[0], tiles[2], tiles[0]],
+        ]
+        width, height = len(expected[0]), len(expected)
+        self.assertEqual(generate_composition(tiles, width, height), expected)
+
+    def test_generate_composition_that_doesnt_connect(self):
+        images = [Image(connections=[1, 2, 1, 1])]
+        tiles = generate_tiles(images, allow_rotation=False)
+        width, height = 3, 3
+        with self.assertRaises(CompositionError):
+            generate_composition(tiles, width, height)
 
     def test_calc_render_tile_size(self):
         composition = [[None] * 2] * 4

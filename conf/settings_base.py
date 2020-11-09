@@ -102,6 +102,8 @@ MAX_COMPOSITIONS_PER_USER = 100
 # Keep in sync with js/storage setting MAX_UPLOAD_SIZE_BYTES
 MAX_UPLOAD_SIZE_BYTES = 1_000_000
 
+MIN_SLUG_LENGTH = 8
+
 CONTACT_EMAIL = 'tessellation@mailbox.org'
 
 WEBPACK_LOADER = {

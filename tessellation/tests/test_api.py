@@ -122,6 +122,47 @@ class TestCompositionAPI(TestCase):
         self.assertEqual(new_tiles[3].rotation, 3)
         self.assertEqual(new_tiles[3].image, new_image)
 
+    @override_settings(MAX_UPLOAD_SIZE_BYTES=10)
+    def test_create_composition_api_limits_maximum_upload_size(self):
+        image_data = 'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAwIiBoZWlnaHQ9IjEwMDAiPjxwYXRoIGQ9Ik0wIDBsMTAwMCAxMDAwVjBIMCIvPjwvc3ZnPg=='  # noqa: E501
+        client = APIClient()
+        client.login(username='alice', password='alicepassword')
+        response = client.post(
+            '/api/compositions/',
+            {
+                'images': [
+                    {
+                        'connections': [1, 2, 2, 1],
+                        'data': f'data:image/svg+xml;base64,{image_data}',
+                        'ref': 'myimageref',
+                    }
+                ],
+                'name': "Alice's new composition",
+                'public': True,
+                'size': {'height': 4, 'width': 5},
+                'tiles': [
+                    {
+                        'imgRef': 'myimageref',
+                        'rotation': 0,
+                    },
+                    {
+                        'imgRef': 'myimageref',
+                        'rotation': 1,
+                    },
+                    {
+                        'imgRef': 'myimageref',
+                        'rotation': 2,
+                    },
+                    {
+                        'imgRef': 'myimageref',
+                        'rotation': 3,
+                    },
+                ],
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, 400)
+
     def test_create_composition_api_requires_size(self):
         client = APIClient()
         client.login(username='alice', password='alicepassword')
