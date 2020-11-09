@@ -26,6 +26,7 @@ export function createComposition(data) {
   const promises = data.images.map(image => {
     return httpImageData(image.url).then(data => {
       image.data = data;
+      delete image.url;
     });
   });
   data.public = true;

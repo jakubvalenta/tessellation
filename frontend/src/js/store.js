@@ -38,9 +38,19 @@ function addIndex(image, i) {
   return { index: i, ...image };
 }
 
-// eslint-disable-next-line no-unused-vars
-function removeIndex({ index, ...imageWithoutIndex }) {
-  return imageWithoutIndex;
+function serializeImage(image) {
+  return {
+    ref: image.ref,
+    connections: image.connections,
+    url: image.url
+  };
+}
+
+function serializeTile(tile) {
+  return {
+    imgRef: tile.image.ref,
+    rotation: tile.rotation
+  };
 }
 
 function compatImage(image) {
@@ -313,10 +323,8 @@ const store = {
   serialize: function () {
     return {
       size: this.state.size,
-      images: this.state.images.filter(isImageComplete).map(removeIndex),
-      tiles: this.state.tiles.map(({ image, rotation }) => {
-        return { imgRef: image.ref, rotation };
-      })
+      images: this.state.images.filter(isImageComplete).map(serializeImage),
+      tiles: this.state.tiles.map(serializeTile)
     };
   }
 };
