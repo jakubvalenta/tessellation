@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class="intro">
     <span class="text-status" style="padding-right: 1em">first time here?</span>
     <button @click="start" class="button-secondary">show intro</button>
   </span>
@@ -7,6 +7,10 @@
 
 <style lang="scss">
 @import '../../css/_variables.scss';
+
+.intro {
+  white-space: nowrap;
+}
 
 body {
   .introjs-helperLayer {

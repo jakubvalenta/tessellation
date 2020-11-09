@@ -56,7 +56,6 @@
 
 .images {
   @extend %clearfix;
-  margin-top: 0.5em;
   margin-left: -1em;
   margin-right: -1em;
 }
@@ -66,7 +65,7 @@
   padding: 1em;
   box-sizing: border-box;
 }
-@media screen and (max-width: 1439px) {
+@media screen and (max-width: 1919px) {
   .image {
     width: 50%;
   }
@@ -74,8 +73,8 @@
 .image__inner {
   position: relative;
   border: 1px solid $color-border;
-  padding: 3em;
-  padding-bottom: 1.5em;
+  padding: 2.5em;
+  padding-bottom: 1em;
 }
 .image__inner__controls {
   margin-top: 3em;

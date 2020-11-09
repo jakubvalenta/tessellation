@@ -41,17 +41,27 @@
   }
 }
 .composition-controls__shuffle {
-  grid-column: 2;
-  grid-row: 1;
-  text-align: center;
+  grid-column: 1;
 }
 .composition-controls__advanced {
-  grid-column: 3;
-  grid-row: 1;
+  grid-column: 2 / 4;
   text-align: right;
 
   a + button {
     margin-left: 0.5em;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .composition-controls__shuffle {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: center;
+  }
+  .composition-controls__advanced {
+    grid-column: 3;
+    grid-row: 1;
+    text-align: right;
   }
 }
 </style>

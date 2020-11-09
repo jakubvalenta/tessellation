@@ -99,12 +99,10 @@
   width: 2em;
   height: 100%;
   top: 0;
-  margin-top: -1em;
 }
 .edge--left {
   left: -2em;
   flex-direction: column-reverse;
-  padding-bottom: 2.5em;
 
   .edge__button + .edge__button {
     margin-bottom: 0.5em;
@@ -113,7 +111,6 @@
 .edge--right {
   right: -2em;
   flex-direction: column;
-  padding-top: 2.5em;
 
   .edge__button + .edge__button {
     margin-top: 0.5em;
@@ -127,7 +124,6 @@
 }
 .edge--top {
   top: -2em;
-  padding-left: 2.5em;
 
   .edge__button + .edge__button {
     margin-left: 0.5em;
@@ -136,7 +132,6 @@
 .edge--bottom {
   bottom: -2em;
   flex-direction: row-reverse;
-  padding-right: 2.5em;
 
   .edge__button + .edge__button {
     margin-right: 0.5em;

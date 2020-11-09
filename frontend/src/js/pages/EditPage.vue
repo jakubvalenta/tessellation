@@ -35,12 +35,8 @@
 
 <style lang="scss">
 .edit__input {
+  flex-shrink: 0;
   padding-top: 0.1em;
-}
-.edit__composition__full_screen {
-  position: absolute;
-  top: 1em;
-  right: 3em;
 }
 .edit__storage {
   padding-top: 0.1em;
@@ -50,39 +46,50 @@
     display: flex;
     min-height: 0;
     flex-grow: 1;
+    padding-right: 1em;
   }
   .edit__input,
   .edit__storage {
     overflow-y: auto;
+  }
+  .edit__input {
+    width: 48em;
+    padding-right: 1.5em;
+    margin-right: 1em;
+    box-sizing: border-box;
   }
   .edit__composition {
     position: relative;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    padding-right: 1em;
 
     .composition {
       min-height: 0;
       flex-grow: 1;
     }
   }
-  .edit__input {
-    padding-right: 1.5em;
-    margin-right: 1em;
-    box-sizing: border-box;
+  .edit__storage {
+    width: 24em;
+    padding-right: 1em;
   }
 }
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1023px) {
   .edit__composition {
-    padding-right: 1em;
     margin-right: 1em;
   }
-  .edit__storage {
-    width: 28em;
-    padding-right: 1em;
+}
+@media screen and (min-width: 1920px) {
+  .edit__input {
+    width: 75em;
   }
 }
 @media screen and (max-width: 1023px) {
+  #app {
+    display: block;
+    min-height: auto;
+  }
   .edit {
     flex-wrap: wrap;
   }
@@ -94,25 +101,12 @@
     padding-top: 2em;
   }
 }
-@media screen and (min-width: 800px) {
-  .edit__input {
-    width: 40%;
-  }
-}
 @media screen and (max-width: 799px) {
-  .edit__input .heading-row h2 {
-    display: none;
-  }
   .edit__composition {
     width: 100%;
   }
   .edit__composition {
     padding-top: 2em;
-  }
-}
-@media screen and (max-width: 1439px) {
-  .edit__input .heading-row {
-    display: block;
   }
 }
 </style>
