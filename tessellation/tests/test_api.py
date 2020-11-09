@@ -220,3 +220,33 @@ class TestCompositionAPI(TestCase):
             slug='bob-old-composition'
         )
         self.assertEqual(updated_composition.name, "Bob's updated composition")
+
+    def test_delete_composition_api_requires_authentication(self):
+        client = APIClient()
+        response = client.delete(
+            '/api/compositions/bob-composition', format='json'
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_composition_api_requires_ownership(self):
+        client = APIClient()
+        response = client.delete(
+            '/api/compositions/bob-composition', format='json'
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_composition_api_updates_owners_composition(self):
+        Composition.objects.create(
+            owner=self.user_bob,
+            name="Bob's old composition",
+            slug='bob-composition-to-delete',
+            width=10,
+            height=10,
+        )
+        client = APIClient()
+        client.login(username='bob', password='bobpassword')
+        client.delete(
+            '/api/compositions/bob-composition-to-delete', format='json'
+        )
+        with self.assertRaises(Composition.DoesNotExist):
+            Composition.objects.get(slug='bob-old-composition')
