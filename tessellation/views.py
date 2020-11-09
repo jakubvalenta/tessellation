@@ -43,7 +43,7 @@ def not_found_view(request, exception):
 
 
 class CompositionListView(CommonContextMixin, generic.ListView):
-    queryset = Composition.objects.filter(featured=True)
+    queryset = Composition.objects.filter(public=True, featured=True)
     context_object_name = 'compositions'
     template_name = 'list.html'
 
@@ -81,7 +81,7 @@ class CompositionEditView(CompositionDetailView):
 class CompositionCreateView(CompositionEditView):
     def get_object(self, **kwargs):
         return (
-            Composition.objects.get_sample_compositions()
+            Composition.objects.filter(public=True, featured=True)
             .prefetch_related('tiles__image')
             .last()
         )
