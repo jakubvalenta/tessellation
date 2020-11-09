@@ -73,7 +73,13 @@ build-frontend: frontend/public/supportedBrowsers.js  ## Build frontend files wi
 	cd frontend && yarn build
 
 test-backend: | start-postgresql  ## Run Python unit tests
-	DJANGO_SETTINGS_MODULE=conf.settings_test $(MAKE) manage args="test $(args)"
+	DJANGO_SETTINGS_MODULE=conf.settings_test \
+	$(MAKE) manage args="test $(args)"
+
+test-backend-with-coverage: | start-postgresql  ## Run Python unit tests with code coverage reporting
+	DJANGO_SETTINGS_MODULE=conf.settings_test \
+	pipenv run coverage run --source='.' manage.py test $(args)
+	pipenv run coverage html -d results/coverage
 
 test-frontend:  ## Run frontend unit tests
 	cd frontend && yarn test:unit

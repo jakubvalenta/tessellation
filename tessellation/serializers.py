@@ -71,21 +71,20 @@ class CompositionSerializer(serializers.ModelSerializer):
                 image=image_data['data'],
                 connections=image_data['connections'],
             )
-            for image_data in validated_data['images']
+            for image_data in validated_data.pop('images')
         }
         tiles = [
             Tile.objects.create(
                 image=images[tile_data['image']['pk']],
                 rotation=tile_data['rotation'],
             )
-            for tile_data in validated_data['tiles']
+            for tile_data in validated_data.pop('tiles')
         ]
+        size = validated_data.pop('size')
         composition = Composition.objects.create(
-            owner=validated_data['owner'],
-            width=validated_data['size']['width'],
-            height=validated_data['size']['height'],
-            name=validated_data['name'],
-            public=validated_data['public'],
+            width=size['width'],
+            height=size['height'],
+            **validated_data,
         )
         composition.tiles.set(tiles)
         composition.render(list(images.values()), tiles)

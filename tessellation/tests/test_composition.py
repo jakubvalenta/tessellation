@@ -105,6 +105,7 @@ class TestComposition(TestCase):
                 [tiles[0], tiles[1], tiles[3]],
             ]
             tile_size = 20
+            results_dir.mkdir(exist_ok=True)
             with open(results_dir / 'composition.png', 'wb+') as f:
                 render_composition(composition, images, tiles, tile_size, f)
                 f.seek(0)

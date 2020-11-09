@@ -30,9 +30,6 @@ class UserSerializer(serializers.ModelSerializer):
     def get_url_admin(self, obj):
         return reverse('admin:index')
 
-    def get_url_login(self, obj):
-        return reverse('accounts:login')
-
     def get_url_logout(self, obj):
         return reverse('accounts:logout')
 

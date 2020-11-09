@@ -77,7 +77,7 @@ class TestCompositionAPI(TestCase):
                 ],
                 'name': "Alice's new composition",
                 'public': True,
-                'size': {'height': 4, 'width': 4},
+                'size': {'height': 4, 'width': 5},
                 'tiles': [
                     {
                         'imgRef': 'myimageref',
@@ -102,8 +102,8 @@ class TestCompositionAPI(TestCase):
         new_composition = Composition.objects.get(
             name="Alice's new composition"
         )
-        self.assertEqual(new_composition.public, True)
-        self.assertEqual(new_composition.width, 4)
+        self.assertTrue(new_composition.public)
+        self.assertEqual(new_composition.width, 5)
         self.assertEqual(new_composition.height, 4)
         self.assertEqual(len(new_composition.images), 1)
         new_image = new_composition.images[0]
@@ -121,6 +121,40 @@ class TestCompositionAPI(TestCase):
         self.assertEqual(new_tiles[2].image, new_image)
         self.assertEqual(new_tiles[3].rotation, 3)
         self.assertEqual(new_tiles[3].image, new_image)
+
+    def test_create_composition_api_requires_size(self):
+        client = APIClient()
+        client.login(username='alice', password='alicepassword')
+        response = client.post(
+            '/api/compositions/',
+            {
+                'images': [],
+                'tiles': [],
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_composition_api_creates_composition_with_defaults(self):
+        client = APIClient()
+        client.login(username='alice', password='alicepassword')
+        response = client.post(
+            '/api/compositions/',
+            {
+                'images': [],
+                'size': {'height': 4, 'width': 5},
+                'tiles': [],
+            },
+            format='json',
+        )
+        new_slug = response.json()['slug']
+        new_composition = Composition.objects.get(slug=new_slug)
+        self.assertFalse(new_composition.public)
+        self.assertFalse(new_composition.featured)
+        self.assertEqual(new_composition.width, 5)
+        self.assertEqual(new_composition.height, 4)
+        self.assertEqual(len(new_composition.images), 0)
+        self.assertEqual(new_composition.tiles.count(), 0)
 
     def test_get_composition_api_requires_authentication(self):
         client = APIClient()
