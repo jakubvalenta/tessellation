@@ -95,5 +95,9 @@ class CompositionSerializer(serializers.ModelSerializer):
     def update(
         self, instance: Composition, validated_data: dict
     ) -> Composition:
+        if 'images' in validated_data or 'tiles' in validated_data:
+            raise serializers.ValidationError(
+                'Updating images is not suppoted'
+            )
         super().update(instance, validated_data)
         return instance

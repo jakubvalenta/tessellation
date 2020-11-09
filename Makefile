@@ -73,7 +73,7 @@ build-frontend: frontend/public/supportedBrowsers.js  ## Build frontend files wi
 	cd frontend && yarn build
 
 test-backend: | start-postgresql  ## Run Python unit tests
-	$(MAKE) manage args="test"
+	DJANGO_SETTINGS_MODULE=conf.settings_test $(MAKE) manage args="test $(args)"
 
 test-frontend:  ## Run frontend unit tests
 	cd frontend && yarn test:unit

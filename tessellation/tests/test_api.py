@@ -1,51 +1,47 @@
 import base64
+import shutil
+from tempfile import mkdtemp
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
 
 from tessellation.models import Composition
 
+tmp_media_root = mkdtemp('tessellation-tests')
 
-class TestAPI(TestCase):
-    maxDiff = None
 
+@override_settings(MEDIA_ROOT=tmp_media_root)
+class TestCompositionAPI(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user1 = User.objects.create_user(
-            'user1', 'example1@example.com', 'user1password'
+        cls.user_alice = User.objects.create_user(
+            'alice', 'alice@example.com', 'alicepassword'
+        )
+        cls.user_bob = User.objects.create_user(
+            'bob', 'bob@example.com', 'bobpassword'
         )
         Composition.objects.create(
-            owner=cls.user1,
-            name='User1\'s public composition',
+            owner=cls.user_alice,
+            name="Alice's composition",
+            slug='alice-composition',
             width=10,
             height=10,
             public=True,
         )
         Composition.objects.create(
-            owner=cls.user1,
-            name='User1\'s private composition',
-            width=10,
-            height=10,
-            public=False,
-        )
-        cls.user2 = User.objects.create_user(
-            'user2', 'example2@example.com', 'user2password'
-        )
-        Composition.objects.create(
-            owner=cls.user2,
-            name='User2\'s public composition',
+            owner=cls.user_bob,
+            name="Bob's composition",
+            slug='bob-composition',
             width=10,
             height=10,
             public=True,
         )
-        Composition.objects.create(
-            owner=cls.user2,
-            name='User2\'s private composition',
-            width=10,
-            height=10,
-            public=False,
-        )
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        shutil.rmtree(tmp_media_root, ignore_errors=True)
 
     def test_list_compositions_api_requires_authentication(self):
         client = APIClient()
@@ -54,12 +50,11 @@ class TestAPI(TestCase):
 
     def test_list_compositions_api_returns_all_users_compositions(self):
         client = APIClient()
-        client.login(username='user1', password='user1password')
+        client.login(username='alice', password='alicepassword')
         response = client.get('/api/compositions/', format='json')
         data = response.json()
-        self.assertEqual(len(data), 2)
-        self.assertEqual(data[0]['name'], 'User1\'s private composition')
-        self.assertEqual(data[1]['name'], 'User1\'s public composition')
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['slug'], 'alice-composition')
 
     def test_create_composition_api_requires_authentication(self):
         client = APIClient()
@@ -69,8 +64,8 @@ class TestAPI(TestCase):
     def test_create_composition_api_creates_composition(self):
         image_data = 'PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAwIiBoZWlnaHQ9IjEwMDAiPjxwYXRoIGQ9Ik0wIDBsMTAwMCAxMDAwVjBIMCIvPjwvc3ZnPg=='  # noqa: E501
         client = APIClient()
-        client.login(username='user1', password='user1password')
-        response = client.post(
+        client.login(username='alice', password='alicepassword')
+        client.post(
             '/api/compositions/',
             {
                 'images': [
@@ -80,7 +75,7 @@ class TestAPI(TestCase):
                         'ref': 'myimageref',
                     }
                 ],
-                'name': 'User1\'s new composition',
+                'name': "Alice's new composition",
                 'public': True,
                 'size': {'height': 4, 'width': 4},
                 'tiles': [
@@ -105,7 +100,7 @@ class TestAPI(TestCase):
             format='json',
         )
         new_composition = Composition.objects.get(
-            name='User1\'s new composition'
+            name="Alice's new composition"
         )
         self.assertEqual(new_composition.public, True)
         self.assertEqual(new_composition.width, 4)
@@ -126,3 +121,102 @@ class TestAPI(TestCase):
         self.assertEqual(new_tiles[2].image, new_image)
         self.assertEqual(new_tiles[3].rotation, 3)
         self.assertEqual(new_tiles[3].image, new_image)
+
+    def test_get_composition_api_requires_authentication(self):
+        client = APIClient()
+        response = client.get(
+            '/api/compositions/alice-composition', format='json'
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_get_composition_api_requires_ownership(self):
+        client = APIClient()
+        client.login(username='bob', password='bobpassword')
+        response = client.get(
+            '/api/compositions/alice-composition', format='json'
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_composition_api_returns_owners_composition(self):
+        client = APIClient()
+        client.login(username='alice', password='alicepassword')
+        response = client.get(
+            '/api/compositions/alice-composition', format='json'
+        )
+        data = response.json()
+        self.assertEqual(data['name'], "Alice's composition")
+
+    def test_update_composition_api_requires_authentication(self):
+        client = APIClient()
+        response = client.put(
+            '/api/compositions/bob-composition', {}, format='json'
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_update_composition_api_requires_ownership(self):
+        client = APIClient()
+        response = client.put(
+            '/api/compositions/bob-composition', {}, format='json'
+        )
+        self.assertEqual(response.status_code, 403)
+
+    def test_update_composition_api_doesnt_allow_updating_images_or_tiles(
+        self,
+    ):
+        Composition.objects.create(
+            owner=self.user_alice,
+            name="Alice's old composition",
+            slug='alice-old-composition',
+            width=10,
+            height=10,
+        )
+        client = APIClient()
+        client.login(username='alice', password='alicepassword')
+        response = client.put(
+            '/api/compositions/alice-old-composition',
+            {
+                'images': [],
+                'name': "Alice's updated composition",
+                'size': {'height': 4, 'width': 4},
+                'tiles': [],
+            },
+            format='json',
+        )
+        response = client.patch(
+            '/api/compositions/alice-old-composition',
+            {
+                'images': [],
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, 400)
+        response = client.patch(
+            '/api/compositions/alice-old-composition',
+            {
+                'tiles': [],
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_update_composition_api_updates_owners_composition(self):
+        Composition.objects.create(
+            owner=self.user_bob,
+            name="Bob's old composition",
+            slug='bob-old-composition',
+            width=10,
+            height=10,
+        )
+        client = APIClient()
+        client.login(username='bob', password='bobpassword')
+        client.patch(
+            '/api/compositions/bob-old-composition',
+            {
+                'name': "Bob's updated composition",
+            },
+            format='json',
+        )
+        updated_composition = Composition.objects.get(
+            slug='bob-old-composition'
+        )
+        self.assertEqual(updated_composition.name, "Bob's updated composition")

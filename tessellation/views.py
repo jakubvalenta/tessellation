@@ -114,4 +114,4 @@ class CompositionDetailAPIView(
     lookup_field = 'slug'
 
     def get_queryset(self):
-        return Composition.objects.filter(owner=self.request.user)
+        return Composition.objects.filter(owner=self.request.user.id)

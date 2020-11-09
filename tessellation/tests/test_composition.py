@@ -15,8 +15,6 @@ results_dir = Path(__file__).parents[2] / 'results'
 
 
 class TestComposition(TestCase):
-    maxDiff = None
-
     def test_reverse_number_single_digit(self):
         self.assertEqual(reverse_digits(0), 0)
         self.assertEqual(reverse_digits(1), 1)
