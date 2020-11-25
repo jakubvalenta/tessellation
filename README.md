@@ -7,7 +7,7 @@ app will then try to arrange the tiles into a larger composition adhering to the
 connection rules. This is similar to the [Wang tiles
 problem](https://en.wikipedia.org/wiki/Wang_tile).
 
-![Tessellation](./tessellation/static/img/tessellation.png)
+![Tessellation screenshot](./tessellation/static/img/tessellation-create.png)
 
 ## Installation
 
