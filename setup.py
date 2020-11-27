@@ -9,7 +9,7 @@ setup(
     version='0.4.0',
     description=__title__,
     long_description=(Path(__file__).parent / 'README.md').read_text(),
-    url='https://www.github.com/jakubvalenta/tessellation',
+    url='https://github.com/jakubvalenta/tessellation',
     author='Jakub Valenta',
     author_email='jakub@jakubvalenta.cz',
     license='GNU General Public License v3 or later (GPLv3+)',
