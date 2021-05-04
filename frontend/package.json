@@ -5,22 +5,22 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test": "yarn test:unit",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint && prettier --check **/*.{js,vue}",
     "format": "prettier --write **/*.{js,vue}",
-    "supportedBrowsers": "echo \"window.SUPPORTED_BROWSERS = $(browserslist-useragent-regexp --allowHigherVersions);\" > public/supportedBrowsers.js"
+    "supportedBrowsers": "echo \"window.SUPPORTED_BROWSERS = $(browserslist-useragent-regexp --allowHigherVersions);\" > public/supportedBrowsers.js",
+    "test": "yarn test:unit"
   },
   "dependencies": {
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.12",
     "abort-controller": "^3.0.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-babel": "~4.5.12",
+    "@vue/cli-plugin-eslint": "~4.5.12",
+    "@vue/cli-service": "~4.5.12",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "babel-eslint": "^10.1.0",
@@ -31,9 +31,9 @@
     "js-cookie": "^2.2.1",
     "prettier": "^2.1.2",
     "sass": "^1.27.0",
-    "sass-loader": "^10.0.3",
+    "sass-loader": "^11.0.1",
     "vue-jest": "^5.0.0-0",
-    "webpack-bundle-tracker": "0.4.3"
+    "webpack-bundle-tracker": "^1.0.0-alpha.1"
   },
   "eslintConfig": {
     "root": true,
