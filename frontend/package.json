@@ -18,12 +18,12 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.14.2",
     "@vue/cli-plugin-babel": "~4.5.12",
     "@vue/cli-plugin-eslint": "~4.5.12",
     "@vue/cli-service": "~4.5.12",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/test-utils": "^2.0.0-0",
-    "babel-eslint": "^10.1.0",
     "browserslist-useragent-regexp": "^2.1.0",
     "eslint": "^7.12.1",
     "eslint-plugin-vue": "^7.0.0-0",
@@ -31,7 +31,7 @@
     "js-cookie": "^2.2.1",
     "prettier": "^2.1.2",
     "sass": "^1.27.0",
-    "sass-loader": "^11.0.1",
+    "sass-loader": "^10.2.0",
     "vue-jest": "^5.0.0-0",
     "webpack-bundle-tracker": "^1.0.0-alpha.1"
   },
@@ -45,7 +45,7 @@
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     },
     "rules": {},
     "overrides": [
