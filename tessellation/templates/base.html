@@ -12,9 +12,9 @@
     <meta property="og:description" content="{{ description }}" />
     <meta name="twitter:card" content="summary_large_image" />
     {% block meta %}{% endblock %}
-    {% render_bundle 'chunk-common' 'css' %}
-    {% render_bundle 'chunk-vendors' 'css' %}
-    {% block styles %}{% endblock %}
+    {% block styles %}
+    {% render_bundle 'index' 'css' %}
+    {% endblock %}
   </head>
   <body class="mode-final">
     {% block top %}{% endblock %}
