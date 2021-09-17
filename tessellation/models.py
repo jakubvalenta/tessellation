@@ -13,6 +13,7 @@ from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.core.files import File
 from django.db import models, transaction
+from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.http import int_to_base36
 from PIL import Image as PILImage
@@ -379,6 +380,9 @@ class Composition(models.Model):
     def delete(self, *args, **kwargs):
         Image.objects.filter(tiles__compositions__id=self.pk).delete()
         super().delete(*args, **kwargs)
+
+    def get_absolute_url(self) -> str:
+        return reverse('detail', args=[self.slug])
 
     def __str__(self) -> str:
         return str(self.id)
