@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from django.contrib.syndication.views import Feed
@@ -23,3 +24,6 @@ class LatestFeaturedCompositions(Feed):
 
     def item_author_name(self, item: Composition) -> str:
         return item.owner.username
+
+    def item_pubdate(self, item: Composition) -> datetime.datetime:
+        return item.created_at
