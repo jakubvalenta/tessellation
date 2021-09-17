@@ -11,6 +11,7 @@
     <meta property="og:title" content="{% if heading %}{{ heading }}{% else %}{{ title }}{% endif %}" />
     <meta property="og:description" content="{{ description }}" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link type="application/rss+xml" rel="alternate" href="{% url 'feed' %}" title="Featured compositions." />
     {% block meta %}{% endblock %}
     {% block styles %}
     {% render_bundle 'index' 'css' %}
