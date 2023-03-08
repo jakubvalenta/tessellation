@@ -13,16 +13,15 @@ problem](https://en.wikipedia.org/wiki/Wang_tile).
 
 ### Mac
 
-``` shell
-$ brew install python yarn
-$ pip install pipenv
+```shell
+$ brew install poetry yarn
 $ make setup
 ```
 
 ### Arch Linux
 
-``` shell
-# pacman -S pipenv yarn
+```shell
+# pacman -S python-poetry yarn
 $ make setup
 ```
 
@@ -30,13 +29,13 @@ $ make setup
 
 Install these dependencies manually:
 
-- Python >= 3.7
+- Python >= 3.8
 - yarn
-- pipenv
+- poetry
 
 Then run:
 
-``` shell
+```shell
 $ make setup
 ```
 
@@ -44,20 +43,20 @@ $ make setup
 
 Start a development server
 
-``` shell
+```shell
 $ make run
 $ make frontend
 ```
 
 Create database:
 
-``` shell
+```shell
 $ make create-db
 ```
 
 Create database tables, superuser, and populate the db with fixtures:
 
-``` shell
+```shell
 $ make migrate create-superuser populate-db
 ```
 
@@ -67,28 +66,22 @@ Dependencies:
 
 - pwgen
 
-``` shell
+```shell
 $ make run-prod
 ```
 
 ## Development
 
-### Installation
-
-``` shell
-make setup-dev
-```
-
 ### Testing and linting
 
-``` shell
+```shell
 make test
 make lint
 ```
 
 ### Help
 
-``` shell
+```shell
 make help
 ```
 

@@ -6,7 +6,7 @@ tmp_secret_key_file = /tmp/tessellation-secret-key
 .PHONY: run frontend run-prod run-wsgi check-prod start-postgresql setup setup-dev manage shell migrate makemigrations create-db create-superuser populate-db cleanup-media build-frontend test lint-backend lint-frontend lint tox reformat help
 
 run: | start-postgresql  ## Start the development server
-	pipenv run python manage.py runserver
+	poetry run python manage.py runserver
 
 frontend: frontend/public/supportedBrowsers.js  ## Start the frontend development server
 	cd frontend && yarn serve
@@ -32,16 +32,12 @@ $(tmp_secret_key_file):
 start-postgresql:
 	[[ -e /run/postgresql/.s.PGSQL.5432 ]] || systemctl start postgresql.service
 
-setup:  ## Create Pipenv virtual environment and install Python and frontend dependencies.
-	pipenv --three --site-packages
-	pipenv install
+setup:  ## Create virtual environment and install Python and frontend dependencies.
+	poetry install
 	cd frontend && yarn install
 
-setup-dev:  ## Install development dependencies
-	pipenv install --dev
-
 manage:  ## Run Django's manage.py, use variable 'args' to pass arguments
-	pipenv run python manage.py $(args)
+	poetry run python manage.py $(args)
 
 shell:  ## Run Django Extensions Shell Plus
 	$(MAKE) manage args=shell_plus
@@ -78,8 +74,8 @@ test-backend: | start-postgresql  ## Run Python unit tests
 
 test-backend-with-coverage: | start-postgresql  ## Run Python unit tests with code coverage reporting
 	DJANGO_SETTINGS_MODULE=conf.settings_test \
-	pipenv run coverage run --source='.' manage.py test $(args)
-	pipenv run coverage html -d results/coverage
+	poetry run coverage run --source='.' manage.py test $(args)
+	poetry run coverage html -d results/coverage
 
 test-frontend:  ## Run frontend unit tests
 	cd frontend && yarn test:unit
@@ -87,9 +83,9 @@ test-frontend:  ## Run frontend unit tests
 test: | test-backend test-frontend  ## Run all unit tests
 
 lint-backend:  ## Run Python linting
-	pipenv run flake8 $(_python_pkg)
-	pipenv run mypy $(_python_pkg) --ignore-missing-imports
-	pipenv run isort -c $(_python_pkg)
+	poetry run flake8 $(_python_pkg)
+	poetry run mypy $(_python_pkg) --ignore-missing-imports
+	poetry run isort -c $(_python_pkg)
 
 lint-frontend: ## Run JavaScript
 	cd frontend && yarn lint
