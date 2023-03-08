@@ -9,6 +9,10 @@ function csrfSafeMethod(method) {
   return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
 }
 
+export function getCSRFToken() {
+  return Cookies.get('csrftoken');
+}
+
 export function http(method, url, data) {
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
@@ -32,8 +36,7 @@ export function http(method, url, data) {
     req.open(method, url, true);
     req.setRequestHeader('Content-Type', 'application/json');
     if (!csrfSafeMethod(method)) {
-      const csrftoken = Cookies.get('csrftoken');
-      req.setRequestHeader('X-CSRFToken', csrftoken);
+      req.setRequestHeader('X-CSRFToken', getCSRFToken());
     }
     req.send(JSON.stringify(data));
   });
