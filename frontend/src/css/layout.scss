@@ -1,4 +1,4 @@
-@use "sass:math";
+@use 'sass:math';
 
 @import '_variables';
 
@@ -52,6 +52,9 @@ body {
   h1 {
     margin: 0;
     letter-spacing: 0.25em;
+  }
+  form {
+    display: inline-block;
   }
 }
 .header-section {
