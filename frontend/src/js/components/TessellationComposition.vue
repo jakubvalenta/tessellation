@@ -14,7 +14,7 @@
           :key="i"
           class="composition__overlay__row"
         >
-          <Tile
+          <CompositionTile
             v-for="(tile, j) in rowTiles"
             :image="tile && tile.image"
             :rotation="tile && tile.rotation"
@@ -74,12 +74,12 @@
 </style>
 
 <script>
-import Tile from './Tile.vue';
+import CompositionTile from './CompositionTile.vue';
 
 export default {
-  name: 'Composition',
+  name: 'TessellationComposition',
   components: {
-    Tile
+    CompositionTile
   },
   props: {
     loading: {

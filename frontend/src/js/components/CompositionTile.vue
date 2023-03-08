@@ -93,7 +93,7 @@ $connections: (
 
 <script>
 export default {
-  name: 'Tile',
+  name: 'CompositionTile',
   props: {
     image: {
       type: Object,

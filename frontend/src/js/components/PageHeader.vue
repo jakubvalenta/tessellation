@@ -22,7 +22,13 @@
     <div class="header-section header-user">
       <span v-if="user.isAuthenticated">
         <a :href="user.urlProfile">{{ user.username }}</a> /
-        <a :href="`${user.urlLogout}?next=${location.pathname}`">x</a>
+        <form id="logout-form" method="post" :action="user.urlLogout">
+          <input type="hidden" name="csrfmiddlewaretoken" :value="csrfToken" />
+          <input type="hidden" name="next" :value="location.pathname" />
+          <button type="submit" class="button-link" style="padding: 0">
+            x
+          </button>
+        </form>
         <span v-if="user.isStaff"> / <a :href="user.urlAdmin">dj</a> </span>
       </span>
       <a :href="`/accounts/login?next=${location.pathname}`" v-else>log in</a>
@@ -31,8 +37,10 @@
 </template>
 
 <script>
+import { getCSRFToken } from '../utils/http';
+
 export default {
-  name: 'Header',
+  name: 'PageHeader',
   props: {
     user: {
       type: Object,
@@ -50,6 +58,9 @@ export default {
   computed: {
     location: function () {
       return window.location;
+    },
+    csrfToken: function () {
+      return getCSRFToken();
     }
   }
 };

@@ -68,7 +68,7 @@
 
 <script>
 export default {
-  name: 'CompositionControls',
+  name: 'TessellationCompositionControls',
   props: {
     showOverlay: {
       type: Boolean,

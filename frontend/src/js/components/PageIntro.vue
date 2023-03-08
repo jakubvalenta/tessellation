@@ -65,7 +65,7 @@ body {
 import introJs from 'intro.js';
 
 export default {
-  name: 'Intro',
+  name: 'PageIntro',
   data: function () {
     return {
       intro: introJs().setOptions({

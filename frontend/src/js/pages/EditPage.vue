@@ -1,21 +1,21 @@
 <template>
-  <Header :title="title" :user="state.user" />
+  <PageHeader :title="title" :user="state.user" />
   <main class="main edit">
     <div class="edit__input">
       <div class="heading-row">
         <h2>Create composition</h2>
-        <Intro />
+        <PageIntro />
       </div>
       <InputImages :images="state.images" />
     </div>
     <div class="edit__composition">
       <h2 class="sr-only">Composition</h2>
-      <CompositionControls
+      <TessellationCompositionControls
         :edit="true"
         :show-overlay="showOverlay"
         @toggle-overlay="showOverlay = !showOverlay"
       />
-      <Composition
+      <TessellationComposition
         :loading="state.loading"
         :show-overlay="showOverlay"
         :error="state.error"
@@ -28,7 +28,7 @@
         :update-stack-func-name="state.updateStackFuncName"
         :allow-rotation="state.allowRotation"
       />
-      <Storage :user="state.user" />
+      <TessellationStorage :user="state.user" />
     </div>
   </main>
 </template>
@@ -112,24 +112,24 @@
 </style>
 
 <script>
-import Composition from '../components/Composition.vue';
-import CompositionControls from '../components/CompositionControls.vue';
-import Header from '../components/Header.vue';
 import InputImages from '../components/InputImages.vue';
-import Intro from '../components/Intro.vue';
+import PageHeader from '../components/PageHeader.vue';
+import PageIntro from '../components/PageIntro.vue';
 import SettingsForm from '../components/SettingsForm.vue';
-import Storage from '../components/Storage.vue';
+import TessellationComposition from '../components/TessellationComposition.vue';
+import TessellationCompositionControls from '../components/TessellationCompositionControls.vue';
+import TessellationStorage from '../components/TessellationStorage.vue';
 
 export default {
   name: 'EditPage',
   components: {
-    Composition,
-    CompositionControls,
-    Header,
+    TessellationComposition,
+    TessellationCompositionControls,
+    PageHeader,
+    PageIntro,
     InputImages,
-    Intro,
     SettingsForm,
-    Storage
+    TessellationStorage
   },
   data: function () {
     const data = {

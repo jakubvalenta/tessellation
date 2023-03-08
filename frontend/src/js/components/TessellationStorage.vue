@@ -1,6 +1,6 @@
 <template>
-  <StorageLocal />
-  <StorageRemote :user="user" />
+  <TessellationStorageLocal />
+  <TessellationStorageRemote :user="user" />
 </template>
 
 <style lang="scss">
@@ -32,14 +32,14 @@
 </style>
 
 <script>
-import StorageLocal from './StorageLocal.vue';
-import StorageRemote from './StorageRemote.vue';
+import TessellationStorageLocal from './TessellationStorageLocal.vue';
+import TessellationStorageRemote from './TessellationStorageRemote.vue';
 
 export default {
-  name: 'Storage',
+  name: 'TessellationStorage',
   components: {
-    StorageLocal,
-    StorageRemote
+    TessellationStorageLocal,
+    TessellationStorageRemote
   },
   props: {
     user: {

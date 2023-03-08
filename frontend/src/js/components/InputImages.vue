@@ -10,8 +10,8 @@
               : null
           "
         >
-          <Tile :image="image" :background="true">
-            <Edge
+          <CompositionTile :image="image" :background="true">
+            <CompositionTileEdge
               v-for="(connection, side) in image.connections"
               :image="image"
               :side="side"
@@ -25,7 +25,7 @@
               "
               :key="`${image.ref}-${side}`"
             />
-          </Tile>
+          </CompositionTile>
           <div class="image__inner__controls">
             <InputControls :image="image" />
           </div>
@@ -106,16 +106,16 @@
 </style>
 
 <script>
-import Edge from './Edge.vue';
+import CompositionTile from './CompositionTile.vue';
+import CompositionTileEdge from './CompositionTileEdge.vue';
 import InputControls from './InputControls.vue';
-import Tile from './Tile.vue';
 
 export default {
   name: 'InputImages',
   components: {
-    Edge,
-    InputControls,
-    Tile
+    CompositionTile,
+    CompositionTileEdge,
+    InputControls
   },
   props: {
     images: {

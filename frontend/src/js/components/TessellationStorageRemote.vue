@@ -27,7 +27,7 @@
         empty
       </p>
       <table class="storage-list">
-        <StorageRemoteItem
+        <TessellationStorageRemoteItem
           v-for="item in items"
           @update="loadItems"
           @error="
@@ -57,14 +57,14 @@
 </template>
 
 <script>
-import StorageRemoteItem from './StorageRemoteItem.vue';
+import TessellationStorageRemoteItem from './TessellationStorageRemoteItem.vue';
 import * as api from '../api.js';
 import { error, log } from '../log.js';
 
 export default {
-  name: 'StorageRemote',
+  name: 'TessellationStorageRemote',
   components: {
-    StorageRemoteItem
+    TessellationStorageRemoteItem
   },
   props: {
     user: {

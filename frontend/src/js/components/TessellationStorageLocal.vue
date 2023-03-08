@@ -79,7 +79,7 @@ function readStorageTimestamps() {
 }
 
 export default {
-  name: 'StorageLocal',
+  name: 'TessellationStorageLocal',
   data: function () {
     return {
       items: []

@@ -80,7 +80,7 @@ import { error, log } from '../log.js';
 import { formatDate } from '../utils/date.js';
 
 export default {
-  name: 'StorageRemoteItem',
+  name: 'TessellationStorageRemoteItem',
   emits: ['error', 'success', 'update'],
   props: {
     item: {

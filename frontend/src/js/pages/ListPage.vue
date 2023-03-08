@@ -1,5 +1,5 @@
 <template>
-  <Header :user="$root.store.state.user" />
+  <PageHeader :user="$root.store.state.user" />
   <main class="main">
     <ul v-show="compositions.length" class="explore-list">
       <li
@@ -78,12 +78,12 @@
 </style>
 
 <script>
-import Header from '../components/Header.vue';
+import PageHeader from '../components/PageHeader.vue';
 
 export default {
   name: 'ListPage',
   components: {
-    Header
+    PageHeader
   },
   data: function () {
     return {

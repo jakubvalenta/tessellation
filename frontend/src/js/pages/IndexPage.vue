@@ -1,5 +1,5 @@
 <template>
-  <Header :user="$root.store.state.user" :showNav="false" />
+  <PageHeader :user="$root.store.state.user" :showNav="false" />
   <main class="main index">
     <p>A web app to arrange tiles according to specified rules.</p>
     <p>
@@ -43,12 +43,12 @@
 </style>
 
 <script>
-import Header from '../components/Header.vue';
+import PageHeader from '../components/PageHeader.vue';
 
 export default {
   name: 'IndexPage',
   components: {
-    Header
+    PageHeader
   }
 };
 </script>

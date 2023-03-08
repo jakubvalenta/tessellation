@@ -1,5 +1,5 @@
 <template>
-  <Header :title="title" :user="$root.store.state.user" />
+  <PageHeader :title="title" :user="$root.store.state.user" />
   <main class="main detail">
     <nav class="detail__nav">
       <a href="/explore/" class="button-link">back</a>
@@ -8,7 +8,7 @@
     </nav>
     <div class="detail__composition">
       <h2 class="sr-only">Composition</h2>
-      <Composition
+      <TessellationComposition
         :loading="state.loading"
         :show-overlay="false"
         :error="state.error"
@@ -42,14 +42,14 @@
 </style>
 
 <script>
-import Composition from '../components/Composition.vue';
-import Header from '../components/Header.vue';
+import TessellationComposition from '../components/TessellationComposition.vue';
+import PageHeader from '../components/PageHeader.vue';
 
 export default {
   name: 'DetailPage',
   components: {
-    Composition,
-    Header
+    TessellationComposition,
+    PageHeader
   },
   data: function () {
     const data = {

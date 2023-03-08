@@ -226,7 +226,7 @@ $connections: (
 import { CONNECTIONS, SIDE_NAMES } from '../composition.js';
 
 export default {
-  name: 'Edge',
+  name: 'CompositionTileEdge',
   props: {
     image: {
       type: Object,
