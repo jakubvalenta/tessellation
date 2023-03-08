@@ -74,7 +74,6 @@ LOGOUT_REDIRECT_URL = '/'
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Europe/Berlin'
 USE_I18N = False
-USE_L10N = False
 USE_TZ = True
 
 MEDIA_ROOT = str(BASE_DIR / 'media')
