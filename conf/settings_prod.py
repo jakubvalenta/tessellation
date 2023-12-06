@@ -5,7 +5,7 @@ from conf.settings_base import *  # noqa: F401, F403
 from conf.settings_base import DATABASES, TEMPLATES, WEBPACK_LOADER
 
 ALLOWED_HOSTS = [os.environ['ALLOWED_HOST']]
-DEBUG = os.environ.get('DEBUG', False)
+DEBUG = False
 SECRET_KEY = (
     Path(
         os.environ.get('SECRET_KEY_FILE', '/run/keys/tessellation-secret-key')
