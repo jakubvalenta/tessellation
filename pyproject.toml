@@ -12,32 +12,31 @@ classifiers = [
     "Topic :: Artistic Software",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-Django = "^4.1.7"
-Pillow = "^9.4.0"
-CairoSVG = "^2.6.0"
-django-cleanup = "^7.0.0"
-django-debug-toolbar = "^3.8.1"
-django-extensions = "^3.2.1"
+python = "^3.10"
+Django = "^5.0.5"
+Pillow = "^10.4.0"
+CairoSVG = "^2.7.1"
+django-cleanup = "^8.1.0"
+django-debug-toolbar = "^4.4.2"
+django-extensions = "^3.2.3"
 django-unused-media = "^0.2.2"
-django-webpack-loader = "^1.8.1"
-djangorestframework = "^3.14.0"
+django-webpack-loader = "^3.1.0"
+djangorestframework = "^3.15.2"
 drf_base64 = "^2.0"
-psycopg2 = "^2.9.5"
+psycopg2 = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.2.1"
-ddt = "^1.6.0"
-isort = "^5.12.0"
-mypy = "^1.1.1"
-flake8-pyproject = "^1.2.2"
+coverage = "^7.5.4"
+ddt = "^1.7.2"
+isort = "^5.13.2"
+mypy = "^1.10.1"
+flake8-pyproject = "^1.2.3"
 
 [tool.coverage.report]
 exclude_lines = [

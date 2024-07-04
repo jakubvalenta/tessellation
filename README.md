@@ -29,7 +29,7 @@ $ make setup
 
 Install these dependencies manually:
 
-- Python >= 3.8
+- Python >= 3.10
 - yarn
 - poetry
 
@@ -51,6 +51,7 @@ $ make frontend
 Create database:
 
 ```shell
+$ make create-user
 $ make create-db
 ```
 

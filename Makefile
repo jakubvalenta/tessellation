@@ -48,10 +48,11 @@ migrate:  ## Migrate
 makemigrations:  ## Make migrations
 	$(MAKE) manage args=makemigrations
 
+create-user:  ## Create database user
+	sudo -u postgres createuser --createdb "$(db_user)"
+
 create-db:  ## Create database
-	sudo -u postgres sh -c ' \
-	    createuser --createdb "$(db_user)"; \
-	    createdb --encoding=UTF8 --template=template0 -O "$(db_user)" "$(db_name)"'
+	sudo -u postgres createdb --encoding=UTF8 --template=template0 -O "$(db_user)" "$(db_name)"
 
 create-superuser:  ## Create superuser
 	$(MAKE) manage args="createsuperuser --username=admin --email=example@example.com"
