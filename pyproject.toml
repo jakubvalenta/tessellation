@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tessellation"
-version = "0.7.0"
+version = "0.7.1"
 description = "A web app to arrange tiles according to specified rules."
 authors = ["Jakub Valenta <jakub@jakubvalenta.cz>"]
 license = "GPL-3.0-or-later"
