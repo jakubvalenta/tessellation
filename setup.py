@@ -6,7 +6,7 @@ from tessellation import __title__
 
 setup(
     name="tessellation",
-    version="0.6.1",
+    version="0.7.0",
     description=__title__,
     long_description=(Path(__file__).parent / "README.md").read_text(),
     url="https://github.com/jakubvalenta/tessellation",
