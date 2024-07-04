@@ -31,7 +31,6 @@ setup(
         "cairosvg",
         "django-cleanup",
         "django-debug-toolbar",
-        "django-extensions",
         "django-unused-media",
         "django-webpack-loader",
         "djangorestframework",
