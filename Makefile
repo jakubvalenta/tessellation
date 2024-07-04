@@ -39,8 +39,8 @@ setup:  ## Create virtual environment and install Python and frontend dependenci
 manage:  ## Run Django's manage.py, use variable 'args' to pass arguments
 	poetry run python manage.py $(args)
 
-shell:  ## Run Django Extensions Shell Plus
-	$(MAKE) manage args=shell_plus
+shell:  ## Run Django shell
+	$(MAKE) manage args=shell
 
 migrate:  ## Migrate
 	$(MAKE) manage args=migrate

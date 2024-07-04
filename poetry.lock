@@ -274,20 +274,6 @@ django = ">=4.2.9"
 sqlparse = ">=0.2"
 
 [[package]]
-name = "django-extensions"
-version = "3.2.3"
-description = "Extensions for Django"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "django-extensions-3.2.3.tar.gz", hash = "sha256:44d27919d04e23b3f40231c4ab7af4e61ce832ef46d610cc650d53e68328410a"},
-    {file = "django_extensions-3.2.3-py3-none-any.whl", hash = "sha256:9600b7562f79a92cbf1fde6403c04fee314608fefbb595502e34383ae8203401"},
-]
-
-[package.dependencies]
-Django = ">=3.2"
-
-[[package]]
 name = "django-unused-media"
 version = "0.2.2"
 description = "Delete unused media files from Django project"
@@ -703,4 +689,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "29c460632b97df95753c5526d74ab044155d7b9cce7b0c8eef69f1c55ed7242e"
+content-hash = "797cfd5a2613029018693cf4d901d3f7a4d06e06ffc273b71e785647c5978dd8"
