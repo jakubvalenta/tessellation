@@ -7,7 +7,7 @@ license = "GPL-3.0-or-later"
 readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 5.0",
     "Intended Audience :: End Users/Desktop",
     "Topic :: Artistic Software",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
@@ -19,23 +19,24 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Django = "^5.0.5"
-Pillow = "^10.4.0"
-CairoSVG = "^2.7.1"
-django-cleanup = "^8.1.0"
-django-debug-toolbar = "^4.4.2"
+cairosvg = "^2.7.1"
+django = "^5.0.9"
+django-cleanup = "^9.0.0"
+django-debug-toolbar = "^4.4.6"
 django-unused-media = "^0.2.2"
-django-webpack-loader = "^3.1.0"
+django-webpack-loader = "^3.1.1"
 djangorestframework = "^3.15.2"
-drf_base64 = "^2.0"
-psycopg2 = "^2.9.9"
+drf-base64 = "^2.0"
+pillow = "^11.0.0"
+psycopg2 = "^2.9.10"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.5.4"
-ddt = "^1.7.2"
-isort = "^5.13.2"
-mypy = "^1.10.1"
-flake8-pyproject = "^1.2.3"
+coverage = "^7.6.4"
+ruff = "^0.7.2"
+pytest-django = "^4.9.0"
+mypy = "^1.11.2"
+django-stubs = {version = "^5.0.4", extras = ["compatible-mypy"]}
+djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.15.1"}
 
 [tool.coverage.report]
 exclude_lines = [
@@ -53,12 +54,26 @@ omit = [
     "setup.py"
 ]
 
-[tool.flake8]
-max-line-length = 100
+[tool.mypy]
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 
-[tool.isort]
-profile = "django"
-line_length = 100
+[[tool.mypy.overrides]]
+module = ["cairosvg", "drf_base64.fields"]
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "conf.settings_test"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "conf.settings_test"
+
+[tool.ruff]
+extend-exclude = ["migrations"]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["C90", "D", "DJ", "E", "F", "I", "N", "PT"]
+ignore = ["D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D211", "D212", "PT009"]
 
 [build-system]
 requires = ["poetry-core"]

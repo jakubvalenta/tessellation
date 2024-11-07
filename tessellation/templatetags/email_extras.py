@@ -8,7 +8,7 @@ from django.template.defaultfilters import stringfilter
 register = template.Library()
 
 EMAIL_TEMPLATE = Template(
-    '''<script>
+    """<script>
   document.write(
     '$email_rot13'.replace(/[a-zA-Z]/g, function(c) {
       return String.fromCharCode(
@@ -17,14 +17,12 @@ EMAIL_TEMPLATE = Template(
     })
   );
 </script>
-'''  # noqa: E501
+"""  # noqa: E501
 )
 
 
 @register.filter
 @stringfilter
 def obfuscate_email(value: str) -> str:
-    email_rot13 = cast(
-        str, codecs.encode(f'<a href="mailto:{value}">{value}</a>', 'rot13')
-    )
+    email_rot13 = cast(str, codecs.encode(f'<a href="mailto:{value}">{value}</a>', "rot13"))
     return EMAIL_TEMPLATE.substitute(email_rot13=email_rot13)

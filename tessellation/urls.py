@@ -6,27 +6,27 @@ from tessellation import views
 from tessellation.feeds import LatestFeaturedCompositions
 
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
-    path('explore/', views.CompositionListView.as_view(), name='list'),
+    path("", views.IndexView.as_view(), name="index"),
+    path("explore/", views.CompositionListView.as_view(), name="list"),
     path(
-        'explore/<slug:slug>/',
+        "explore/<slug:slug>/",
         views.CompositionDetailView.as_view(),
-        name='detail',
+        name="detail",
     ),
     path(
-        'create/<slug:slug>/',
+        "create/<slug:slug>/",
         views.CompositionEditView.as_view(),
-        name='edit',
+        name="edit",
     ),
     path(
-        'create/',
+        "create/",
         views.CompositionCreateView.as_view(),
-        name='create',
+        name="create",
     ),
-    path('api/compositions/', views.CompositionListAPIView.as_view()),
+    path("api/compositions/", views.CompositionListAPIView.as_view()),
     path(
-        'api/compositions/<slug:slug>',
+        "api/compositions/<slug:slug>",
         views.CompositionDetailAPIView.as_view(),
     ),
-    path('rss.xml', LatestFeaturedCompositions(), name='feed'),
+    path("rss.xml", LatestFeaturedCompositions(), name="feed"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

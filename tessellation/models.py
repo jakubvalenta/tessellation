@@ -32,13 +32,13 @@ class TessellationError(Exception):
 
 
 SIDES = [0, 1, 2, 3]
-SIDE_NAMES = ['left', 'top', 'right', 'bottom']
+SIDE_NAMES = ["left", "top", "right", "bottom"]
 CONNECTIONS = [1, 2, 3, 4, 5]
 (LEFT, TOP, RIGHT, BOTTOM) = SIDES
 
-TComposition = List[List[Optional['Tile']]]
-TTried = List[List[List['Tile']]]
-TStack = List['Tile']
+TComposition = List[List[Optional["Tile"]]]
+TTried = List[List[List["Tile"]]]
+TStack = List["Tile"]
 TUpdateStackFunc = Callable[[TStack, int], None]
 
 
@@ -54,25 +54,21 @@ class UpdateStackFunc:
     func: TUpdateStackFunc
 
 
-UPDATE_STACK_FUNC_DEFAULT_NAME: str = 'push_current'
+UPDATE_STACK_FUNC_DEFAULT_NAME: str = "push_current"
 
 UPDATE_STACK_FUNCS: Dict[str, UpdateStackFunc] = {
     UPDATE_STACK_FUNC_DEFAULT_NAME: UpdateStackFunc(
-        label='Degrade last used tile',
+        label="Degrade last used tile",
         func=lambda stack, i: stack.append(stack.pop(i)),
     ),
-    'cycle_stack': UpdateStackFunc(
-        label='Repeat sequence',
+    "cycle_stack": UpdateStackFunc(
+        label="Repeat sequence",
         func=lambda stack, i: stack.append(stack.pop(0)),
     ),
-    'noop': UpdateStackFunc(
-        label='Prefer one tile', func=lambda stack, i: None
-    ),
-    'shuffle_stack': UpdateStackFunc(
-        label='Random', func=lambda stack, i: random.shuffle(stack)
-    ),
-    'unshift_current': UpdateStackFunc(
-        label='Prefer last used tile',
+    "noop": UpdateStackFunc(label="Prefer one tile", func=lambda stack, i: None),
+    "shuffle_stack": UpdateStackFunc(label="Random", func=lambda stack, i: random.shuffle(stack)),
+    "unshift_current": UpdateStackFunc(
+        label="Prefer last used tile",
         func=lambda stack, i: stack.insert(0, stack.pop(i)),
     ),
 }
@@ -88,9 +84,7 @@ def reverse_digits(n: int) -> int:
     return rev
 
 
-def find_requirements(
-    composition: TComposition, col: int, row: int
-) -> Iterator[Requirement]:
+def find_requirements(composition: TComposition, col: int, row: int) -> Iterator[Requirement]:
     if col != 0:
         left_tile = composition[row][col - 1]
         if left_tile:
@@ -107,7 +101,7 @@ def find_requirements(
             )
 
 
-def fits(tile: 'Tile', requirements: Sequence[Requirement]) -> bool:
+def fits(tile: "Tile", requirements: Sequence[Requirement]) -> bool:
     for requirement in requirements:
         if tile.get_connection(requirement.side) != requirement.connection:
             return False
@@ -117,9 +111,9 @@ def fits(tile: 'Tile', requirements: Sequence[Requirement]) -> bool:
 def choose_tile(
     stack: TStack,
     requirements: Sequence[Requirement],
-    excl: Sequence['Tile'],
+    excl: Sequence["Tile"],
     update_stack_func: TUpdateStackFunc,
-) -> Optional['Tile']:
+) -> Optional["Tile"]:
     for i in range(len(stack)):
         tile = stack[i]
         if tile not in excl and fits(tile, requirements):
@@ -129,26 +123,20 @@ def choose_tile(
 
 
 def generate_composition(
-    tiles: List['Tile'],
+    tiles: List["Tile"],
     width: int,
     height: int,
     max_steps: int = pow(2, 18),
     update_stack_func_name: str = UPDATE_STACK_FUNC_DEFAULT_NAME,
 ) -> TComposition:
-    logger.info(
-        f'Generating composition update_stack_func_name={update_stack_func_name}'
-    )
+    logger.info(f"Generating composition update_stack_func_name={update_stack_func_name}")
     t0 = time.time()
-    composition: TComposition = [
-        [None for _ in range(width)] for _ in range(height)
-    ]
+    composition: TComposition = [[None for _ in range(width)] for _ in range(height)]
     if not tiles:
         return composition
     tried: TTried = [[[] for _ in range(width)] for _ in range(height)]
     stack = tiles.copy()
-    update_stack_func: TUpdateStackFunc = UPDATE_STACK_FUNCS[
-        update_stack_func_name
-    ].func  # type: ignore
+    update_stack_func: TUpdateStackFunc = UPDATE_STACK_FUNCS[update_stack_func_name].func  # type: ignore
     i = 0
     row = 0
     col = 0
@@ -168,9 +156,7 @@ def generate_composition(
             else:
                 col += 1
         else:
-            logger.debug(
-                f'[{row}, {col}] No fitting tile found, going one step back'
-            )
+            logger.debug(f"[{row}, {col}] No fitting tile found, going one step back")
             tried[row][col].clear()
             if col == 0:
                 if row == 0:
@@ -180,18 +166,14 @@ def generate_composition(
             else:
                 col -= 1
         if i >= max_steps:
-            raise CompositionError(
-                f'Failed to calculate composition in {max_steps} steps.'
-            )
+            raise CompositionError(f"Failed to calculate composition in {max_steps} steps.")
         i += 1
     t1 = time.time()
-    logger.info(f'Generated composition in {t1 - t0:.5f}ms')
+    logger.info(f"Generated composition in {t1 - t0:.5f}ms")
     return composition
 
 
-def calc_render_tile_size(
-    composition: TComposition, max_size: int = 1920
-) -> int:
+def calc_render_tile_size(composition: TComposition, max_size: int = 1920) -> int:
     width = len(composition[0])
     height = len(composition)
     tile_size = math.ceil(max_size / min(width, height))
@@ -201,7 +183,7 @@ def calc_render_tile_size(
     return tile_size
 
 
-def read_im(f: IO) -> PILImage:
+def read_im(f: IO) -> PILImage.Image:
     try:
         return PILImage.open(f)
     except OSError:  # Use OSError instead of UnidentifiedImageError for compatibility w/ Pillow 6.x
@@ -214,12 +196,12 @@ def read_im(f: IO) -> PILImage:
 
 def render_composition(
     composition: TComposition,
-    images: Sequence['Image'],
-    tiles: Sequence['Tile'],
+    images: Sequence["Image"],
+    tiles: Sequence["Tile"],
     tile_size: int,
     f: IO,
 ):
-    logger.info('Rendering composition')
+    logger.info("Rendering composition")
     t0 = time.time()
     width = len(composition[0])
     height = len(composition)
@@ -227,26 +209,24 @@ def render_composition(
     for image in images:
         images_im[image.id] = read_im(io.BytesIO(image.image.read()))
     tile_im = {
-        tile.id: images_im[tile.image.id]
-        .resize((tile_size, tile_size))
-        .rotate(tile.rotation * 90)
+        tile.id: images_im[tile.image.id].resize((tile_size, tile_size)).rotate(tile.rotation * 90)
         for tile in tiles
     }
-    im = PILImage.new('RGBA', (width * tile_size, height * tile_size), '#fff')
+    im = PILImage.new("RGBA", (width * tile_size, height * tile_size), "#fff")
     for row in range(height):
         for col in range(width):
             tile = composition[row][col]
             if tile:
                 im.paste(tile_im[tile.id], (col * tile_size, row * tile_size))
     t1 = time.time()
-    logger.info(f'Rendered composition in {t1 - t0:.5f}ms')
-    im.save(f, 'PNG')
+    logger.info(f"Rendered composition in {t1 - t0:.5f}ms")
+    im.save(f, "PNG")
 
 
-def image_upload_to(instance: 'Image', filename: str) -> str:
+def image_upload_to(instance: "Image", filename: str) -> str:
     suffix = Path(filename).suffix
     name = str(uuid.uuid4())
-    path = (Path('images') / name).with_suffix(suffix)
+    path = (Path("images") / name).with_suffix(suffix)
     return str(path)
 
 
@@ -263,23 +243,19 @@ class Image(models.Model):
 class Tile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now=True)
-    image = models.ForeignKey(
-        Image, on_delete=models.CASCADE, related_name='tiles'
-    )
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name="tiles")
     rotation = models.PositiveSmallIntegerField()
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=['image', 'rotation'], name='unique_image_and_rotation'
-            )
+            models.UniqueConstraint(fields=["image", "rotation"], name="unique_image_and_rotation")
         ]
 
     def __str__(self):
         return str(self.id)
 
     def __repr__(self):
-        return f'<Tile: image__id={self.image.id} rotation={self.rotation}>'
+        return f"<Tile: image__id={self.image.id} rotation={self.rotation}>"
 
     def get_connection(self, side: int) -> int:
         return self.image.connections[(side + self.rotation) % len(SIDES)]
@@ -299,20 +275,18 @@ def find_shortest_str(
     return out
 
 
-def composition_upload_to(instance: 'Composition', filename: str) -> str:
-    return str(Path('compositions') / (str(instance.id) + '.png'))
+def composition_upload_to(instance: "Composition", filename: str) -> str:
+    return str(Path("compositions") / (str(instance.id) + ".png"))
 
 
 class Composition(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey(
-        'auth.User', related_name='compositions', on_delete=models.CASCADE
-    )
-    name = models.CharField(max_length=128, null=True, blank=True)
+    owner = models.ForeignKey("auth.User", related_name="compositions", on_delete=models.CASCADE)
+    name = models.CharField(max_length=128, null=True, blank=True)  # noqa: DJ001
     width = models.PositiveSmallIntegerField()
     height = models.PositiveSmallIntegerField()
-    tiles = models.ManyToManyField(Tile, related_name='compositions')
+    tiles = models.ManyToManyField(Tile, related_name="compositions")
     slug = models.SlugField(max_length=50)
     public = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
@@ -322,17 +296,32 @@ class Composition(models.Model):
     objects = CompositionManager()
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return str(self.id)
+
+    def save(self, *args, **kwargs):
+        if (
+            not self.owner.is_superuser
+            and Composition.objects.filter(owner=self.owner).count()
+            >= settings.MAX_COMPOSITIONS_PER_USER
+        ):
+            raise TessellationError("Reached the maximum number of published compositions")
+        if not self.slug:
+            self.generate_slug()
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self) -> str:
+        return reverse("detail", args=[self.slug])
 
     @property
     def size(self) -> dict:
-        return {'width': self.width, 'height': self.height}
+        return {"width": self.width, "height": self.height}
 
     @cached_property
     def images(self) -> List[Image]:
-        images: List[
-            Image
-        ] = []  # Don't use the 'set' data type to preserve order.
+        images: List[Image] = []  # Don't use the 'set' data type to preserve order.
         for tile in self.tiles.all():
             if tile.image not in images:
                 images.append(tile.image)
@@ -346,22 +335,9 @@ class Composition(models.Model):
             length=settings.MIN_SLUG_LENGTH,
         )
         if self.slug is None:
-            raise TessellationError('Slug collision')
+            raise TessellationError("Slug collision")
         iterations = len(self.slug) - settings.MIN_SLUG_LENGTH + 1
-        logger.info(f'Generated new slug in {iterations} interations')
-
-    def save(self, *args, **kwargs):
-        if (
-            not self.owner.is_superuser
-            and Composition.objects.filter(owner=self.owner).count()
-            >= settings.MAX_COMPOSITIONS_PER_USER
-        ):
-            raise TessellationError(
-                'Reached the maximum number of published compositions'
-            )
-        if not self.slug:
-            self.generate_slug()
-        super().save(*args, **kwargs)
+        logger.info(f"Generated new slug in {iterations} interations")
 
     def render(self, images: List[Image], tiles: List[Tile]):
         composition = generate_composition(tiles, self.width, self.height)
@@ -374,15 +350,9 @@ class Composition(models.Model):
             tile_size,
             f,
         )
-        self.image.save('ignored', File(f))
+        self.image.save("ignored", File(f))
 
     @transaction.atomic
     def delete(self, *args, **kwargs):
         Image.objects.filter(tiles__compositions__id=self.pk).delete()
         super().delete(*args, **kwargs)
-
-    def get_absolute_url(self) -> str:
-        return reverse('detail', args=[self.slug])
-
-    def __str__(self) -> str:
-        return str(self.id)

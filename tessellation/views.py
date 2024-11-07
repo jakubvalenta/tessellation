@@ -16,27 +16,27 @@ class CommonContextMixin(generic.base.ContextMixin):
         context = super().get_context_data(**kwargs)
         context.update(
             {
-                'title': __title__,
-                'description': __description__,
-                'email': settings.CONTACT_EMAIL,
+                "title": __title__,
+                "description": __description__,
+                "email": settings.CONTACT_EMAIL,
             }
         )
         return context
 
 
 class IndexView(CommonContextMixin, generic.base.TemplateView):
-    template_name = 'index.html'
+    template_name = "index.html"
 
 
 def not_found_view(request, exception):
     return render(
         request,
-        '404.html',
+        "404.html",
         {
-            'heading': 'Page not found',
-            'title': __title__,
-            'description': __description__,
-            'email': settings.CONTACT_EMAIL,
+            "heading": "Page not found",
+            "title": __title__,
+            "description": __description__,
+            "email": settings.CONTACT_EMAIL,
         },
         status=404,
     )
@@ -44,63 +44,57 @@ def not_found_view(request, exception):
 
 class CompositionListView(CommonContextMixin, generic.ListView):
     queryset = Composition.objects.filter(public=True, featured=True)
-    context_object_name = 'compositions'
-    template_name = 'list.html'
+    context_object_name = "compositions"
+    template_name = "list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['serialized_compositions'] = CompositionSerializer(
-            context['compositions'], many=True
+        context["serialized_compositions"] = CompositionSerializer(
+            context["compositions"], many=True
         ).data
         return context
 
 
 class CompositionDetailView(CommonContextMixin, generic.DetailView):
     model = Composition
-    context_object_name = 'composition'
-    template_name = 'detail.html'
+    context_object_name = "composition"
+    template_name = "detail.html"
 
     def get_queryset(self):
         qs = Q(public=True)
         if self.request.user.is_authenticated:
             qs = qs | Q(owner=self.request.user)
-        return Composition.objects.filter(qs).prefetch_related('tiles__image')
+        return Composition.objects.filter(qs).prefetch_related("tiles__image")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['serialized_composition'] = CompositionSerializer(
-            context['composition']
-        ).data
+        context["serialized_composition"] = CompositionSerializer(context["composition"]).data
         return context
 
 
 class CompositionEditView(CompositionDetailView):
-    template_name = 'edit.html'
+    template_name = "edit.html"
 
 
 class CompositionCreateView(CompositionEditView):
     def get_object(self, **kwargs):
         return (
             Composition.objects.filter(public=True, featured=True)
-            .prefetch_related('tiles__image')
+            .prefetch_related("tiles__image")
             .last()
         )
 
 
 class CompositionAPIMixin:
     def get_serializer(self, *args, **kwargs):
-        return CompositionSerializer(
-            *args, **kwargs, context={'request': self.request}
-        )
+        return CompositionSerializer(*args, **kwargs, context={"request": self.request})
 
 
 class CompositionListAPIView(CompositionAPIMixin, generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Composition.objects.filter(
-            owner=self.request.user
-        ).prefetch_related('tiles__image')
+        return Composition.objects.filter(owner=self.request.user).prefetch_related("tiles__image")
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -111,7 +105,7 @@ class CompositionDetailAPIView(
     generics.RetrieveUpdateDestroyAPIView,
 ):
     permission_classes = [IsOwner]
-    lookup_field = 'slug'
+    lookup_field = "slug"
 
     def get_queryset(self):
         return Composition.objects.filter(owner=self.request.user.id)
