@@ -18,17 +18,17 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
 cairosvg = "^2.7.1"
 django = "^5.0.9"
 django-cleanup = "^8.1.0"
-django-debug-toolbar = "^4.4.6"
+django-debug-toolbar = "^4.3.0"
 django-unused-media = "^0.2.2"
 django-webpack-loader = "^3.1.0"
-djangorestframework = "^3.15.2"
+djangorestframework = "^3.14.0"
 drf-base64 = "^2.0"
 pillow = "^10.3.0"
 psycopg2 = "^2.9.9"
+python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.6.4"
