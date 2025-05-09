@@ -235,6 +235,11 @@ export function renderCompositionOnCanvas(
   for (let row = 0; row < height; row++) {
     for (let col = 0; col < width; col++) {
       const tile = composition[row][col];
+      if (tile == undefined) {
+        // Tile can be undefined when an empty composition was generated,
+        // because the user hasn't uploaded any tiles yet.
+        continue;
+      }
       ctx.drawImage(tile.canvas, col * tileSize, row * tileSize);
     }
   }
