@@ -218,8 +218,8 @@ export function renderCompositionOnCanvas(
     if (image.htmlImage !== undefined) {
       // HTML image can be undefined when the image has not been uploaded yet.
       image.htmlImage.width = image.htmlImage.height = tileSize;
+      ctx.drawImage(image.htmlImage, 0, 0, tileSize, tileSize);
     }
-    ctx.drawImage(image.htmlImage, 0, 0, tileSize, tileSize);
     image.canvas = canvas;
   });
   const offset = tileSize / 2;
