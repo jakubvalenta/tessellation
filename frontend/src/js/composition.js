@@ -215,7 +215,10 @@ export function renderCompositionOnCanvas(
     const canvas = document.createElement('canvas');
     canvas.width = canvas.height = tileSize;
     const ctx = canvas.getContext('2d');
-    image.htmlImage.width = image.htmlImage.height = tileSize;
+    if (image.htmlImage !== undefined) {
+      // HTML image can be undefined when the image has not been uploaded yet.
+      image.htmlImage.width = image.htmlImage.height = tileSize;
+    }
     ctx.drawImage(image.htmlImage, 0, 0, tileSize, tileSize);
     image.canvas = canvas;
   });
@@ -235,12 +238,11 @@ export function renderCompositionOnCanvas(
   for (let row = 0; row < height; row++) {
     for (let col = 0; col < width; col++) {
       const tile = composition[row][col];
-      if (tile == undefined) {
+      if (tile !== undefined) {
         // Tile can be undefined when an empty composition was generated,
         // because the user hasn't uploaded any tiles yet.
-        continue;
+        ctx.drawImage(tile.canvas, col * tileSize, row * tileSize);
       }
-      ctx.drawImage(tile.canvas, col * tileSize, row * tileSize);
     }
   }
   const t1 = performance.now();
