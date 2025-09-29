@@ -32,12 +32,12 @@ psycopg2 = "^2.9.10"
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.6.4"
-ruff = "^0.7.2"
-pytest-django = "^4.9.0"
-mypy = "^1.11.2"
-django-stubs = {version = "^5.0.4", extras = ["compatible-mypy"]}
-djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.15.1"}
+coverage = "^7.10.7"
+ruff = "^0.13.2"
+pytest-django = "^4.11.1"
+mypy = "^1.18.2"
+django-stubs = {version = "^5.2.5", extras = ["compatible-mypy"]}
+djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.16.0"}
 
 [tool.coverage.report]
 exclude_lines = [
