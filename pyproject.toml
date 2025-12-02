@@ -19,24 +19,24 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-cairosvg = "^2.7.1"
-django = "^5.1.12"
+cairosvg = "^2.8.2"
+django = "^5.2.8"
 django-cleanup = "^9.0.0"
-django-debug-toolbar = "^5.0.1"
+django-debug-toolbar = "^6.1.0"
 django-unused-media = "^0.2.2"
-django-webpack-loader = "^3.1.1"
+django-webpack-loader = "^3.2.2"
 djangorestframework = "^3.16.0"
 drf-base64 = "^2.0"
-pillow = "^11.2.1"
-psycopg2 = "^2.9.10"
+pillow = "^12.0.0"
+psycopg2 = "^2.9.11"
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.10.7"
-ruff = "^0.13.2"
+coverage = "^7.12.0"
+ruff = "^0.14.7"
 pytest-django = "^4.11.1"
 mypy = "^1.18.2"
-django-stubs = {version = "^5.2.5", extras = ["compatible-mypy"]}
+django-stubs = {version = "^5.2.8", extras = ["compatible-mypy"]}
 djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.16.0"}
 
 [tool.coverage.report]
