@@ -16,28 +16,29 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 
 [tool.poetry.dependencies]
-cairosvg = "^2.8.2"
-django = "^5.2.8"
+cairosvg = "^2.9.0"
+django = "^5.2.17"
 django-cleanup = "^9.0.0"
-django-debug-toolbar = "^6.1.0"
+django-debug-toolbar = "^6.3.0"
 django-unused-media = "^0.2.2"
-django-webpack-loader = "^3.2.2"
-djangorestframework = "^3.16.0"
+django-webpack-loader = "^3.2.4"
+djangorestframework = "^3.16.1"
 drf-base64 = "^2.0"
-pillow = "^12.0.0"
+pillow = "^12.3.0"
 psycopg2 = "^2.9.11"
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.12.0"
-ruff = "^0.14.7"
-pytest-django = "^4.11.1"
-mypy = "^1.18.2"
-django-stubs = {version = "^5.2.8", extras = ["compatible-mypy"]}
+coverage = "^7.14.1"
+django-stubs = {version = "^5.2.9", extras = ["compatible-mypy"]}
 djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.16.0"}
+mypy = "^1.19.1"
+pytest-django = "^4.11.1"
+ruff = "^0.15.14"
 
 [tool.coverage.report]
 exclude_lines = [
